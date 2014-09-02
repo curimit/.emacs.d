@@ -72,7 +72,7 @@
 (which-function-mode t)             ;; 在状态条上显示当前光标在哪个函数体内部
 
 ;; 回车缩进
-(global-set-key (kbd "RET") 'newline-and-indent)
+(global-set-key (kbd "RET") 'my-new-line)
 
 ;; Remove this :  Buffer `blah' still has clients; kill it? (yes or no)
 (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)

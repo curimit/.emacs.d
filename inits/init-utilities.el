@@ -25,4 +25,19 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
   (interactive)
   (load-file (buffer-file-name)))
 
+(defun my-new-line-insert-blank-line()
+  (newline-and-indent)
+  (previous-line)
+  (end-of-line)
+  (newline-and-indent))
+
+(defun my-new-line()
+  (interactive)
+  (cond ((looking-at ")") (my-new-line-insert-blank-line))
+        ((looking-at "]") (my-new-line-insert-blank-line))
+        ((looking-at "}") (my-new-line-insert-blank-line))
+        (t (newline-and-indent))
+        )
+  )
+
 (provide 'init-utilities)
