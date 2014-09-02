@@ -27,4 +27,9 @@
 (require 'expand-region)
 (global-set-key (kbd "C-;") 'er/expand-region)
 
+;; multiple cursors
+(add-to-list 'load-path "~/.emacs.d/packages/multiple-cursors")
+(require 'multiple-cursors)
+(global-set-key (kbd "M-<RET>") 'mc/mark-next-like-this)
+
 (provide 'init-modes)
