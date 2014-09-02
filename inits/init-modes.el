@@ -18,9 +18,13 @@
 ;; undo tree
 (add-to-list 'load-path "~/.emacs.d/packages/undo-tree")
 (require 'undo-tree)
-(global-set-key (kbd "C-x C-u") 'undo-tree-visualize)
+(global-set-key (kbd "C-x C-u") ' undo-tree-visualize)
 (global-set-key (kbd "C-/") 'undo-tree-undo)
 (global-set-key (kbd "C-?") 'undo-tree-redo)
 
+;; expand region
+(add-to-list 'load-path "~/.emacs.d/packages/expand-region")
+(require 'expand-region)
+(global-set-key (kbd "C-;") 'er/expand-region)
 
 (provide 'init-modes)

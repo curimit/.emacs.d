@@ -86,7 +86,6 @@
 (global-set-key (kbd "C-x C-k") 'kill-region)
 (global-set-key (kbd "C-x C-n") 'set-mark-command)
 (global-set-key (kbd "C-w") 'backward-kill-word)
-(global-set-key (kbd "C-;") 'er/expand-region)
 (global-set-key [C-return] 'back-insert-new-line)
 (global-set-key (kbd "C-x C-v") 'view-in-explorer)
 (global-set-key (kbd "<C-S-tab>") 'insert-one-tab)
