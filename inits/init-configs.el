@@ -14,11 +14,11 @@
 
 ;; Font
 (if (eq system-type 'windows-nt)
-    (progn (set-face-attribute 'default nil :font "Consolas 13")
+    (progn (set-face-attribute 'default nil :font "Consolas 11")
            (dolist (charset '(kana han symbol cjk-misc bopomofo))
              (set-fontset-font (frame-parameter nil 'font) ; ¹þ¹þ
                                charset
-                               (font-spec :family "Microsoft Yahei" :size 15)))
+                               (font-spec :family "Microsoft Yahei" :size 12)))
            )
   (set-face-attribute 'default nil :height 120)
   )
