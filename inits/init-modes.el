@@ -15,5 +15,9 @@
 (require 'auto-complete-config)
 (ac-config-default)
 
+;; undo tree
+(add-to-list 'load-path "~/.emacs.d/packages/undo-tree")
+(require 'undo-tree)
+
 
 (provide 'init-modes)
