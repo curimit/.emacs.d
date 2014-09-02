@@ -18,6 +18,9 @@
 ;; undo tree
 (add-to-list 'load-path "~/.emacs.d/packages/undo-tree")
 (require 'undo-tree)
+(global-set-key (kbd "C-x C-u") 'undo-tree-visualize)
+(global-set-key (kbd "C-/") 'undo-tree-undo)
+(global-set-key (kbd "C-?") 'undo-tree-redo)
 
 
 (provide 'init-modes)

@@ -93,7 +93,6 @@
 (global-set-key "\C-l" 'ace-jump-word-mode)
 (global-set-key (kbd "C-S-l") 'ace-jump-line-mode)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
-(global-set-key (kbd "C-x C-u") 'cua-mode)
 (global-set-key (kbd "C-x C-a") 'align-regexp)
 (global-set-key (kbd "<C-backspace>") 'replace-last-sexp)
 (global-set-key (kbd "<f9>") 'run-file)
