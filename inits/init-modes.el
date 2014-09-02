@@ -63,5 +63,6 @@
 ;; helm
 (add-to-list 'load-path "~/.emacs.d/packages/helm")
 (require 'helm-config)
+(global-set-key (kbd "C-x C-b") 'helm-buffers-list)
 
 (provide 'init-modes)
