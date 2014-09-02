@@ -79,6 +79,7 @@
      (color-theme-dark-blue2)))
 
 (require 'init-utilities)
+(require 'init-modes)
 
 ;; keyboard bindings
 (global-set-key (kbd "C-x C-m") 'execute-extended-command)
