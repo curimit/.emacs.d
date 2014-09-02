@@ -25,19 +25,28 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
   (interactive)
   (load-file (buffer-file-name)))
 
-(defun my-new-line-insert-blank-line()
+(defun my-newline-insert-blank-line()
   (newline-and-indent)
   (previous-line)
   (end-of-line)
   (newline-and-indent))
 
-(defun my-new-line()
+(defun my-newline()
   (interactive)
-  (cond ((looking-at ")") (my-new-line-insert-blank-line))
-        ((looking-at "]") (my-new-line-insert-blank-line))
-        ((looking-at "}") (my-new-line-insert-blank-line))
+  (cond ((looking-at ")") (my-newline-insert-blank-line))
+        ((looking-at "]") (my-newline-insert-blank-line))
+        ((looking-at "}") (my-newline-insert-blank-line))
         (t (newline-and-indent))
         )
   )
+
+(defun duplicate-line ()
+  "Duplicate current line."
+  (interactive)
+  (let ((text (buffer-substring-no-properties (point-at-bol) (point-at-eol)))
+        (cur-col (current-column)))
+    (end-of-line) (insert "\n" text)
+    (beginning-of-line) (right-char cur-col)))
+
 
 (provide 'init-utilities)

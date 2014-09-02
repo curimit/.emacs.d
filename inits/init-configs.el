@@ -129,4 +129,6 @@
 (global-set-key (kbd "C-o") 'perly-sense-map)
 (global-set-key (kbd "C-o C-h") 'history)
 
+(global-set-key (kbd "C-M-d") 'duplicate-line)
+
 (provide 'init-configs)
