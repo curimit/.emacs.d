@@ -23,6 +23,8 @@
   (set-face-attribute 'default nil :height 120)
   )
 
+(electric-pair-mode 't)
+
 (require 'tramp)
 (setq tramp-default-method "plink")
 (setq tramp-default-method "ssh")
