@@ -15,6 +15,14 @@
 (require 'auto-complete-config)
 (ac-config-default)
 
+;; yasnippet
+(add-to-list 'load-path "~/.emacs.d/packages/yasnippet")
+(require 'yasnippet)
+(setq yas-snippet-dirs
+      '("~/.emacs.d/packages/yasnippet/snippets"         ;; the default collection
+        ))
+(yas-global-mode 1)
+
 ;; undo tree
 (add-to-list 'load-path "~/.emacs.d/packages/undo-tree")
 (require 'undo-tree)
