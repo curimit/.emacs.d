@@ -60,5 +60,8 @@
     (highlight-parentheses-mode t)))
 (global-highlight-parentheses-mode t)
 
+;; helm
+(add-to-list 'load-path "~/.emacs.d/packages/helm")
+(require 'helm-config)
 
 (provide 'init-modes)
