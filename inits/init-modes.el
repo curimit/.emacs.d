@@ -43,4 +43,14 @@
 (idle-highlight-mode t)
 (set-face-background 'idle-highlight "SlateBlue1")
 
+;; highlight-parentheses
+(add-to-list 'load-path "~/.emacs.d/packages/highlight-parentheses")
+(require 'highlight-parentheses)
+(define-globalized-minor-mode global-highlight-parentheses-mode
+  highlight-parentheses-mode
+  (lambda ()
+    (highlight-parentheses-mode t)))
+(global-highlight-parentheses-mode t)
+
+
 (provide 'init-modes)
