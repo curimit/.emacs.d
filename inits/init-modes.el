@@ -37,4 +37,10 @@
 (require 'wb-line-number)
 (wb-line-number-toggle)
 
+;; idle-highlight-mode
+(add-to-list 'load-path "~/.emacs.d/packages/idle-highlight")
+(require 'idle-highlight-mode)
+(idle-highlight-mode t)
+(set-face-background 'idle-highlight "SlateBlue1")
+
 (provide 'init-modes)
