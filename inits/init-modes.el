@@ -14,6 +14,9 @@
 (add-to-list 'load-path "~/.emacs.d/packages/auto-complete")
 (require 'auto-complete-config)
 (ac-config-default)
+(setq ac-quick-help-prefer-pos-tip t)
+(setq ac-use-quick-help t)
+(setq ac-quick-help-delay 1.0)
 
 ;; yasnippet
 (add-to-list 'load-path "~/.emacs.d/packages/yasnippet")
