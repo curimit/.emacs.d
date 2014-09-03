@@ -182,8 +182,8 @@
 (add-to-list 'load-path "~/.emacs.d/packages/coffee-mode")
 (autoload 'coffee-mode "coffee-mode" nil t)
 (add-to-list 'auto-mode-alist
-             '("\\.coffee$" . rinari-minor-mode)
              '("\\.coffee$" . coffee-mode)
+             ;; '("\\.coffee$" . rinari-minor-mode)
              )
 (defun coffee-custom ()
   "coffee-mode-hook"
