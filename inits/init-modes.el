@@ -43,6 +43,9 @@
 (global-semantic-idle-summary-mode)
 ;; (global-semantic-idle-completions-mode)
 
+;; ede
+(global-ede-mode)
+
 ;; yasnippet
 (add-to-list 'load-path "~/.emacs.d/packages/yasnippet")
 (require 'yasnippet)
