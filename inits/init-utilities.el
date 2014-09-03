@@ -14,6 +14,12 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
   (end-of-line)
   (newline-and-indent))
 
+(defun prev-insert-new-line ()
+  (interactive)
+  (previous-line)
+  (end-of-line)
+  (newline-and-indent))
+
 (defun view-in-explorer()
   (interactive)
   (shell-command
