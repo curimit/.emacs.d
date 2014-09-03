@@ -65,4 +65,10 @@
 (require 'helm-config)
 (global-set-key (kbd "C-x C-b") 'helm-buffers-list)
 
+;; languages
+;; js2-mode
+(add-to-list 'load-path "~/.emacs.d/packages/js2-mode")
+(autoload 'js2-mode "js2-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+
 (provide 'init-modes)
