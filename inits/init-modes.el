@@ -71,4 +71,18 @@
 (autoload 'js2-mode "js2-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
+;; coffee-mode
+(add-to-list 'load-path "~/.emacs.d/packages/coffee-mode")
+(autoload 'coffee-mode "coffee-mode" nil t)
+(add-to-list 'auto-mode-alist
+             ;; Todo: support rinari-mode
+             ;; '("\\.coffee$" . rinari-minor-mode) ;;use rinari-mode
+             '("\\.coffee$" . coffee-mode)
+             )
+(defun coffee-custom ()
+  "coffee-mode-hook"
+  (define-key coffee-mode-map "\C-c\C-c" 'coffee-compile-buffer)
+  )
+(add-hook 'coffee-mode-hook 'coffee-custom)
+
 (provide 'init-modes)
