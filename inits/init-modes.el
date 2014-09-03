@@ -62,8 +62,12 @@
 
 ;; helm
 (add-to-list 'load-path "~/.emacs.d/packages/helm")
+(require 'helm-info)
+(require 'helm-mode)
 (require 'helm-config)
 (global-set-key (kbd "C-x C-b") 'helm-buffers-list)
+(global-set-key (kbd "C-x C-m") 'helm-M-x)
+(global-set-key (kbd "C-o") 'helm-bookmarks)
 
 ;; languages
 ;; js2-mode

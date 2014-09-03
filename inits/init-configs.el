@@ -92,7 +92,6 @@
 (require 'init-modes)
 
 ;; keyboard bindings
-(global-set-key (kbd "C-x C-m") 'execute-extended-command)
 (global-set-key (kbd "C-x C-k") 'kill-region)
 (global-set-key (kbd "C-x C-n") 'set-mark-command)
 (global-set-key (kbd "C-w") 'backward-kill-word)
@@ -122,11 +121,6 @@
 (defun down-slightly () (interactive) (scroll-down 3))
 (global-set-key [mouse-4] 'down-slightly)
 (global-set-key [mouse-5] 'up-slightly)
-
-;; C-o binding
-(define-prefix-command 'perly-sense-map)
-(global-set-key (kbd "C-o") 'perly-sense-map)
-(global-set-key (kbd "C-o C-h") 'history)
 
 (global-set-key (kbd "C-M-d") 'duplicate-line)
 
