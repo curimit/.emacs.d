@@ -71,12 +71,36 @@
 (autoload 'js2-mode "js2-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
+;; enhanced-ruby-mode
+(add-to-list 'load-path "~/.emacs.d/packages/Enhanced-Ruby-Mode")
+(autoload 'enh-ruby-mode "enh-ruby-mode" "Major mode for ruby files" t)
+(add-to-list 'auto-mode-alist '("\\.rb$" . enh-ruby-mode))
+(add-to-list 'interpreter-mode-alist '("ruby" . enh-ruby-mode))
+;; Manually specify ruby path
+;; (setq enh-ruby-program "(path-to-ruby1.9)/bin/ruby")
+
+;; inf-ruby
+(add-to-list 'load-path "~/.emacs.d/packages/inf-ruby")
+(autoload 'inf-ruby-minor-mode "inf-ruby" "Run an inferior Ruby process" t)
+(add-hook 'enh-ruby-mode-hook 'inf-ruby-minor-mode)
+
+;; findr
+(add-to-list 'load-path "~/.emacs.d/packages/findr")
+(require 'findr)
+
+;; jump
+(add-to-list 'load-path "~/.emacs.d/packages/jump")
+(require 'jump)
+
+;; rinari
+(add-to-list 'load-path "~/.emacs.d/packages/rinari")
+(require 'rinari)
+
 ;; coffee-mode
 (add-to-list 'load-path "~/.emacs.d/packages/coffee-mode")
 (autoload 'coffee-mode "coffee-mode" nil t)
 (add-to-list 'auto-mode-alist
-             ;; Todo: support rinari-mode
-             ;; '("\\.coffee$" . rinari-minor-mode) ;;use rinari-mode
+             '("\\.coffee$" . rinari-minor-mode)
              '("\\.coffee$" . coffee-mode)
              )
 (defun coffee-custom ()
