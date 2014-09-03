@@ -9,6 +9,7 @@
 ;; popup-pos-tip
 (add-to-list 'load-path "~/.emacs.d/packages/popup-pos-tip")
 (require 'popup-pos-tip)
+(set-face-attribute 'popup-tip-face    nil   :background "#003A4E" :foreground "light gray")
 
 ;; fuzzy
 (add-to-list 'load-path "~/.emacs.d/packages/fuzzy")
@@ -21,6 +22,8 @@
 (setq ac-quick-help-prefer-pos-tip t)
 (setq ac-use-quick-help t)
 (setq ac-quick-help-delay 1.0)
+(set-face-attribute 'ac-candidate-face nil   :background "#00222c" :foreground "light gray")
+(set-face-attribute 'ac-selection-face nil   :background "SteelBlue4" :foreground "white")
 
 (setq ac-fuzzy-enable t)
 (global-set-key (kbd "C-<space>") 'ac-fuzzy-complete)
