@@ -10,6 +10,10 @@
 (add-to-list 'load-path "~/.emacs.d/packages/popup-pos-tip")
 (require 'popup-pos-tip)
 
+;; fuzzy
+(add-to-list 'load-path "~/.emacs.d/packages/fuzzy")
+(require 'fuzzy)
+
 ;; auto complete mode
 (add-to-list 'load-path "~/.emacs.d/packages/auto-complete")
 (require 'auto-complete-config)
@@ -17,6 +21,9 @@
 (setq ac-quick-help-prefer-pos-tip t)
 (setq ac-use-quick-help t)
 (setq ac-quick-help-delay 1.0)
+
+(setq ac-fuzzy-enable t)
+(global-set-key (kbd "C-<space>") 'ac-fuzzy-complete)
 
 ;; yasnippet
 (add-to-list 'load-path "~/.emacs.d/packages/yasnippet")
