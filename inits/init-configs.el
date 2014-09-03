@@ -105,7 +105,7 @@
 (global-set-key (kbd "<C-backspace>") 'replace-last-sexp)
 (global-set-key (kbd "<f9>") 'run-file)
 
-(global-set-key (kbd "RET") 'my-new-line)
+(global-set-key (kbd "RET") 'my-newline)
 
 ;; replace-region
 (global-set-key (kbd "M-%") 'replace-region)
