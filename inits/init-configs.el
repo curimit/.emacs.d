@@ -71,9 +71,6 @@
 (setq inhibit-startup-message t)    ;; 不显示GNU emacs启动界面
 (which-function-mode t)             ;; 在状态条上显示当前光标在哪个函数体内部
 
-;; 回车缩进
-(global-set-key (kbd "RET") 'my-new-line)
-
 ;; Remove this :  Buffer `blah' still has clients; kill it? (yes or no)
 (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
 
@@ -107,6 +104,8 @@
 (global-set-key (kbd "C-x C-a") 'align-regexp)
 (global-set-key (kbd "<C-backspace>") 'replace-last-sexp)
 (global-set-key (kbd "<f9>") 'run-file)
+
+(global-set-key (kbd "RET") 'my-new-line)
 
 ;; replace-region
 (global-set-key (kbd "M-%") 'replace-region)
