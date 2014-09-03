@@ -121,10 +121,17 @@
 ;; doxymacs
 (add-to-list 'load-path "~/.emacs.d/packages/doxymacs")
 (require 'doxymacs)
+
+;; doxymacs-yard
+(add-to-list 'load-path "~/.emacs.d/packages/doxymacs-yard")
+(require 'doxymacs-yard)
+
 (defun my-doxymacs-font-lock-hook ()
   (interactive)
   (if (or (eq major-mode 'c-mode) (eq major-mode 'c++-mode)) 
-      (doxymacs-font-lock)))
+      (progn (doxymacs-font-lock)
+             (doxymacs-yard)
+             )))
 (add-hook 'font-lock-mode-hook 'my-doxymacs-font-lock-hook)
 
 ;; languages
