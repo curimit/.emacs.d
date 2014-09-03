@@ -120,6 +120,11 @@
 (global-set-key [mouse-4] 'down-slightly)
 (global-set-key [mouse-5] 'up-slightly)
 
+(defun scroll-up-1 () (interactive) (scroll-up 1))
+(defun scroll-down-1 () (interactive) (scroll-down 1))
+(global-set-key (kbd "C-<up>") 'scroll-down-1)
+(global-set-key (kbd "C-<down>") 'scroll-up-1)
+
 (global-set-key (kbd "C-M-d") 'duplicate-line)
 
 (provide 'init-configs)
