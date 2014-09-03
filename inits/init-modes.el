@@ -19,9 +19,10 @@
 (add-to-list 'load-path "~/.emacs.d/packages/auto-complete")
 (require 'auto-complete-config)
 (ac-config-default)
+(global-auto-complete-mode)
 (setq ac-quick-help-prefer-pos-tip t)
 (setq ac-use-quick-help t)
-(setq ac-quick-help-delay 1.0)
+(setq ac-quick-help-delay 0.3)
 (set-face-attribute 'ac-candidate-face nil   :background "#00222c" :foreground "light gray")
 (set-face-attribute 'ac-selection-face nil   :background "SteelBlue4" :foreground "white")
 (define-key ac-complete-mode-map (kbd "C-s") 'ac-isearch)
@@ -39,7 +40,7 @@
 (global-semantic-idle-local-symbol-highlight-mode)
 (global-semantic-idle-scheduler-mode)
 (global-semantic-idle-summary-mode)
-(global-semantic-idle-completions-mode)
+;; (global-semantic-idle-completions-mode)
 
 ;; yasnippet
 (add-to-list 'load-path "~/.emacs.d/packages/yasnippet")
@@ -48,6 +49,8 @@
       '("~/.emacs.d/packages/yasnippet/snippets"         ;; the default collection
         ))
 (yas-global-mode 1)
+
+(require 'init-auto-complete-settings)
 
 ;; undo tree
 (add-to-list 'load-path "~/.emacs.d/packages/undo-tree")
