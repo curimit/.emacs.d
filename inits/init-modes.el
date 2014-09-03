@@ -29,6 +29,18 @@
 (setq ac-fuzzy-enable t)
 (global-set-key (kbd "C-<space>") 'ac-fuzzy-complete)
 
+;; cedit
+(require 'cedet)
+(require 'semantic/ia)
+(semantic-mode 1)
+(global-semanticdb-minor-mode)
+(global-semantic-decoration-mode)
+(global-semantic-mru-bookmark-mode)
+(global-semantic-idle-local-symbol-highlight-mode)
+(global-semantic-idle-scheduler-mode)
+(global-semantic-idle-summary-mode)
+(global-semantic-idle-completions-mode)
+
 ;; yasnippet
 (add-to-list 'load-path "~/.emacs.d/packages/yasnippet")
 (require 'yasnippet)
