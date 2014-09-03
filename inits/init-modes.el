@@ -24,7 +24,7 @@
 (setq ac-quick-help-delay 1.0)
 (set-face-attribute 'ac-candidate-face nil   :background "#00222c" :foreground "light gray")
 (set-face-attribute 'ac-selection-face nil   :background "SteelBlue4" :foreground "white")
-(define-key ac-mode-map (kbd "C-s") 'ac-isearch)
+(define-key ac-complete-mode-map (kbd "C-s") 'ac-isearch)
 
 (setq ac-fuzzy-enable t)
 (global-set-key (kbd "C-<space>") 'ac-fuzzy-complete)
