@@ -86,7 +86,18 @@
 (add-to-list 'load-path "~/.emacs.d/packages/drag-stuff")
 (require 'drag-stuff)
 (drag-stuff-global-mode t)
-                     
+
+;; sr-speedbar
+(add-to-list 'load-path "~/.emacs.d/packages/sr-speedbar")
+(require 'sr-speedbar)
+(setq speedbar-use-images nil)
+(defun sr-speedbar-toggle-and-focus()
+  (interactive)
+  (sr-speedbar-toggle)
+  (if (sr-speedbar-exist-p)
+      (sr-speedbar-select-window)))
+(global-set-key (kbd "<f8>") 'sr-speedbar-toggle-and-focus)
+
 ;; languages
 ;; js2-mode
 (add-to-list 'load-path "~/.emacs.d/packages/js2-mode")
