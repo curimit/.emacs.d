@@ -48,5 +48,10 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
     (end-of-line) (insert "\n" text)
     (beginning-of-line) (right-char cur-col)))
 
+(defun replace-last-sexp ()
+    (interactive)
+    (let ((value (eval (preceding-sexp))))
+      (kill-sexp -1)
+      (insert (format "%S" value))))
 
 (provide 'init-utilities)
