@@ -69,6 +69,11 @@
 (global-set-key (kbd "C-x C-m") 'helm-M-x)
 (global-set-key (kbd "C-o") 'helm-bookmarks)
 
+;; drag stuff
+(add-to-list 'load-path "~/.emacs.d/packages/drag-stuff")
+(require 'drag-stuff)
+(drag-stuff-global-mode t)
+                     
 ;; languages
 ;; js2-mode
 (add-to-list 'load-path "~/.emacs.d/packages/js2-mode")
