@@ -118,6 +118,15 @@
       (sr-speedbar-select-window)))
 (global-set-key (kbd "<f8>") 'sr-speedbar-toggle-and-focus)
 
+;; doxymacs
+(add-to-list 'load-path "~/.emacs.d/packages/doxymacs")
+(require 'doxymacs)
+(defun my-doxymacs-font-lock-hook ()
+  (interactive)
+  (if (or (eq major-mode 'c-mode) (eq major-mode 'c++-mode)) 
+      (doxymacs-font-lock)))
+(add-hook 'font-lock-mode-hook 'my-doxymacs-font-lock-hook)
+
 ;; languages
 ;; js2-mode
 (add-to-list 'load-path "~/.emacs.d/packages/js2-mode")
