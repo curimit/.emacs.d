@@ -22,8 +22,8 @@
 (global-auto-complete-mode)
 (setq ac-quick-help-prefer-pos-tip t)
 (setq ac-use-quick-help t)
-(setq ac-delay 0.1)
-(setq ac-quick-help-delay 0.5)
+(setq ac-delay 0.3)
+(setq ac-quick-help-delay 0.8)
 (set-face-attribute 'ac-candidate-face nil   :background "#00222c" :foreground "light gray")
 (set-face-attribute 'ac-selection-face nil   :background "SteelBlue4" :foreground "white")
 (define-key ac-complete-mode-map (kbd "C-s") 'ac-isearch)
@@ -139,6 +139,19 @@
 (add-to-list 'load-path "~/.emacs.d/packages/js2-mode")
 (autoload 'js2-mode "js2-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+
+;; simple-httpd
+(add-to-list 'load-path "~/.emacs.d/packages/simple-httpd")
+(require 'simple-httpd)
+
+;; skewer
+(add-to-list 'load-path "~/.emacs.d/packages/skewer")
+(require 'skewer-mode)
+
+;; ac-js2
+(add-to-list 'load-path "~/.emacs.d/packages/ac-js2")
+(autoload 'ac-js2-mode "ac-js2" nil t)
+(add-hook 'js2-mode-hook 'ac-js2-mode)
 
 ;; enhanced-ruby-mode
 (add-to-list 'load-path "~/.emacs.d/packages/Enhanced-Ruby-Mode")
