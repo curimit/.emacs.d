@@ -140,18 +140,17 @@
 (autoload 'js2-mode "js2-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
-;; simple-httpd
-(add-to-list 'load-path "~/.emacs.d/packages/simple-httpd")
-(require 'simple-httpd)
+;; tern
+(add-to-list 'load-path "~/.emacs.d/packages/tern/emacs")
 
-;; skewer
-(add-to-list 'load-path "~/.emacs.d/packages/skewer")
-(require 'skewer-mode)
+(autoload 'tern-mode "tern.el" nil t)
 
-;; ac-js2
-(add-to-list 'load-path "~/.emacs.d/packages/ac-js2")
-(autoload 'ac-js2-mode "ac-js2" nil t)
-(add-hook 'js2-mode-hook 'ac-js2-mode)
+(eval-after-load 'tern
+   '(progn
+      (require 'tern-auto-complete)
+      (tern-ac-setup)))
+
+(add-hook 'js2-mode-hook (lambda () (tern-mode t)))
 
 ;; enhanced-ruby-mode
 (add-to-list 'load-path "~/.emacs.d/packages/Enhanced-Ruby-Mode")

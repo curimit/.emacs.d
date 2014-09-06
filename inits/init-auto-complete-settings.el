@@ -28,12 +28,9 @@
   )
 
 (defun ac-settings-4-js2 ()
-  (add-to-list 'ac-omni-completion-sources
-               (cons "\\." '(ac-source-semantic)))
-  
   (setq ac-sources
         '(ac-source-semantic
-          ac-source-js2
+          ac-source-tern-completion
           ac-source-yasnippet
           ac-source-abbrev
           ac-source-words-in-buffer
