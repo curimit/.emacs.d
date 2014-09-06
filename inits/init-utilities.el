@@ -60,4 +60,16 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
       (kill-sexp -1)
       (insert (format "%S" value))))
 
+
+(defun my-delete-backward-char ()
+  (interactive)
+  (if (or (and (looking-back "\(" ) (looking-at "\)"))
+      (and (looking-back "\\[") (looking-at "\\]"))
+      (and (looking-back "\{") (looking-at "\}"))
+      (and (looking-back "\'") (looking-at "\'"))
+      (and (looking-back "\"") (looking-at "\""))
+      )
+      (delete-char 1))
+  (delete-backward-char 1))
+
 (provide 'init-utilities)
