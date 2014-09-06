@@ -110,7 +110,6 @@
 ;; sr-speedbar
 (add-to-list 'load-path "~/.emacs.d/packages/sr-speedbar")
 (require 'sr-speedbar)
-(setq speedbar-use-images nil)
 (defun sr-speedbar-toggle-and-focus()
   (interactive)
   (sr-speedbar-toggle)
