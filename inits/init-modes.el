@@ -1,3 +1,13 @@
+;; paredit
+(add-to-list 'load-path "~/.emacs.d/packages/paredit")
+(autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
+(add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
+(add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
+(add-hook 'ielm-mode-hook             #'enable-paredit-mode)
+(add-hook 'lisp-mode-hook             #'enable-paredit-mode)
+(add-hook 'lisp-interaction-enable-mode #'hook-paredit-mode)
+(add-hook 'scheme-mode-hook           #'enable-paredit-mode)
+
 ;; popup
 (add-to-list 'load-path "~/.emacs.d/packages/popup")
 (require 'popup)
@@ -145,9 +155,9 @@
 (autoload 'tern-mode "tern.el" nil t)
 
 (eval-after-load 'tern
-   '(progn
-      (require 'tern-auto-complete)
-      (tern-ac-setup)))
+  '(progn
+     (require 'tern-auto-complete)
+     (tern-ac-setup)))
 
 (add-hook 'js2-mode-hook (lambda () (tern-mode t)))
 
