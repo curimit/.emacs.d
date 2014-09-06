@@ -8,6 +8,25 @@
 (add-hook 'lisp-interaction-enable-mode #'hook-paredit-mode)
 (add-hook 'scheme-mode-hook           #'enable-paredit-mode)
 
+;; parenface
+(add-to-list 'load-path "~/.emacs.d/packages/parenface")
+(require 'parenface)
+(set-face-foreground 'parenface-paren-face "DarkSlateGray")
+(set-face-foreground 'parenface-bracket-face "DarkSlateGray")
+(set-face-foreground 'parenface-curly-face "DarkSlateGray")
+
+(defun paren-face-js-add-keyword ()
+  "Adds paren-face support to the mode."
+  (font-lock-add-keywords nil '(("{\\|}" . parenface-curly-face))))
+
+(defun paren-face-c-add-keyword ()
+  "Adds paren-face support to the mode."
+  (font-lock-add-keywords nil '(("};\\|{\\|}" . parenface-curly-face))))
+
+(add-hook 'js2-mode-hook 'paren-face-js-add-keyword)
+(add-hook 'java-mode-hook 'paren-face-js-add-keyword)
+(add-hook 'c-mode-common-hook 'paren-face-c-add-keyword)
+
 ;; popup
 (add-to-list 'load-path "~/.emacs.d/packages/popup")
 (require 'popup)
