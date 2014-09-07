@@ -27,6 +27,13 @@
 (add-hook 'java-mode-hook 'paren-face-js-add-keyword)
 (add-hook 'c-mode-common-hook 'paren-face-c-add-keyword)
 
+;; dash
+(add-to-list 'load-path "~/.emacs.d/packages/dash")
+
+;; litable
+(add-to-list 'load-path "~/.emacs.d/packages/litable")
+(autoload 'litable-mode "litable.el" nil t)
+
 ;; popup
 (add-to-list 'load-path "~/.emacs.d/packages/popup")
 (require 'popup)
