@@ -23,7 +23,7 @@
   "Adds paren-face support to the mode."
   (font-lock-add-keywords nil '(("};\\|{\\|}" . parenface-curly-face))))
 
-(add-hook 'js2-mode-hook 'paren-face-js-add-keyword)
+(add-hook 'js2-mode-hook 'paren-face-c-add-keyword)
 (add-hook 'java-mode-hook 'paren-face-js-add-keyword)
 (add-hook 'c-mode-common-hook 'paren-face-c-add-keyword)
 
