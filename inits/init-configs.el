@@ -134,4 +134,8 @@
 ;; delete brackets when meets () [] {} "" ''
 (global-set-key (kbd "<backspace>") 'my-delete-backward-char)
 
+;; compile
+(add-hook 'compilation-finish-functions 'bury-compile-buffer-if-successful)
+(define-key c-mode-base-map [(f7)] 'compile)
+
 (provide 'init-configs)
