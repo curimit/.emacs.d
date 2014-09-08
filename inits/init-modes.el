@@ -225,4 +225,7 @@
   )
 (add-hook 'coffee-mode-hook 'coffee-custom)
 
+;; nxhtml
+(load-file "~/.emacs.d/packages/nxhtml/autostart.el")
+
 (provide 'init-modes)
