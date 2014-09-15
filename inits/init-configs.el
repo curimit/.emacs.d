@@ -145,6 +145,10 @@
 (setq linum-format "%5d ")
 
 ;; mirror view
-(global-set-key (kbd "C-m") 'mirror-view)
+(global-set-key (kbd "M-M") 'mirror-view)
+(add-hook 'js2-mode-hook #'(lambda ()
+                             (interactive)
+                             (local-set-key (kbd "M-S-m") 'mirror-view)
+                             ))
 
 (provide 'init-configs)
