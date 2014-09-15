@@ -116,8 +116,8 @@
 ;; Eval-expression
 ;; (global-set-key (kbd "M-!") 'eval-expression)
 
-(defun up-slightly () (interactive) (scroll-up 3))
-(defun down-slightly () (interactive) (scroll-down 3))
+(defun up-slightly () (interactive) (scroll-up 1))
+(defun down-slightly () (interactive) (scroll-down 1))
 (global-set-key [mouse-4] 'down-slightly)
 (global-set-key [mouse-5] 'up-slightly)
 
