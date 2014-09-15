@@ -86,4 +86,30 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
                         (switch-to-prev-buffer (get-buffer-window buf) 'kill))
                       buffer)))
 
+(defun mirror-view ()
+  (interactive)
+  (split-window-vertically)
+  (other-window 1)
+  (mirror-view-mode)
+  )
+
+(setq mirror-view-mode-map (make-sparse-keymap))
+(define-key mirror-view-mode-map (kbd "C-q") '(lambda ()
+                                                (interactive)
+                                                (mirror-view-mode 0)
+                                                (delete-window)
+                                                ))
+(define-key mirror-view-mode-map (kbd "C-S-q") '(lambda ()
+                                                (interactive)
+                                                (let ((cursor (point)))
+                                                  (mirror-view-mode 0)
+                                                  (delete-window)
+                                                  (goto-char cursor)
+                                                  )
+                                                ))
+(define-minor-mode mirror-view-mode
+  "Mirror view mode"
+  :lighter " mirror"
+  :keymap (mirror-view-mode-map))
+
 (provide 'init-utilities)

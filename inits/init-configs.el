@@ -144,4 +144,7 @@
 (set-face-foreground 'linum "orange")
 (setq linum-format "%5d ")
 
+;; mirror view
+(global-set-key (kbd "M-m") 'mirror-view)
+
 (provide 'init-configs)
