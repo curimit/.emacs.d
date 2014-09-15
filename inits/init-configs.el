@@ -136,6 +136,8 @@
 
 ;; compile
 (add-hook 'compilation-finish-functions 'bury-compile-buffer-if-successful)
-(define-key c-mode-base-map [(f7)] 'compile)
+(add-hook 'c-mode-common-hook #'(lambda ()
+                                (define-key c-mode-base-map [(f7)] 'compile)
+                                ))
 
 (provide 'init-configs)
