@@ -176,6 +176,11 @@
 (add-hook 'e2wm:def-plugin-history-list-mode-hook (lambda () (linum-mode -1)))
 (add-hook 'e2wm:def-plugin-history-list2-mode-hook (lambda () (linum-mode -1)))
 
+;; window-numbering
+(add-to-list 'load-path "~/.emacs.d/packages/window-numbering")
+(require 'window-numbering)
+(window-numbering-mode)
+
 
 ;; languages
 ;; js2-mode
