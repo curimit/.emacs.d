@@ -165,6 +165,18 @@
              )))
 (add-hook 'font-lock-mode-hook 'my-doxymacs-font-lock-hook)
 
+;; e2wm
+(add-to-list 'load-path "~/.emacs.d/packages/window-layout")
+(add-to-list 'load-path "~/.emacs.d/packages/emacs-window-manager")
+(require 'e2wm)
+(global-set-key (kbd "M-=") 'e2wm:start-management)
+(global-set-key (kbd "M--") 'e2wm:stop-management)
+(add-hook 'e2wm:def-plugin-imenu-mode-hook (lambda () (linum-mode -1)))
+(add-hook 'e2wm:def-plugin-files-mode-hook (lambda () (linum-mode -1)))
+(add-hook 'e2wm:def-plugin-history-list-mode-hook (lambda () (linum-mode -1)))
+(add-hook 'e2wm:def-plugin-history-list2-mode-hook (lambda () (linum-mode -1)))
+
+
 ;; languages
 ;; js2-mode
 (add-to-list 'load-path "~/.emacs.d/packages/js2-mode")
