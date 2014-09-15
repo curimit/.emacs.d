@@ -151,4 +151,30 @@
                              (local-set-key (kbd "M-S-m") 'mirror-view)
                              ))
 
+;; unicode display
+(defun c++-unicode ()
+    (interactive)
+    (substitute-patterns-with-unicode
+     (list (cons "\\(==\\)" 'identical)
+           (cons "\\(!=\\)" 'not-identical)
+           (cons "\\(&&\\)" 'logical-and)
+           (cons "\\(||\\)" 'logical-or)
+           (cons "\\(>=\\)" 'greater-than-or-equal-to)
+           (cons "\\(<=\\)" 'less-than-or-equal-to))))
+  
+(add-hook 'c-mode-common-hook 'c++-unicode)
+
+(defun js2-unicode ()
+    (interactive)
+    (substitute-patterns-with-unicode
+     (list (cons "\\(===\\)" 'identical)
+           (cons "\\(!==\\)" 'not-identical)
+           (cons "\\(function\\)" 'lambda)
+           (cons "\\(&&\\)" 'logical-and)
+           (cons "\\(||\\)" 'logical-or)
+           (cons "\\(>=\\)" 'greater-than-or-equal-to)
+           (cons "\\(<=\\)" 'less-than-or-equal-to))))
+  
+(add-hook 'js2-mode-hook 'js2-unicode)
+
 (provide 'init-configs)
