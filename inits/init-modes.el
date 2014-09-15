@@ -132,6 +132,7 @@
 (global-set-key (kbd "C-x C-b") 'helm-buffers-list)
 (global-set-key (kbd "C-x C-m") 'helm-M-x)
 (global-set-key (kbd "C-o") 'helm-bookmarks)
+(define-key dired-mode-map (kbd "C-o") 'helm-bookmarks)
 
 ;; drag stuff
 (add-to-list 'load-path "~/.emacs.d/packages/drag-stuff")
