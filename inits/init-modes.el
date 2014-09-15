@@ -226,9 +226,9 @@
 (add-hook 'coffee-mode-hook 'coffee-custom)
 
 ;; nxhtml
-(load-file "~/.emacs.d/packages/nxhtml/autostart.el")
-(add-hook 'nxhtml-mode-hook #'(lambda ()
-                                (local-set-key (kbd "C-c C-e") 'sgml-close-tag)
-                                ))
+;; (load-file "~/.emacs.d/packages/nxhtml/autostart.el")
+;; (add-hook 'nxhtml-mode-hook #'(lambda ()
+;;                                 (local-set-key (kbd "C-c C-e") 'sgml-close-tag)
+;;                                 ))
 
 (provide 'init-modes)
