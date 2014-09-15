@@ -140,7 +140,7 @@
                                 (define-key c-mode-base-map [(f7)] 'compile)
                                 ))
 
-(linum-mode)
+(global-linum-mode)
 (set-face-foreground 'linum "orange")
 (setq linum-format "%5d ")
 
