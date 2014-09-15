@@ -176,6 +176,9 @@
 (add-hook 'e2wm:def-plugin-history-list-mode-hook (lambda () (linum-mode -1)))
 (add-hook 'e2wm:def-plugin-history-list2-mode-hook (lambda () (linum-mode -1)))
 
+(set-face-foreground 'e2wm:face-item "Mediumpurple1")
+(set-face-foreground 'e2wm:face-history-list-normal "Mediumpurple1")
+
 ;; window-numbering
 (add-to-list 'load-path "~/.emacs.d/packages/window-numbering")
 (require 'window-numbering)
