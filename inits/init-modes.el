@@ -181,6 +181,34 @@
 (require 'window-numbering)
 (window-numbering-mode)
 
+;; tabbar
+(add-to-list 'load-path "~/.emacs.d/packages/tabbar")
+(require 'tabbar)
+(tabbar-mode 1)
+(global-set-key (kbd "M-h") 'tabbar-backward)
+(global-set-key (kbd "M-l") 'tabbar-forward)
+
+(set-face-attribute 'tabbar-default nil
+                    :background "gray80"
+                    :foreground "black"
+                    :height 1.0
+                    )
+
+(set-face-attribute 'tabbar-button nil 
+                    :inherit 'tabbar-default
+                    )
+(set-face-attribute 'tabbar-selected nil
+                    :inherit 'tabbar-default
+                    :foreground "hotpink"
+                    :background "#233b5a"
+                    :box '(:line-width 5 :color "#233b5a" :background: "#233b5a")
+                    :height 1.2
+                    :weight 'bold
+                    )
+(set-face-attribute 'tabbar-unselected nil
+                    :inherit 'tabbar-default
+                    :foreground "black"
+                    )
 
 ;; languages
 ;; js2-mode
