@@ -109,11 +109,6 @@
 (require 'multiple-cursors)
 (global-set-key (kbd "M-<RET>") 'mc/mark-next-like-this)
 
-;; wb-line-number
-(add-to-list 'load-path "~/.emacs.d/packages/wb-line-number")
-(require 'wb-line-number)
-(wb-line-number-toggle)
-
 ;; idle-highlight-mode
 (add-to-list 'load-path "~/.emacs.d/packages/idle-highlight")
 (require 'idle-highlight-mode)
