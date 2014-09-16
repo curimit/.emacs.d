@@ -269,6 +269,15 @@
   )
 (add-hook 'coffee-mode-hook 'coffee-custom)
 
+;; web mode
+(add-to-list 'load-path "~/.emacs.d/packages/web-mode")
+(require 'web-mode)
+
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.aspx?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.ejs\\'" . web-mode))
+
 ;; nxhtml
 ;; (load-file "~/.emacs.d/packages/nxhtml/autostart.el")
 ;; (add-hook 'nxhtml-mode-hook #'(lambda ()
