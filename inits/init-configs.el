@@ -33,7 +33,8 @@
 (global-set-key [(meta ?/)] 'hippie-expand)
 
 ;; no menu
-(tool-bar-mode -1)
+(if (not (eq system-type 'darwin))
+    (tool-bar-mode -1))
 (scroll-bar-mode -1)
 ;(menu-bar-mode -1)
 
