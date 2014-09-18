@@ -51,22 +51,6 @@
 (add-to-list 'load-path "~/.emacs.d/packages/fuzzy")
 (require 'fuzzy)
 
-;; auto complete mode
-(add-to-list 'load-path "~/.emacs.d/packages/auto-complete")
-(require 'auto-complete-config)
-(ac-config-default)
-(global-auto-complete-mode)
-(setq ac-quick-help-prefer-pos-tip t)
-(setq ac-use-quick-help t)
-(setq ac-delay 0.3)
-(setq ac-quick-help-delay 0.8)
-(set-face-attribute 'ac-candidate-face nil   :background "#00222c" :foreground "light gray")
-(set-face-attribute 'ac-selection-face nil   :background "SteelBlue4" :foreground "white")
-(define-key ac-complete-mode-map (kbd "C-s") 'ac-isearch)
-
-(setq ac-fuzzy-enable t)
-(global-set-key (kbd "C-<space>") 'ac-fuzzy-complete)
-
 ;; cedit
 (require 'cedet)
 (require 'semantic/ia)
@@ -90,7 +74,12 @@
         ))
 (yas-global-mode 1)
 
-(require 'init-auto-complete-settings)
+;; company mode
+(add-to-list 'load-path "~/.emacs.d/packages/company-mode")
+(require 'company)
+(global-company-mode)
+(setq company-idle-delay t)
+(define-key company-active-map (kbd "C-w") 'backward-kill-word)
 
 ;; undo tree
 (add-to-list 'load-path "~/.emacs.d/packages/undo-tree")
