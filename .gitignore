@@ -4,3 +4,4 @@ bookmarks
 ede-projects.el
 semanticdb*
 .litable-lists.el
+*.elc
