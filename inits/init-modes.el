@@ -81,6 +81,11 @@
 (setq company-idle-delay t)
 (define-key company-active-map (kbd "C-w") 'backward-kill-word)
 
+;; company c headers
+(add-to-list 'load-path "~/.emacs.d/packages/company-c-headers")
+(require 'company-c-headers)
+(add-to-list 'company-backends 'company-c-headers)
+
 ;; undo tree
 (add-to-list 'load-path "~/.emacs.d/packages/undo-tree")
 (require 'undo-tree)
