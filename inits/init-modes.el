@@ -213,6 +213,16 @@
                     :foreground "black"
                     )
 
+;; flycheck
+(add-to-list 'load-path "~/.emacs.d/packages/flycheck")
+(require 'flycheck)
+(global-flycheck-mode)
+
+;; helm flycheck
+(add-to-list 'load-path "~/.emacs.d/packages/helm-flycheck")
+(require 'helm-flycheck)
+
+
 ;; languages
 ;; js2-mode
 (add-to-list 'load-path "~/.emacs.d/packages/js2-mode")
