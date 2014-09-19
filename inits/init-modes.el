@@ -128,6 +128,10 @@
 (global-set-key (kbd "C-o") 'helm-bookmarks)
 (define-key dired-mode-map (kbd "C-o") 'helm-bookmarks)
 
+;; helm dash
+(add-to-list 'load-path "~/.emacs.d/packages/helm-dash")
+(require 'helm-dash)
+
 ;; drag stuff
 (add-to-list 'load-path "~/.emacs.d/packages/drag-stuff")
 (require 'drag-stuff)
