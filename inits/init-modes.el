@@ -78,6 +78,8 @@
 (global-company-mode)
 (setq company-idle-delay t)
 (define-key company-active-map (kbd "C-w") 'backward-kill-word)
+(set-face-attribute 'company-tooltip nil   :background "#00222c" :foreground "light gray")
+(set-face-attribute 'company-tooltip-selection nil   :background "SteelBlue4" :foreground "white")
 
 ;; company c headers
 (add-to-list 'load-path "~/.emacs.d/packages/company-c-headers")
