@@ -5,3 +5,4 @@ ede-projects.el
 semanticdb*
 .litable-lists.el
 *.elc
+personal.el
