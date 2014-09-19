@@ -128,6 +128,8 @@
 (global-set-key (kbd "C-o") 'helm-bookmarks)
 (define-key dired-mode-map (kbd "C-o") 'helm-bookmarks)
 
+(define-key helm-map (kbd "C-w") 'backward-kill-word)
+
 ;; helm dash
 (add-to-list 'load-path "~/.emacs.d/packages/helm-dash")
 (require 'helm-dash)
