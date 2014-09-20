@@ -205,7 +205,6 @@
                     :foreground "hotpink"
                     :background "#233b5a"
                     :box '(:line-width 5 :color "#233b5a" :background: "#233b5a")
-                    :height 1.2
                     :weight 'bold
                     )
 (set-face-attribute 'tabbar-unselected nil
