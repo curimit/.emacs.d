@@ -140,6 +140,8 @@
 (add-hook 'c-mode-common-hook #'(lambda ()
                                 (define-key c-mode-base-map [(f7)] 'compile)
                                 ))
+(setq compilation-scroll-output t)
+(setq compilation-auto-jump-to-first-error t)
 
 (global-linum-mode)
 (set-face-foreground 'linum "orange")
