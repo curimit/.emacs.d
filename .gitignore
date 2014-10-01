@@ -7,3 +7,4 @@ semanticdb*
 *.elc
 personal.el
 url/
+.mc-lists.el
