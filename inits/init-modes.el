@@ -297,4 +297,11 @@
 (add-to-list 'load-path "~/.emacs.d/packages/helm-ls-git")
 (autoload 'helm-ls-git-ls "helm-ls-git" nil t)
 
+;; diff hl
+(add-to-list 'load-path "~/.emacs.d/packages/diff-hl")
+(require 'diff-hl)
+(set-face-background 'diff-hl-insert "LawnGreen")
+(set-face-background 'diff-hl-delete "Red")
+(set-face-background 'diff-hl-change "Deepskyblue2")
+
 (provide 'init-modes)
