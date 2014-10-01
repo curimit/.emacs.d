@@ -299,4 +299,8 @@
           (add-to-list 'Info-directory-list "~/.emacs.d/packages//magit")))
 (autoload 'magit-status "magit" nil t)
 
+;; helm ls git
+(add-to-list 'load-path "~/.emacs.d/packages/helm-ls-git")
+(autoload 'helm-ls-git-ls "helm-ls-git" nil t)
+
 (provide 'init-modes)
