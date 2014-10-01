@@ -304,6 +304,11 @@
 (set-face-background 'diff-hl-delete "Red")
 (set-face-background 'diff-hl-change "Deepskyblue2")
 
+;; git gutter fringe
+(add-to-list 'load-path "~/.emacs.d/packages/git-gutter-fringe")
+(require 'git-gutter-fringe)
+(global-git-gutter-mode 1)
+
 ;; back button
 (add-to-list 'load-path "~/.emacs.d/packages/back-button")
 (require 'back-button)
