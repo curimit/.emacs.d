@@ -6,3 +6,4 @@ semanticdb*
 .litable-lists.el
 *.elc
 personal.el
+url/
