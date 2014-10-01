@@ -286,12 +286,6 @@
 (add-to-list 'auto-mode-alist '("\\.aspx?\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.ejs\\'" . web-mode))
 
-;; nxhtml
-;; (load-file "~/.emacs.d/packages/nxhtml/autostart.el")
-;; (add-hook 'nxhtml-mode-hook #'(lambda ()
-;;                                 (local-set-key (kbd "C-c C-e") 'sgml-close-tag)
-;;                                 ))
-
 (add-to-list 'load-path "~/.emacs.d/packages/git-modes")
 (add-to-list 'load-path "~/.emacs.d/packages//magit")
 (eval-after-load 'info
