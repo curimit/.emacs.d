@@ -129,9 +129,6 @@
 
 (global-set-key (kbd "C-M-d") 'duplicate-line)
 
-(global-set-key (kbd "C--") 'previous-buffer)
-(global-set-key (kbd "C-=") 'next-buffer)
-
 ;; delete brackets when meets () [] {} "" ''
 (global-set-key (kbd "<backspace>") 'my-delete-backward-char)
 

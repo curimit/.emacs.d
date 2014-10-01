@@ -304,4 +304,12 @@
 (set-face-background 'diff-hl-delete "Red")
 (set-face-background 'diff-hl-change "Deepskyblue2")
 
+;; back button
+(add-to-list 'load-path "~/.emacs.d/packages/back-button")
+(require 'back-button)
+(back-button-mode 1)
+(global-set-key (kbd "C--") 'back-button-local-backward)
+(global-set-key (kbd "C-=") 'back-button-local-forward)
+
+
 (provide 'init-modes)
