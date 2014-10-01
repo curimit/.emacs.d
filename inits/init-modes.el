@@ -292,4 +292,11 @@
 ;;                                 (local-set-key (kbd "C-c C-e") 'sgml-close-tag)
 ;;                                 ))
 
+(add-to-list 'load-path "~/.emacs.d/packages/git-modes")
+(add-to-list 'load-path "~/.emacs.d/packages//magit")
+(eval-after-load 'info
+  '(progn (info-initialize)
+          (add-to-list 'Info-directory-list "~/.emacs.d/packages//magit")))
+(autoload 'magit-status "magit" nil t)
+
 (provide 'init-modes)
