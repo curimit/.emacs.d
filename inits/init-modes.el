@@ -316,19 +316,5 @@
 (global-set-key (kbd "C--") 'back-button-local-backward)
 (global-set-key (kbd "C-=") 'back-button-local-forward)
 
-;; anzu
-(add-to-list 'load-path "~/.emacs.d/packages/anzu")
-(require 'anzu)
-(global-anzu-mode t)
-
-(custom-set-variables
- '(anzu-deactivate-region t)
- '(anzu-search-threshold 1000)
- '(anzu-replace-to-string-separator " => "))
-
-(set-face-attribute 'anzu-mode-line nil
-                    :foreground "red" :weight 'bold)
-
-(global-set-key (kbd "M-%") 'anzu-query-replace)
 
 (provide 'init-modes)

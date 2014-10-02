@@ -106,6 +106,9 @@
 
 (global-set-key (kbd "RET") 'my-newline)
 
+;; replace-region
+(global-set-key (kbd "M-%") 'replace-string)
+
 (global-set-key "\M-;" 'qiang-comment-dwim-line)
 
 (global-set-key (kbd "C-M-0") 'forward-sexp)
