@@ -331,4 +331,10 @@
 
 (global-set-key (kbd "M-%") 'anzu-query-replace)
 
+;; auto pair
+(add-to-list 'load-path "~/.emacs.d/packages/autopair")
+(require 'autopair)
+
+(autopair-global-mode t)
+
 (provide 'init-modes)

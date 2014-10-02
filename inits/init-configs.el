@@ -23,8 +23,6 @@
   (set-face-attribute 'default nil :height 120)
   )
 
-(electric-pair-mode 't)
-
 (require 'tramp)
 (setq tramp-default-method "plink")
 (setq tramp-default-method "ssh")
@@ -125,9 +123,6 @@
 (global-set-key (kbd "C-<down>") 'scroll-up-1)
 
 (global-set-key (kbd "C-M-d") 'duplicate-line)
-
-;; delete brackets when meets () [] {} "" ''
-(global-set-key (kbd "<backspace>") 'my-delete-backward-char)
 
 ;; compile
 (add-hook 'compilation-finish-functions 'bury-compile-buffer-if-successful)
