@@ -172,4 +172,8 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
                                                (cdr x)))
           patterns))
 
+(defun clean-buffer ()
+  (interactive)
+  (indent-region (point-min) (point-max)))
+
 (provide 'init-utilities)
