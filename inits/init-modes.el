@@ -343,4 +343,8 @@
 (add-to-list 'auto-mode-alist '("\.feature$" . feature-mode))
 (setq feature-default-i18n-file "~/.emacs.d/packages/feature-mode/i18n.yml")
 
+;; nummm-mode
+(add-to-list 'load-path "~/.emacs.d/packages/nummm-mode")
+(require 'nummm-mode)
+
 (provide 'init-modes)
