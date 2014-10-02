@@ -337,4 +337,10 @@
 
 (autopair-global-mode t)
 
+;; feature-mode
+(add-to-list 'load-path "~/.emacs.d/packages/feature-mode")
+(autoload 'feature-mode "feature-mode" nil t)
+(add-to-list 'auto-mode-alist '("\.feature$" . feature-mode))
+(setq feature-default-i18n-file "~/.emacs.d/packages/feature-mode/i18n.yml")
+
 (provide 'init-modes)
