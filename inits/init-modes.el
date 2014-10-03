@@ -347,4 +347,8 @@
 (add-to-list 'load-path "~/.emacs.d/packages/nummm-mode")
 (require 'nummm-mode)
 
+;; simple-httpd
+(add-to-list 'load-path "~/.emacs.d/packages/simple-httpd")
+(require 'simple-httpd)
+
 (provide 'init-modes)
