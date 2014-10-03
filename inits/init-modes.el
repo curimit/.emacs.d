@@ -188,8 +188,8 @@
 (add-to-list 'load-path "~/.emacs.d/packages/tabbar")
 (require 'tabbar)
 (tabbar-mode 1)
-(global-set-key (kbd "M-h") 'tabbar-backward)
-(global-set-key (kbd "M-l") 'tabbar-forward)
+(global-set-key (kbd "M-h") 'tabbar-backward-tab)
+(global-set-key (kbd "M-l") 'tabbar-forward-tab)
 
 (set-face-attribute 'tabbar-default nil
                     :background "gray80"
