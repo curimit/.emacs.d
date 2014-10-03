@@ -351,4 +351,13 @@
 (add-to-list 'load-path "~/.emacs.d/packages/simple-httpd")
 (require 'simple-httpd)
 
+;; skewer
+(add-to-list 'load-path "~/.emacs.d/packages/skewer-mode")
+(require 'skewer-mode)
+
+(add-to-list 'js2-mode-hook (lambda ()
+                              (define-key js2-mode-map (kbd "<f5>") 'skewer-load-buffer)
+                              (define-key js2-mode-map (kbd "C-x C-e") 'skewer-eval-last-expression)
+                              ))
+
 (provide 'init-modes)
