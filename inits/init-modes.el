@@ -355,9 +355,12 @@
 (add-to-list 'load-path "~/.emacs.d/packages/skewer-mode")
 (require 'skewer-mode)
 
-(add-to-list 'js2-mode-hook (lambda ()
-                              (define-key js2-mode-map (kbd "<f5>") 'skewer-load-buffer)
-                              (define-key js2-mode-map (kbd "C-x C-e") 'skewer-eval-last-expression)
-                              ))
+(autoload 'skewer-css-mode "skewer-css" nil t)
+(autoload 'skewer-html-mode "skewer-html" nil t)
+(autoload 'skewer-repl "skewer-repl" nil t)
+
+(add-hook 'js2-mode-hook 'skewer-mode)
+(add-hook 'css-mode-hook 'skewer-css-mode)
+(add-hook 'web-mode-hook 'skewer-html-mode)
 
 (provide 'init-modes)
