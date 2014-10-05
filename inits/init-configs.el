@@ -16,7 +16,7 @@
 (if (eq system-type 'windows-nt)
     (progn (set-face-attribute 'default nil :font "Consolas 11")
            (dolist (charset '(kana han symbol cjk-misc bopomofo))
-             (set-fontset-font (frame-parameter nil 'font) ; 哈哈
+             (set-fontset-font (frame-parameter nil 'font)
                                charset
                                (font-spec :family "Microsoft Yahei" :size 12)))
            )
@@ -49,33 +49,32 @@
 ;; scroll-margin 3
 (setq scroll-margin 3 scroll-conservatively 10000)
 
-(setq default-major-ode 'text-mode) ;; 缺省mode为text-mode
-(setq x-select-enable-clipboard t)  ;; 支持emacs和外部程序之间进行粘贴
-(setq make-backup-files nil)        ;; 关闭自动备份功能
-(setq backup-inhibited t)           ;; 不产生备份
-(setq auto-save-default nil)        ;; 不生成名为#filename#的临时文件
-(setq auto-save-mode t)             ;; 自动保存
-(global-auto-revert-mode 1)         ;; 自动重载更改的文件
-(setq echo-keystrokes 0.1)          ;; 尽快显示按键序列提示
-(global-font-lock-mode t)           ;; 语法高亮
-(setq auto-image-file-mode t)       ;; 让 Emacs 可以直接打开和显示图片
-(setq c-basic-offset 2)             ;; 设置缩进字符数
-(put 'erase-buffer 'disabled nil)   ;; 启用清空buffer函数
-(auto-image-file-mode)              ;; 支持图片文件显示
-(delete-selection-mode t)           ;; 替换选区文字
-(fset 'yes-or-no-p 'y-or-n-p)       ;; 以 'y/n'字样代替原默认的'yes/no'字样
-(transient-mark-mode t)             ;; 高亮显示要拷贝的区域
-(setq inhibit-startup-message t)    ;; 尽快显示按键序列
-(setq column-number-mode t)         ;; 显示列号
-(setq inhibit-startup-message t)    ;; 不显示GNU emacs启动界面
-(which-function-mode t)             ;; 在状态条上显示当前光标在哪个函数体内部
+(setq default-major-ode 'text-mode)
+(setq x-select-enable-clipboard t)
+(setq make-backup-files nil)
+(setq backup-inhibited t)
+(setq auto-save-default nil)
+(setq auto-save-mode t)
+(global-auto-revert-mode 1)
+(setq echo-keystrokes 0.1)
+(global-font-lock-mode t)
+(setq auto-image-file-mode t)
+(setq c-basic-offset 2)
+(put 'erase-buffer 'disabled nil)
+(auto-image-file-mode)
+(delete-selection-mode t)
+(fset 'yes-or-no-p 'y-or-n-p)
+(transient-mark-mode t)
+(setq inhibit-startup-message t)
+(setq column-number-mode t)
+(setq inhibit-startup-message t)
+(which-function-mode t)
 
 ;; Remove this :  Buffer `blah' still has clients; kill it? (yes or no)
 (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
 
-;; 使用空格作格式化字符
-(setq-default         ;; 使用空格缩进 
- indent-tabs-mode nil ;; t 使用 TAB 作格式化字符  nil 使用空格作格式化字符
+(setq-default
+ indent-tabs-mode nil
  tab-always-indent nil
  tab-width 2)
 
