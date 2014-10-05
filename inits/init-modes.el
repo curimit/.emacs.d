@@ -225,6 +225,10 @@
 (add-to-list 'load-path "~/.emacs.d/packages/helm-css-scss")
 (require 'helm-css-scss)
 
+;; helm-mode-manager
+(add-to-list 'load-path "~/.emacs.d/packages/helm-mode-manager")
+(require 'helm-mode-manager)
+
 ;; languages
 ;; js2-mode
 (add-to-list 'load-path "~/.emacs.d/packages/js2-mode")
