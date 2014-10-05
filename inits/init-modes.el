@@ -221,6 +221,9 @@
 (add-to-list 'load-path "~/.emacs.d/packages/helm-flycheck")
 (require 'helm-flycheck)
 
+;; helm-css-scss
+(add-to-list 'load-path "~/.emacs.d/packages/helm-css-scss")
+(require 'helm-css-scss)
 
 ;; languages
 ;; js2-mode
