@@ -23,8 +23,6 @@
 (add-hook 'java-mode-hook 'paren-face-js-add-keyword)
 (add-hook 'c-mode-common-hook 'paren-face-c-add-keyword)
 
-;; dash
-
 ;; litable
 (autoload 'litable-mode "litable.el" nil t)
 
