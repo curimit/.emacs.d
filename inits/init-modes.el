@@ -370,4 +370,7 @@
 (add-hook 'css-mode-hook 'skewer-css-mode)
 (add-hook 'web-mode-hook 'skewer-html-mode)
 
+(add-to-list 'load-path "~/.emacs.d/packages/htmlize")
+(require 'htmlize)
+
 (provide 'init-modes)
