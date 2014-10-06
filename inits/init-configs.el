@@ -167,4 +167,11 @@
   
 (add-hook 'js2-mode-hook 'js2-unicode)
 
+(defun lisp-unicode ()
+    (interactive)
+    (substitute-patterns-with-unicode
+     (list (cons "\\(lambda\\)" 'lambda))))
+
+(add-hook 'emacs-lisp-mode-hook 'lisp-unicode)
+
 (provide 'init-configs)
