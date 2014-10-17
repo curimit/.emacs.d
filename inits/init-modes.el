@@ -318,4 +318,9 @@
 
 (require 'htmlize)
 
+(autoload 'stylus-mode "stylus-mode" nil t)
+(autoload 'jade-mode "jade-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.styl$" . stylus-mode))
+(add-to-list 'auto-mode-alist '("\\.jade$" . jade-mode))
+
 (provide 'init-modes)
