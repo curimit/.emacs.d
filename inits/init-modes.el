@@ -185,11 +185,11 @@
                     )
 
 ;; flycheck
-(require 'flycheck)
-(global-flycheck-mode)
+;; (require 'flycheck)
+;; (global-flycheck-mode)
 
 ;; helm flycheck
-(require 'helm-flycheck)
+;; (require 'helm-flycheck)
 
 ;; helm-css-scss
 (require 'helm-css-scss)
