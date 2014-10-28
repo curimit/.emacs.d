@@ -114,6 +114,26 @@
 ;; helm dash
 (require 'helm-dash)
 
+(defun ensure-dash-docset (list)
+  (setq-local helm-dash-docsets list)
+  )
+
+(defun c++-doc ()
+  (interactive)
+  (ensure-dash-docset '("C++" "C"))
+  )
+(add-hook 'c-mode-common-hook 'c++-doc)
+
+(defun emacs-lisp-doc ()
+  (interactive)
+  (ensure-dash-docset '("Emacs Lisp"))
+  )
+(add-hook 'emacs-lisp-mode-hook 'emacs-lisp-doc)
+
+(setq helm-dash-min-length 0)
+
+(helm-dash-buffer-local-docsets)
+
 ;; drag stuff
 (require 'drag-stuff)
 (drag-stuff-global-mode t)
