@@ -294,6 +294,7 @@
 (back-button-mode 1)
 (global-set-key (kbd "C--") 'back-button-local-backward)
 (global-set-key (kbd "C-=") 'back-button-local-forward)
+(global-set-key (kbd "C-\\") 'back-button-push-mark-local-and-global)
 
 ;; anzu
 (require 'anzu)
