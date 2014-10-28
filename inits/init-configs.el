@@ -174,4 +174,10 @@
 
 (add-hook 'emacs-lisp-mode-hook 'lisp-unicode)
 
+;; compilation window settings
+(setq compilation-scroll-output t)
+(setq compilation-auto-jump-to-first-error t)
+(setq compilation-auto-jump-to-next t)
+(setq compilation-always-kill t)
+
 (provide 'init-configs)
