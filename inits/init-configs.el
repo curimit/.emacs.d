@@ -34,7 +34,7 @@
 (if (not (eq system-type 'darwin))
     (tool-bar-mode -1))
 (scroll-bar-mode -1)
-;(menu-bar-mode -1)
+;; (menu-bar-mode -1)
 
 ;; hight paren
 (show-paren-mode nil)
@@ -125,8 +125,8 @@
 ;; compile
 (add-hook 'compilation-finish-functions 'bury-compile-buffer-if-successful)
 (add-hook 'c-mode-common-hook #'(lambda ()
-                                (define-key c-mode-base-map [(f7)] 'compile)
-                                ))
+                                  (define-key c-mode-base-map [(f7)] 'compile)
+                                  ))
 (setq compilation-scroll-output t)
 (setq compilation-auto-jump-to-first-error t)
 
@@ -143,34 +143,34 @@
 
 ;; unicode display
 (defun c++-unicode ()
-    (interactive)
-    (substitute-patterns-with-unicode
-     (list (cons "\\(==\\)" 'identical)
-           (cons "\\(!=\\)" 'not-identical)
-           (cons "\\(&&\\)" 'logical-and)
-           (cons "\\(||\\)" 'logical-or)
-           (cons "\\(>=\\)" 'greater-than-or-equal-to)
-           (cons "\\(<=\\)" 'less-than-or-equal-to))))
-  
+  (interactive)
+  (substitute-patterns-with-unicode
+   (list (cons "\\(==\\)" 'identical)
+         (cons "\\(!=\\)" 'not-identical)
+         (cons "\\(&&\\)" 'logical-and)
+         (cons "\\(||\\)" 'logical-or)
+         (cons "\\(>=\\)" 'greater-than-or-equal-to)
+         (cons "\\(<=\\)" 'less-than-or-equal-to))))
+
 (add-hook 'c-mode-common-hook 'c++-unicode)
 
 (defun js2-unicode ()
-    (interactive)
-    (substitute-patterns-with-unicode
-     (list (cons "\\(===\\)" 'identical)
-           (cons "\\(!==\\)" 'not-identical)
-           (cons "\\(function\\)" 'lambda)
-           (cons "\\(&&\\)" 'logical-and)
-           (cons "\\(||\\)" 'logical-or)
-           (cons "\\(>=\\)" 'greater-than-or-equal-to)
-           (cons "\\(<=\\)" 'less-than-or-equal-to))))
-  
+  (interactive)
+  (substitute-patterns-with-unicode
+   (list (cons "\\(===\\)" 'identical)
+         (cons "\\(!==\\)" 'not-identical)
+         (cons "\\(function\\)" 'lambda)
+         (cons "\\(&&\\)" 'logical-and)
+         (cons "\\(||\\)" 'logical-or)
+         (cons "\\(>=\\)" 'greater-than-or-equal-to)
+         (cons "\\(<=\\)" 'less-than-or-equal-to))))
+
 (add-hook 'js2-mode-hook 'js2-unicode)
 
 (defun lisp-unicode ()
-    (interactive)
-    (substitute-patterns-with-unicode
-     (list (cons "\\(lambda\\)" 'lambda))))
+  (interactive)
+  (substitute-patterns-with-unicode
+   (list (cons "\\(lambda\\)" 'lambda))))
 
 (add-hook 'emacs-lisp-mode-hook 'lisp-unicode)
 
