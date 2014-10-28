@@ -170,15 +170,15 @@ Filters on the appropriate regex for the current major mode."
     (`candidates (company-c-headers--candidates arg))
     (`meta (company-c-headers--meta arg))
     (`location (company-c-headers--location arg))
-    (`post-completion
-     (when (looking-back company-c-headers-include-declaration (line-beginning-position))
-       (let ((matched (match-string-no-properties 1)))
-         ;; Add a terminating delimiter unless we've completed a directory name
-         ;; TODO: handle pre-existing terminating delimiter?
-         (unless (equal matched (file-name-as-directory matched))
-           (pcase (aref matched 0)
-             (?\" (insert "\""))
-             (?< (insert ">")))))))
+    ;; (`post-completion
+    ;;  (when (looking-back company-c-headers-include-declaration (line-beginning-position))
+    ;;    (let ((matched (match-string-no-properties 1)))
+    ;;      ;; Add a terminating delimiter unless we've completed a directory name
+    ;;      ;; TODO: handle pre-existing terminating delimiter?
+    ;;      (unless (equal matched (file-name-as-directory matched))
+    ;;        (pcase (aref matched 0)
+    ;;          (?\" (insert "\""))
+    ;;          (?< (insert ">")))))))
     ))
 
 (provide 'company-c-headers)
