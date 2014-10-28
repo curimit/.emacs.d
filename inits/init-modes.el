@@ -96,14 +96,16 @@
           (if (and return-name (not (string= return-name "void")))
               (setq snippet-text (concat snippet-text
                                          (format " // @return ${%d:%s}" idx return-name)))
-            (substring snippet-text 0 (- (length snippet-text) 1))
+            (setq snippet-text (substring snippet-text 0 (- (length snippet-text) 1)))
             )
           (backward-delete-char 3)
           (yas/expand-snippet snippet-text))
       )
     )
   )
-(define-key c-mode-base-map (kbd "/") 'c++-triple-slash)
+(add-hook 'c-mode-common-hook (lambda ()
+                                (define-key c-mode-base-map (kbd "/") 'c++-triple-slash)
+                                ))
 
 ;; company mode
 (require 'company)
