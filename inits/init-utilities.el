@@ -200,44 +200,27 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
              (setq args (s-split "\\." raw_args))
              (back-to-indentation)
              (kill-line)
-             (if (equal raw_args "")
-                 (progn
-                   (insert "namespace {")
-                   (save-excursion
-                     (insert "}  // namespace"))
-                   (newline-and-indent)
-                   (newline-and-indent)
-                   (previous-line)
-                   (previous-line)
-                   (end-of-line)
-                   (newline-and-indent)
-                   (newline-and-indent)
-                   )
-               (progn
-                 (--map
-                  (progn
-                    (insert (concat "namespace "
-                                    it
-                                    " {"
-                                    ))
-                    (save-excursion
-                      (insert (concat "}  // "
-                                      it
-                                      ))
-                      )
-                    (newline-and-indent)
-                    (previous-line)
-                    (end-of-line)
-                    (newline-and-indent)
-                    )
-                  args)
-                 (newline-and-indent)
-                 (previous-line)
-                 (end-of-line)
-                 (newline-and-indent)
-                 )
-               )
-
+             (--map
+              (progn
+                (insert (concat "namespace "
+                                it
+                                " {"
+                                ))
+                (save-excursion
+                  (insert (concat "}  // namespace "
+                                  it
+                                  ))
+                  )
+                (newline-and-indent)
+                (previous-line)
+                (end-of-line)
+                (newline-and-indent)
+                )
+              args)
+             (newline-and-indent)
+             (previous-line)
+             (end-of-line)
+             (newline-and-indent)
              )
            )
          smart-expand-list)
