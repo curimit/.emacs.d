@@ -190,5 +190,9 @@
                                '(lambda () "sort by Name"
                                   (interactive) (dired-sort-other (concat dired-listing-switches ""))))))
 
+;; smart-expand
+(add-hook 'c-mode-common-hook (lambda ()
+                                (define-key c-mode-base-map (kbd "C-j") 'smart-expand)
+                                ))
 
 (provide 'init-configs)

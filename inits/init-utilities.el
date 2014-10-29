@@ -164,4 +164,82 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
   (interactive)
   (indent-region (point-min) (point-max)))
 
+(setq smart-expand-list (make-hash-table :test 'equal))
+
+(defun smart-expand ()
+  (interactive)
+  (if (not (equal (point) (line-end-position)))
+      (error "Cursor should at the end of line.")
+    (progn
+      (let (line-text space-index cmd rest action)
+        (setq line-text (buffer-substring (line-beginning-position) (line-end-position)))
+        (setq line-text (s-trim-left line-text))
+        (setq space-index (s-index-of " " line-text))
+
+        (if (equal space-index nil)
+            (setq cmd line-text
+                  args "")
+          (setq cmd (substring line-text 0 space-index)
+                args (substring line-text (+ 1 space-index))))
+
+        (setq action (gethash cmd smart-expand-list))
+
+        (if (equal action nil)
+            (error "Command not found: [%s]" cmd)
+          (funcall action args)
+          )
+        )
+      )
+    )
+  )
+
+(puthash "ns"
+         (lambda (raw_args)
+           (let (args)
+             (setq raw_args (s-trim raw_args))
+             (setq args (s-split "\\." raw_args))
+             (back-to-indentation)
+             (kill-line)
+             (if (equal raw_args "")
+                 (progn
+                   (insert "namespace {")
+                   (save-excursion
+                     (insert "}  // namespace"))
+                   (newline-and-indent)
+                   (newline-and-indent)
+                   (previous-line)
+                   (previous-line)
+                   (end-of-line)
+                   (newline-and-indent)
+                   (newline-and-indent)
+                   )
+               (progn
+                 (--map
+                  (progn
+                    (insert (concat "namespace "
+                                    it
+                                    " {"
+                                    ))
+                    (save-excursion
+                      (insert (concat "}  // "
+                                      it
+                                      ))
+                      )
+                    (newline-and-indent)
+                    (previous-line)
+                    (end-of-line)
+                    (newline-and-indent)
+                    )
+                  args)
+                 (newline-and-indent)
+                 (previous-line)
+                 (end-of-line)
+                 (newline-and-indent)
+                 )
+               )
+
+             )
+           )
+         smart-expand-list)
+
 (provide 'init-utilities)
