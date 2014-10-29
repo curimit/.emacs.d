@@ -207,7 +207,8 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
                                 " {"
                                 ))
                 (save-excursion
-                  (insert (concat "}  // namespace "
+                  (insert (concat "}  // namespace"
+                                  (if (not (equal it "")) " ")
                                   it
                                   ))
                   )
