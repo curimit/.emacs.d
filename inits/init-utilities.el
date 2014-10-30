@@ -193,37 +193,45 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
     )
   )
 
-(puthash "ns"
-         (lambda (raw_args)
-           (let (args)
-             (setq raw_args (s-trim raw_args))
-             (setq args (s-split "\\." raw_args))
-             (back-to-indentation)
-             (kill-line)
-             (--map
-              (progn
-                (insert (concat "namespace "
-                                it
-                                " {"
-                                ))
-                (save-excursion
-                  (insert (concat "}  // namespace"
-                                  (if (not (equal it "")) " ")
-                                  it
-                                  ))
-                  )
-                (newline-and-indent)
-                (previous-line)
-                (end-of-line)
-                (newline-and-indent)
-                )
-              args)
-             (newline-and-indent)
-             (previous-line)
-             (end-of-line)
-             (newline-and-indent)
-             )
-           )
-         smart-expand-list)
+(defun smart-expand-define (cmd action)
+  (lexical-let ((func action))
+    (puthash cmd
+             (lambda (raw-args)
+               (funcall func raw-args)
+               )
+             smart-expand-list))
+  )
+
+(smart-expand-define "ns"
+                     (lambda (raw_args)
+                       (let (args)
+                         (setq raw_args (s-trim raw_args))
+                         (setq args (s-split "\\." raw_args))
+                         (back-to-indentation)
+                         (kill-line)
+                         (--map
+                          (progn
+                            (insert (concat "namespace "
+                                            it
+                                            " {"
+                                            ))
+                            (save-excursion
+                              (insert (concat "}  // namespace"
+                                              (if (not (equal it "")) " ")
+                                              it
+                                              ))
+                              )
+                            (newline-and-indent)
+                            (previous-line)
+                            (end-of-line)
+                            (newline-and-indent)
+                            )
+                          args)
+                         (newline-and-indent)
+                         (previous-line)
+                         (end-of-line)
+                         (newline-and-indent)
+                         )
+                       ))
 
 (provide 'init-utilities)
