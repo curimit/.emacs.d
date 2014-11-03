@@ -489,4 +489,15 @@
 (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
 (add-to-list 'interpreter-mode-alist '("lua" . lua-mode))
 
+;; haskell-mode
+(setq haskell-snippets-dir "~/.emacs.d/packages/haskell-mode")
+(require 'haskell-mode-autoloads)
+(add-hook 'haskell-mode-hook 'haskell-indentation-mode)
+(add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+(add-hook 'haskell-mode-hook 'haskell-decl-scan-mode)
+(add-hook 'haskell-mode-hook 'haskell-doc-mode)
+(custom-set-variables
+  '(haskell-process-suggest-hoogle-imports t)
+  '(haskell-process-suggest-remove-import-lines t))
+
 (provide 'init-modes)
