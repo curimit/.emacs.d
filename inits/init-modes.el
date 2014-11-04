@@ -504,4 +504,8 @@
 (add-to-list 'load-path "~/.emacs.d/packages/ess/lisp")
 (require 'ess-site)
 
+;; j-mode
+(autoload 'j-mode "j-mode.el" "Major mode for editing J files" t)
+(add-to-list 'auto-mode-alist '("\\.ij[rstp]$" . j-mode))
+
 (provide 'init-modes)
