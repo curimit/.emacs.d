@@ -154,6 +154,7 @@
 (global-set-key (kbd "C-x C-m") 'helm-M-x)
 (global-set-key (kbd "C-o") 'helm-bookmarks)
 (define-key dired-mode-map (kbd "C-o") 'helm-bookmarks)
+(global-set-key (kbd "M-y") 'helm-show-kill-ring)
 
 (define-key helm-map (kbd "C-w") 'backward-kill-word)
 
