@@ -318,9 +318,9 @@
 (add-to-list 'auto-mode-alist '("\\.aspx?\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.ejs\\'" . web-mode))
 
-(eval-after-load 'info
-  '(progn (info-initialize)
-          (add-to-list 'Info-directory-list "~/.emacs.d/packages//magit")))
+(after-load 'info
+  (info-initialize)
+  (add-to-list 'Info-directory-list "~/.emacs.d/packages//magit"))
 (autoload 'magit-status "magit" nil t)
 
 ;; helm ls git
