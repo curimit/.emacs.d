@@ -500,4 +500,8 @@
   '(haskell-process-suggest-hoogle-imports t)
   '(haskell-process-suggest-remove-import-lines t))
 
+;; ess
+(add-to-list 'load-path "~/.emacs.d/packages/ess/lisp")
+(require 'ess-site)
+
 (provide 'init-modes)
