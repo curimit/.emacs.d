@@ -234,4 +234,11 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
                          )
                        ))
 
+(defun helm-do-grep-recursive (&optional non-recursive)
+  "Like `helm-do-grep', but greps recursively by default."
+  (interactive "P")
+  (let* ((current-prefix-arg (not non-recursive))
+         (helm-current-prefix-arg non-recursive))
+    (call-interactively 'helm-do-grep)))
+
 (provide 'init-utilities)
