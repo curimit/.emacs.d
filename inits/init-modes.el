@@ -504,6 +504,7 @@
 ;; ess
 (add-to-list 'load-path "~/.emacs.d/packages/ess/lisp")
 (require 'ess-site)
+(define-key ess-mode-map (kbd "<f10>") 'ess-eval-line-and-step)
 
 ;; j-mode
 (autoload 'j-mode "j-mode.el" "Major mode for editing J files" t)
