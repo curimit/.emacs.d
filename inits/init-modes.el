@@ -505,9 +505,12 @@
 (add-to-list 'load-path "~/.emacs.d/packages/ess/lisp")
 (require 'ess-site)
 (define-key ess-mode-map (kbd "<f10>") 'ess-eval-line-and-step)
+(defun r-shell () (interactive) (R))
 
 ;; j-mode
 (autoload 'j-mode "j-mode.el" "Major mode for editing J files" t)
 (add-to-list 'auto-mode-alist '("\\.ij[rstp]$" . j-mode))
+(autoload 'j-console "j-mode.el" nil t)
+(defun j-shell () (interactive) (j-console))
 
 (provide 'init-modes)
