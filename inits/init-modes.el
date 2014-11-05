@@ -525,4 +525,10 @@
 (autoload 'j-console "j-mode.el" nil t)
 (defun j-shell () (interactive) (j-console))
 
+;; hungry-delete
+(require 'hungry-delete)
+(global-hungry-delete-mode)
+(define-key hungry-delete-mode-map (kbd "C-c C-d") 'hungry-delete-forward)
+(define-key hungry-delete-mode-map (kbd "C-c C-<backspace>") 'hungry-delete-backward)
+
 (provide 'init-modes)
