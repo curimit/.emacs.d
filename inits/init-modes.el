@@ -158,6 +158,11 @@
 
 (define-key helm-map (kbd "C-w") 'backward-kill-word)
 
+;; use helm-find-files as default
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
+(define-key helm-find-files-map (kbd "<tab>") 'helm-execute-persistent-action)
+(global-set-key (kbd "C-x C-d") (lambda () (interactive) (helm-find-files-history)))
+
 ;; helm dash
 (require 'helm-dash)
 
