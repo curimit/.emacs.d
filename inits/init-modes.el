@@ -150,7 +150,14 @@
 (require 'helm-info)
 (require 'helm-mode)
 (require 'helm-config)
-(global-set-key (kbd "C-x C-b") 'helm-buffers-list)
+
+(setq helm-mini-default-sources '(helm-source-buffers-list
+                                  helm-source-bookmark-files&dirs
+                                  helm-source-recentf
+                                  helm-source-buffer-not-found
+                                  ))
+(global-set-key (kbd "C-x C-b") 'helm-mini)
+
 (global-set-key (kbd "C-x C-m") 'helm-M-x)
 (global-set-key (kbd "C-o") 'helm-bookmarks)
 (define-key dired-mode-map (kbd "C-o") 'helm-bookmarks)
