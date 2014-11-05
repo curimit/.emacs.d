@@ -161,7 +161,7 @@
 ;; use helm-find-files as default
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 (define-key helm-find-files-map (kbd "<tab>") 'helm-execute-persistent-action)
-(global-set-key (kbd "C-x C-d") (lambda () (interactive) (helm-find-files-history)))
+(define-key helm-find-files-map (kbd "<right>") 'helm-select-action)
 
 ;; helm dash
 (require 'helm-dash)
