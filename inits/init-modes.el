@@ -151,13 +151,6 @@
 (require 'helm-mode)
 (require 'helm-config)
 
-(setq helm-mini-default-sources '(helm-source-buffers-list
-                                  helm-source-bookmark-files&dirs
-                                  helm-source-recentf
-                                  helm-source-buffer-not-found
-                                  ))
-(global-set-key (kbd "C-x C-b") 'helm-mini)
-
 (global-set-key (kbd "C-x C-m") 'helm-M-x)
 (global-set-key (kbd "C-o") 'helm-bookmarks)
 (define-key dired-mode-map (kbd "C-o") 'helm-bookmarks)
@@ -530,5 +523,16 @@
 (global-hungry-delete-mode)
 (define-key hungry-delete-mode-map (kbd "C-c C-d") 'hungry-delete-forward)
 (define-key hungry-delete-mode-map (kbd "C-c C-<backspace>") 'hungry-delete-backward)
+
+;; helm-cmd-t
+(require 'helm-cmd-t)
+(setq helm-mini-default-sources '(helm-source-buffers-list
+                                  helm-source-bookmark-files&dirs
+                                  helm-source-recentf
+                                  helm-source-files-in-current-dir
+                                  helm-source-buffer-not-found
+                                  helm-source-bookmark-set
+                                  ))
+(global-set-key (kbd "C-x C-b") 'helm-mini)
 
 (provide 'init-modes)
