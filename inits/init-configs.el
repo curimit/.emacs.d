@@ -99,6 +99,8 @@
 (global-set-key (kbd "<C-backspace>") 'replace-last-sexp)
 (global-set-key (kbd "<f9>") 'run-file)
 
+(setq gud-key-prefix "\C-x\C-g")
+
 (global-set-key (kbd "RET") 'my-newline)
 
 (global-set-key "\M-;" 'qiang-comment-dwim-line)
