@@ -535,4 +535,7 @@
                                   ))
 (global-set-key (kbd "C-x C-b") 'helm-mini)
 
+;; dired+
+(require 'dired+)
+
 (provide 'init-modes)
