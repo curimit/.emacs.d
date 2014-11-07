@@ -559,5 +559,7 @@
                              (define-key dired-mode-map (kbd "C-o") 'helm-bookmarks)
                              (define-key dired-mode-map (kbd "<tab>") 'helm-occur)
                              ))
+;; bookmark+
+(require 'bookmark+)
 
 (provide 'init-modes)
