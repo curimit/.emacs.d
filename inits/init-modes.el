@@ -588,4 +588,12 @@
 ;; helm swoop
 (require 'helm-swoop)
 
+;; hideshowvis
+(require 'hideshowvis)
+(dolist (hook (list 'emacs-lisp-mode-hook
+                    'js2-mode-hook
+                    'c-mode-common-hook))
+  (add-hook hook 'hideshowvis-enable))
+(hideshowvis-symbols)
+
 (provide 'init-modes)
