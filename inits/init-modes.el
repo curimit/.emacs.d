@@ -557,7 +557,9 @@
                                   (interactive) (dired-sort-other (concat dired-listing-switches ""))))
 
                              (define-key dired-mode-map (kbd "C-o") 'helm-bookmarks)
-                             (define-key dired-mode-map (kbd "<tab>") 'helm-swoop)
+                             (define-key dired-mode-map (kbd "C-s") '(lambda ()
+                                                                     (interactive)
+                                                                     (helm-swoop :$query "")))
                              ))
 ;; bookmark+
 (require 'bookmark+)
