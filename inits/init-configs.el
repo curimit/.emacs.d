@@ -177,4 +177,10 @@
                                 (define-key c-mode-base-map (kbd "C-j") 'smart-expand)
                                 ))
 
+;; coding style: 80 chars limit
+(require 'whitespace)
+(setq whitespace-line-column 80)
+(setq whitespace-style '(face lines-tail))
+(add-hook 'c++-mode-hook 'whitespace-mode)
+
 (provide 'init-configs)
