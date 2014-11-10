@@ -562,4 +562,9 @@
 ;; bookmark+
 (require 'bookmark+)
 
+;; super-smart-ops
+ (require 'super-smart-ops)
+(super-smart-ops-configure-for-mode 'c++-mode)
+(super-smart-ops-configure-for-mode 'js2-mode)
+
 (provide 'init-modes)
