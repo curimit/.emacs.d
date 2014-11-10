@@ -585,4 +585,7 @@
   )
 (graphic-powerline-config)
 
+;; helm swoop
+(require 'helm-swoop)
+
 (provide 'init-modes)
