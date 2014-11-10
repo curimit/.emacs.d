@@ -183,4 +183,7 @@
 (setq whitespace-style '(face lines-tail))
 (add-hook 'c++-mode-hook 'whitespace-mode)
 
+;; delete trailing-whitespace before saving
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
 (provide 'init-configs)
