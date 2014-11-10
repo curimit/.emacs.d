@@ -145,7 +145,7 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
                       ('delta #X03B4))))
 
 (defun substitute-pattern-with-unicode (pattern symbol)
-  "Add a font lock hook to replace the matched part of PATTERN with the 
+  "Add a font lock hook to replace the matched part of PATTERN with the
   Unicode symbol SYMBOL looked up with UNICODE-SYMBOL."
   (interactive)
   (font-lock-add-keywords
@@ -290,7 +290,7 @@ Adapted from `flyspell-correct-word-before-point'."
                                                                                   "Default"))
                                                  :must-match t
                                                  :alistp t)
-                                 
+
                                  poss word cursor-location start end opoint)))
           (ispell-pdict-save t)))))
 

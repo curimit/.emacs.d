@@ -206,7 +206,7 @@
 
 (defun my-doxymacs-font-lock-hook ()
   (interactive)
-  (if (or (eq major-mode 'c-mode) (eq major-mode 'c++-mode)) 
+  (if (or (eq major-mode 'c-mode) (eq major-mode 'c++-mode))
       (progn (doxymacs-font-lock)
              (doxymacs-yard)
              )))
@@ -240,7 +240,7 @@
                     :height 1.0
                     )
 
-(set-face-attribute 'tabbar-button nil 
+(set-face-attribute 'tabbar-button nil
                     :inherit 'tabbar-default
                     )
 (set-face-attribute 'tabbar-selected nil
@@ -465,7 +465,7 @@
      (lambda (x)
        (moo-action-jump x)
        (recenter)
-       ) 
+       )
      "Functions"
      (moo-get-function-under-cursor)
      )))
