@@ -186,4 +186,8 @@
 ;; delete trailing-whitespace before saving
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+(add-hook 'c-mode-common-hook (lambda ()
+                                (define-key c-mode-base-map (kbd "C-<f12>") 'ff-find-related-file)
+                                ))
+
 (provide 'init-configs)
