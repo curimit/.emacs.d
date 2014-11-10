@@ -567,4 +567,22 @@
 (super-smart-ops-configure-for-mode 'c++-mode)
 (super-smart-ops-configure-for-mode 'js2-mode)
 
+;; powerline
+(require 'powerline)
+(powerline-center-theme)
+(defun graphic-powerline-config ()
+  "powerline setting for graphic"
+  (interactive)
+  (progn
+   (setq powerline-arrow-shape 'arrow)
+   (custom-set-faces
+    '(mode-line ((t (:foreground "white" :background "#0044cc" :box nil))))
+    '(mode-line-inactive ((t (:foreground "white" :background "#262626" :box nil))))
+    )
+   (setq powerline-color1 "#0088cc")
+   (setq powerline-color2 "white")
+   )
+  )
+(graphic-powerline-config)
+
 (provide 'init-modes)
