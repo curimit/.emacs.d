@@ -69,6 +69,7 @@
 (setq column-number-mode t)
 (setq inhibit-startup-message t)
 (which-function-mode t)
+(setq-default word-wrap t)
 
 ;; Remove this :  Buffer `blah' still has clients; kill it? (yes or no)
 (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
