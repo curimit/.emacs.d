@@ -191,4 +191,7 @@
                                 (define-key c-mode-base-map (kbd "C-<f12>") 'ff-find-related-file)
                                 ))
 
+;; cursors following mouse
+(setq mouse-autoselect-window t)
+
 (provide 'init-configs)
