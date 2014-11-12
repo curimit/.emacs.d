@@ -613,6 +613,6 @@
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
 ;; sunrise commander
-(autoload 'sunrise-commander "sunrise-commander" nil t)
+(autoload 'sunrise "sunrise-commander" nil t)
 
 (provide 'init-modes)
