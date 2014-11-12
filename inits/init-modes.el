@@ -597,6 +597,7 @@
                     'c-mode-common-hook))
   (add-hook hook 'hideshowvis-enable))
 (hideshowvis-symbols)
+(global-set-key (kbd "C-c C-f") 'hs-toggle-hiding)
 
 ;; aggressive-indent-mode
 (require 'aggressive-indent)
