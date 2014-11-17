@@ -589,6 +589,7 @@
 
 ;; helm swoop
 (require 'helm-swoop)
+(define-key helm-swoop-map (kbd "C-k") 'kill-line)
 
 ;; hideshowvis
 (require 'hideshowvis)
