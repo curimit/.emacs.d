@@ -590,6 +590,9 @@
 ;; helm swoop
 (require 'helm-swoop)
 (define-key helm-swoop-map (kbd "C-k") 'kill-line)
+(global-set-key (kbd "M-i") 'helm-swoop)
+(define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
+(define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop)
 
 ;; hideshowvis
 (require 'hideshowvis)
