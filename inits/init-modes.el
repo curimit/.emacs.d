@@ -602,8 +602,10 @@
 
 ;; aggressive-indent-mode
 (require 'aggressive-indent)
-(global-aggressive-indent-mode 1)
-(add-to-list 'aggressive-indent-excluded-modes 'html-mode)
+;; (global-aggressive-indent-mode 1)
+;; (add-to-list 'aggressive-indent-excluded-modes 'html-mode)
+(defadvice c-electric-semi&comma (after indent-advice activate)
+  (aggressive-indent-indent-defun))
 
 ;; markdown-mode
 (autoload 'markdown-mode "markdown-mode"
