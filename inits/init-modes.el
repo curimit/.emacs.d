@@ -621,4 +621,10 @@
 ;; sunrise commander
 (autoload 'sunrise "sunrise-commander" nil t)
 
+;; projectile
+(require 'projectile)
+(require 'helm-projectile)
+(projectile-global-mode t)
+(setq projectile-enable-caching t)
+
 (provide 'init-modes)
