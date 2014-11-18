@@ -630,7 +630,7 @@
 
 ;; projectile
 (require 'projectile)
-(require 'helm-projectile)
+;; (require 'helm-projectile)
 (projectile-global-mode t)
 (setq projectile-enable-caching t)
 
