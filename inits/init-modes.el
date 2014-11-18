@@ -119,6 +119,13 @@
 (require 'company-c-headers)
 (add-to-list 'company-backends 'company-c-headers)
 
+;; helm company
+(autoload 'helm-company "helm-company")
+(eval-after-load 'company
+  '(progn
+     (define-key company-mode-map (kbd "C-s") 'helm-company)
+     (define-key company-active-map (kbd "C-s") 'helm-company)))
+
 ;; undo tree
 (require 'undo-tree)
 (global-set-key (kbd "C-x C-u") ' undo-tree-visualize)
