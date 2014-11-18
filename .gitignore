@@ -10,3 +10,5 @@ url/
 .mc-lists.el
 preconfig.el
 userdata
+projectile-bookmarks.eld
+projectile.cache
