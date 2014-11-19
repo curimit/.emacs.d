@@ -276,6 +276,27 @@
     (propertize "%02c" 'face 'font-lock-type-face)
     ") "
 
+    ;; the current major mode for the buffer.
+    "["
+
+    '(:eval (propertize "%m" 'face 'font-lock-string-face
+                        'help-echo buffer-file-coding-system))
+
+    "] "
+
+    ;; project name
+    '(:eval (format "[%s]" (projectile-project-name)))
+
+    '(:eval (when vc-mode
+              (concat "["
+                      (propertize (string-strip (format "%s" vc-mode)) 'face 'font-lock-variable-name-face)
+                      "] "
+                      )))
+
+    ;; workspace name
+    '(:eval (propertize (wg-mode-line-string) 'face 'font-lock-type-face))
+    " "
+
     "["
     (propertize "%p" 'face 'font-lock-constant-face) ;; % above top
     "] "
@@ -289,24 +310,8 @@
                           )))
     "] "
 
-    ;; the current major mode for the buffer.
-    "["
-
-    '(:eval (propertize "%m" 'face 'font-lock-string-face
-                        'help-echo buffer-file-coding-system))
-
-    "] "
-
-    '(:eval (when vc-mode
-              (concat "["
-                      (propertize (string-strip (format "%s" vc-mode)) 'face 'font-lock-variable-name-face)
-                      "] "
-                      )))
-
-    '(:eval (format "[Project: %s] " (projectile-project-name)))
-
     ;; add the time, with the date and the emacs uptime in the tooltip
-    '(:eval (propertize (format-time-string "%H:%M:%S")
+    '(:eval (propertize (format-time-string "[%H:%M:%S]")
                         'face 'font-lock-type-face
                         'help-echo
                         (concat (format-time-string "%Y-%02m-%02d %02H:%02M:%02S %Y-%02m-%02d %3a; ")
@@ -319,7 +324,7 @@
     " "
 
     ;; date
-    '(:eval (propertize (format-time-string "%Y-%02m-%02d %3a")
+    '(:eval (propertize (format-time-string "[%Y-%02m-%02d %3a]")
                         'face 'font-lock-comment-face))
     ))
   )
@@ -331,5 +336,7 @@
 (set-face-background 'mode-line-inactive "gray45")
 (set-face-foreground 'window-numbering-face "OrangeRed")
 (set-face-bold-p 'window-numbering-face 't)
+(set-face-foreground 'wg-mode-line-face "OrangeRed")
+(set-face-bold-p 'wg-mode-line-face 't)
 
 (provide 'init-configs)
