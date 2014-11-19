@@ -533,17 +533,6 @@
 (define-key hungry-delete-mode-map (kbd "C-c C-d") 'hungry-delete-forward)
 (define-key hungry-delete-mode-map (kbd "C-c C-<backspace>") 'hungry-delete-backward)
 
-;; helm-cmd-t
-(require 'helm-cmd-t)
-(setq helm-mini-default-sources '(helm-source-buffers-list
-                                  helm-source-bookmark-files&dirs
-                                  helm-source-recentf
-                                  helm-source-files-in-current-dir
-                                  helm-source-buffer-not-found
-                                  helm-source-bookmark-set
-                                  ))
-(global-set-key (kbd "C-x C-b") 'helm-mini)
-
 ;; dired+
 (require 'dired+)
 
@@ -648,5 +637,32 @@
 (setq wg-emacs-exit-save-behavior 'save)
 (setq wg-workgroups-mode-exit-save-behavior 'save)
 (workgroups-mode 1)
+
+(defun helm-dwim ()
+  (interactive)
+  (if (projectile-project-p)
+      (let ((helm-ff-transformer-show-only-basename nil))
+      (helm-other-buffer
+       '(helm-source-buffers-list
+         helm-source-projectile-projects
+         helm-source-projectile-files-list
+         helm-source-bookmark-files&dirs
+         helm-source-recentf
+         helm-source-buffer-not-found
+         helm-source-bookmark-set
+         )
+       "*helm search*"))
+    (let ((helm-ff-transformer-show-only-basename nil))
+        (helm-other-buffer
+         '(helm-source-buffers-list
+           helm-source-bookmark-files&dirs
+           helm-source-recentf
+           helm-source-files-in-current-dir
+           helm-source-buffer-not-found
+           helm-source-bookmark-set
+           )
+         "*helm search*"))))
+
+(global-set-key (kbd "C-x C-b") 'helm-dwim)
 
 (provide 'init-modes)
