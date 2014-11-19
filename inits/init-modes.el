@@ -641,4 +641,12 @@
 (helm-projectile-on)
 (setq projectile-completion-system 'helm)
 
+;; workgroups2
+(require 'workgroups2)
+(setq wg-prefix-key (kbd "C-z"))
+(setq wg-session-file "~/.emacs.d/.workgroups")
+(setq wg-emacs-exit-save-behavior 'save)
+(setq wg-workgroups-mode-exit-save-behavior 'save)
+(workgroups-mode 1)
+
 (provide 'init-modes)
