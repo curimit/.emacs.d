@@ -665,4 +665,15 @@
 
 (global-set-key (kbd "C-x C-b") 'helm-dwim)
 
+;; customize tabbar group function
+(defun tabbar-buffer-groups ()
+  (list (cond
+         ((s-starts-with-p "*helm" (buffer-name)) "helm buffer")
+         (buffer-read-only "readonly buffer")
+         ((s-starts-with-p "*" (buffer-name)) "emacs buffer")
+         ((equalp (buffer-file-name) nil) "noname buffer")
+         ((projectile-project-p) (projectile-project-p))
+         ((buffer-file-name) (f-dirname (buffer-file-name)))
+         (t "others"))))
+
 (provide 'init-modes)
