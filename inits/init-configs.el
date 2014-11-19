@@ -194,4 +194,142 @@
 ;; cursors following mouse
 (setq mouse-autoselect-window t)
 
+;; borrow from http://stackoverflow.com/questions/8190277/how-do-i-display-the-total-number-of-lines-in-the-emacs-modeline
+(defvar my-mode-line-buffer-line-count nil)
+(make-variable-buffer-local 'my-mode-line-buffer-line-count)
+
+(defun my-mode-line-count-lines ()
+  (setq my-mode-line-buffer-line-count (int-to-string (count-lines (point-min) (point-max)))))
+
+(add-hook 'find-file-hook 'my-mode-line-count-lines)
+(add-hook 'after-save-hook 'my-mode-line-count-lines)
+(add-hook 'after-revert-hook 'my-mode-line-count-lines)
+(add-hook 'dired-after-readin-hook 'my-mode-line-count-lines)
+;; -------------------- line count --------------------
+
+
+;;在标题栏提示当前位置
+(setq frame-title-format
+      (list "[" '(:eval (projectile-project-name)) "]"
+	    " ψωETωψ ◎ "
+	    '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+
+
+(setq show-buffer-file-name nil)
+(defun toggle-show-buffer-file-name ()
+  "toggle show or hide buffer full file name in mode line"
+  (interactive)
+  (setq show-buffer-file-name
+	(if show-buffer-file-name nil t)))
+(global-set-key (kbd "M-<f11>") 'toggle-show-buffer-file-name)
+
+;;====================== time setting =====================
+(display-time-mode 1)
+
+(setq display-time-24hr-format t)
+(setq display-time-format "%02H:%02M:%02S %Y-%02m-%02d %3a")
+
+(setq display-time-day-and-date t)
+
+(setq display-time-interval 1)
+
+(display-time-mode 1)
+(setq display-time-24hr-format t)
+(setq display-time-day-and-date t)
+;;----------------------    END    time setting    ---------------------
+
+(defun my-mode-line ()
+  (setq-default
+   mode-line-format
+   (list
+
+    "["
+    '(:eval (window-numbering-get-number-string))
+    "] "
+
+    '(:eval (propertize "%b " 'face 'font-lock-keyword-face
+                        'help-echo (format "%s" (buffer-file-name))
+                        ))
+
+    "[" ;; insert vs overwrite mode, input-method in a tooltip
+    '(:eval (propertize (if overwrite-mode "Ovr" "Ins")
+                        'face 'font-lock-preprocessor-face
+                        'help-echo (concat "Buffer is in "
+                                           (if overwrite-mode "overwrite" "insert") " mode")))
+
+    ;; was this buffer modified since the last save?
+    '(:eval (when (buffer-modified-p)
+              (concat ","  (propertize "Mod"
+                                       'face 'font-lock-warning-face
+                                       'help-echo "Buffer has been modified"))))
+
+    ;; is this buffer read-only?
+    '(:eval (when buffer-read-only
+              (concat ","  (propertize "RO"
+                                       'face 'font-lock-type-face
+                                       'help-echo "Buffer is read-only"))))
+    "] "
+
+    ;; ;; line and column
+    "(" ;; '%02' to set to 2 chars at least; prevents flickering
+    (propertize "%01l" 'face 'font-lock-type-face) ","
+    (propertize "%02c" 'face 'font-lock-type-face)
+    ") "
+
+    "["
+    (propertize "%p" 'face 'font-lock-constant-face) ;; % above top
+    "] "
+
+    ;; relative position, size of file
+    "["
+    (propertize "%I" 'face 'font-lock-constant-face) ;; size
+    '(:eval (when (and (not (buffer-modified-p)) my-mode-line-buffer-line-count)
+              (propertize (concat " / " my-mode-line-buffer-line-count "L")
+                          'face 'font-lock-type-face
+                          )))
+    "] "
+
+    ;; the current major mode for the buffer.
+    "["
+
+    '(:eval (propertize "%m" 'face 'font-lock-string-face
+                        'help-echo buffer-file-coding-system))
+
+    "] "
+
+    '(:eval (when vc-mode
+              (concat "["
+                      (propertize (string-strip (format "%s" vc-mode)) 'face 'font-lock-variable-name-face)
+                      "] "
+                      )))
+
+    '(:eval (format "[Project: %s] " (projectile-project-name)))
+
+    ;; add the time, with the date and the emacs uptime in the tooltip
+    '(:eval (propertize (format-time-string "%H:%M:%S")
+                        'face 'font-lock-type-face
+                        'help-echo
+                        (concat (format-time-string "%Y-%02m-%02d %02H:%02M:%02S %Y-%02m-%02d %3a; ")
+                                (emacs-uptime "Uptime:%hh"))))
+
+    ;; show buffer file name
+    '(:eval (when show-buffer-file-name
+              (format " [%s]" (buffer-file-name))))
+
+    " "
+
+    ;; date
+    '(:eval (propertize (format-time-string "%Y-%02m-%02d %3a")
+                        'face 'font-lock-comment-face))
+    ))
+  )
+(my-mode-line)
+
+(set-face-foreground 'mode-line "YellowGreen")
+(set-face-background 'mode-line "gray15")
+(set-face-foreground 'mode-line-inactive "white")
+(set-face-background 'mode-line-inactive "gray45")
+(set-face-foreground 'window-numbering-face "OrangeRed")
+(set-face-bold 'window-numbering-face 't)
+
 (provide 'init-configs)
