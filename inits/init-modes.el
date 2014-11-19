@@ -641,6 +641,7 @@
     (let ((helm-ff-transformer-show-only-basename nil))
         (helm-other-buffer
          '(helm-source-buffers-list
+           helm-source-projectile-projects
            helm-source-bookmark-files&dirs
            helm-source-recentf
            helm-source-files-in-current-dir
