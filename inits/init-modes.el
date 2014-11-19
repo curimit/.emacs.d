@@ -152,6 +152,7 @@
 (require 'helm-config)
 (require 'helm-misc)
 (require 'helm-command)
+(require 'helm-ring)
 
 (global-set-key (kbd "C-x C-m") 'helm-M-x)
 (global-set-key (kbd "C-o") 'helm-bookmarks)
