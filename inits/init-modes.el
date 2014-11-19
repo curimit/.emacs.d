@@ -153,6 +153,8 @@
 (require 'helm-misc)
 (require 'helm-command)
 (require 'helm-ring)
+(require 'helm-color)
+(require 'helm-imenu)
 
 (global-set-key (kbd "C-x C-m") 'helm-M-x)
 (global-set-key (kbd "C-o") 'helm-bookmarks)
