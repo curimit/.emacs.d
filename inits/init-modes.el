@@ -633,8 +633,12 @@
 
 ;; projectile
 (require 'projectile)
-;; (require 'helm-projectile)
 (projectile-global-mode t)
 (setq projectile-enable-caching t)
+(setq projectile-indexing-method 'alien)
+(setq projectile-sort-order 'recently-active)
+(require 'helm-projectile)
+(helm-projectile-on)
+(setq projectile-completion-system 'helm)
 
 (provide 'init-modes)
