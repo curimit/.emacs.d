@@ -34,6 +34,9 @@
 (defgeneric helm--setup-source (source)
   "Prepare slots and handle slot errors before creating a helm source.")
 
+(defgeneric helm-setup-user-source (source)
+  "Allow users modifying slots in SOURCE just before creation.")
+
 
 ;;; Classes for sources
 ;;
@@ -250,14 +253,14 @@
     :documentation
       "  A transformer function that treat candidates one by one.
   It is called with one arg the candidate.
-  It is faster than `filtered-candidate-transformer' or `candidates-transformer',
-  but should be used only in sources that recompute constantly their candidates,
-  e.g `helm-source-find-files'.
+  It is faster than `filtered-candidate-transformer' or
+  `candidates-transformer', but should be used only in sources
+  that recompute constantly their candidates, e.g `helm-source-find-files'.
   Filtering happen early and candidates are treated
   one by one instead of re-looping on the whole list.
   If used with `filtered-candidate-transformer' or `candidates-transformer'
-  these functions should treat the candidates transformed by the `filter-one-by-one'
-  function in consequence.")
+  these functions should treat the candidates transformed by the
+  `filter-one-by-one' function in consequence.")
 
    (display-to-real
     :initarg :display-to-real
@@ -361,7 +364,18 @@
 
   This attribute has no effect for asynchronous sources (see
   attribute `candidates'), since they perform pattern matching
-  themselves.")
+  themselves.
+
+  Note that FUZZY-MATCH slot will overhide value of this slot.")
+
+   (fuzzy-match
+    :initarg :fuzzy-match
+    :initform nil
+    :custom boolean
+    :documentation
+    "  Enable fuzzy matching in this source.
+  This will overwrite settings in MATCH slot, and for
+  sources build with child class `helm-source-in-buffer' the SEARCH slot.")
 
    (nomark
     :initarg :nomark
@@ -405,7 +419,6 @@
     :custom function
     :documentation
       "  It's a function called with one argument: the selected candidate.
-
   This function is intended for type convertion. In normal case,
   the selected candidate (string) is passed to action
   function. If coerce function is specified, it is called just
@@ -458,8 +471,8 @@
     :custom integer
     :documentation
     "  `helm-follow-mode' will execute persistent-action after this delay.
-Otherwise value of `helm-follow-input-idle-delay' is used if non--nil,
-If none of these are found fallback to `helm-input-idle-delay'.")
+  Otherwise value of `helm-follow-input-idle-delay' is used if non--nil,
+  If none of these are found fallback to `helm-input-idle-delay'.")
 
    (dont-plug
     :initarg :dont-plug
@@ -473,20 +486,32 @@ If none of these are found fallback to `helm-input-idle-delay'.")
     :initform nil
     :custom boolean
     :documentation
-    "If you are not Japonese, ignore this.")
+    "  Needed for Japanese input with helm-migemo.el.
+  If you are not Japanese, ignore this.")
 
    (matchplugin
     :initarg :matchplugin
     :initform t
     :custom boolean)
 
+   (match-part
+    :initarg :match-part
+    :initform nil
+    :custom function
+    :documentation
+    "  Allow matching only one part of candidate.
+  If source contain match-part attribute, match is computed only
+  on part of candidate returned by the call of function provided
+  by this attribute. The function should have one arg, candidate,
+  and return only a specific part of candidate.")
+   
    (before-init-hook
     :initarg :before-init-hook
     :initform nil
     :custom symbol
     :documentation
     "  A local hook that run at beginning of initilization of this source.
-i.e Before the creation of `helm-buffer'.")
+  i.e Before the creation of `helm-buffer'.")
 
    (after-init-hook
     :initarg :after-init-hook
@@ -494,7 +519,7 @@ i.e Before the creation of `helm-buffer'.")
     :custom symbol
     :documentation
     "  A local hook that run at end of initilization of this source.
-i.e After the creation of `helm-buffer'."))
+  i.e After the creation of `helm-buffer'."))
   
   "Main interface to define helm sources."
   :abstract t)
@@ -575,7 +600,10 @@ i.e After the creation of `helm-buffer'."))
     :documentation
     "  List of functions like `re-search-forward' or `search-forward'.
   Buffer search function used by `helm-candidates-in-buffer'.
-  By default, `helm-candidates-in-buffer' uses `re-search-forward'.")
+  By default, `helm-candidates-in-buffer' uses `re-search-forward'.
+  The function should take one arg PATTERN.
+
+  Note that FUZZY-MATCH slot wiil overhide value of this slot.")
 
    (search-from-end
     :initarg :search-from-end
@@ -598,31 +626,7 @@ i.e After the creation of `helm-buffer'."))
   functions will be concatened, which in some cases is not what
   is wanted. When using `search-strict' only this or these
   functions will be used. You can specify those functions as a
-  list of functions or a single symbol function.")
-
-   (match-part
-    :initarg :match-part
-    :initform nil
-    :custom function
-    :documentation
-    "  Allow matching candidate in the line with `candidates-in-buffer'.
-  In candidates-in-buffer sources, match is done with
-  `re-search-forward' which allow matching only a regexp on the
-  `helm-buffer'; when this search is done, match-part allow
-  matching only a specific part of the current line e.g with a
-  line like this:
-
-  filename:candidate-containing-the-word-filename
-
-  What you want is to ignore \"filename\" part and match only
-  \"candidate-containing-the-word-filename\"
-
-  So give a function matching only the part of candidate after \":\"
-
-  If source contain match-part attribute, match is computed only
-  on part of candidate returned by the call of function provided
-  by this attribute. The function should have one arg, candidate,
-  and return only a specific part of candidate.")))
+  list of functions or a single symbol function.")))
 
 (defclass helm-source-dummy (helm-source)
   ((candidates
@@ -630,6 +634,9 @@ i.e After the creation of `helm-buffer'."))
 
    (filtered-candidate-transformer
     :initform 'helm-dummy-candidate)
+
+   (matchplugin
+    :initform nil)
    
    (accept-empty
     :initarg :accept-empty
@@ -671,13 +678,15 @@ i.e After the creation of `helm-buffer'."))
            'helm-ff-etags-select
            "View file"                            'view-file
            "Insert file"                          'insert-file
+           "Add marked files to file-cache"       'helm-ff-cache-add-file
            "Delete file(s)"                       'helm-delete-marked-files
            "Open file externally (C-u to choose)" 'helm-open-file-externally
            "Open file with default tool"          'helm-open-file-with-default-tool
            "Find file in hex dump"                'hexl-find-file))
     (oset source :persistent-help "Show this file")
     (oset source :action-transformer '(helm-transform-file-load-el
-                                       helm-transform-file-browse-url))
+                                       helm-transform-file-browse-url
+                                       helm-transform-file-cache))
     (oset source :candidate-transformer '(helm-skip-boring-files
                                           helm-highlight-files
                                           helm-w32-pathname-transformer)))
@@ -708,23 +717,23 @@ i.e After the creation of `helm-buffer'."))
                         "Switch to buffer" 'helm-switch-to-buffer
                         (lambda () (and (locate-library "popwin") "Switch to buffer in popup window"))
                         'popwin:popup-buffer
-                        "Switch to buffer other window" 'switch-to-buffer-other-window
-                        "Switch to buffer other frame" 'switch-to-buffer-other-frame
+                        "Switch to buffer other window `C-c o'" 'switch-to-buffer-other-window
+                        "Switch to buffer other frame `C-c C-o'" 'switch-to-buffer-other-frame
                         (lambda () (and (locate-library "elscreen") "Display buffer in Elscreen"))
                         'helm-find-buffer-on-elscreen
-                        "Query replace regexp" 'helm-buffer-query-replace-regexp
-                        "Query replace" 'helm-buffer-query-replace
+                        "Query replace regexp `C-M-%'" 'helm-buffer-query-replace-regexp
+                        "Query replace `M-%'" 'helm-buffer-query-replace
                         "View buffer" 'view-buffer
                         "Display buffer" 'display-buffer
-                        "Grep buffers (C-u grep all buffers)" 'helm-zgrep-buffers
-                        "Multi occur buffer(s)" 'helm-multi-occur-as-action
-                        "Revert buffer(s)" 'helm-revert-marked-buffers
+                        "Grep buffers `M-g s' (C-u grep all buffers)" 'helm-zgrep-buffers
+                        "Multi occur buffer(s) `C-s'" 'helm-multi-occur-as-action
+                        "Revert buffer(s) `M-U'" 'helm-revert-marked-buffers
                         "Insert buffer" 'insert-buffer
-                        "Kill buffer(s)" 'helm-kill-marked-buffers
-                        "Diff with file" 'diff-buffer-with-file
-                        "Ediff Marked buffers" 'helm-ediff-marked-buffers
-                        "Ediff Merge marked buffers" (lambda (candidate)
-                                                       (helm-ediff-marked-buffers candidate t))))
+                        "Kill buffer(s) `M-D'" 'helm-kill-marked-buffers
+                        "Diff with file `C-='" 'diff-buffer-with-file
+                        "Ediff Marked buffers `C-c ='" 'helm-ediff-marked-buffers
+                        "Ediff Merge marked buffers `M-='" (lambda (candidate)
+                                                             (helm-ediff-marked-buffers candidate t))))
       (oset source :persistent-help "Show this buffer")
       (oset source :filtered-candidate-transformer '(helm-skip-boring-buffers
                                                      helm-buffers-sort-transformer
@@ -750,7 +759,7 @@ i.e After the creation of `helm-buffer'."))
            when slot-val
            collect (cons s (unless (eq t slot-val) slot-val))))
 
-(defun helm--make-source (name class &rest args)
+(defun helm-make-source (name class &rest args)
   "Build a `helm' source named NAME with ARGS for CLASS.
 Argument NAME is a string which define the source name, so no need to use
 the keyword :name in your source, NAME will be used instead.
@@ -759,14 +768,17 @@ Arguments ARGS are keyword value pairs as defined in CLASS."
   (let ((source (apply #'make-instance class name args)))
     (oset source :name name)
     (helm--setup-source source)
+    (helm-setup-user-source source)
     (helm--create-source source (object-class source))))
 
-(defun helm--make-type (class &rest args)
+(defun helm-make-type (class &rest args)
   (let ((source (apply #'make-instance class args)))
+    (oset source :name nil)
     (helm--setup-source source)
     (helm--create-source source (object-class source))))
 
 (defun helm-source-mp-get-search-or-match-fns (source method)
+  (require 'helm-match-plugin)
   (let ((searchers        (and (eq method 'search)
                                (if (eq t (oref source :search-from-end))
                                    helm-mp-default-search-backward-functions
@@ -791,20 +803,50 @@ Arguments ARGS are keyword value pairs as defined in CLASS."
                     (defsearch
                      (append searchers defsearch))
                     (t searchers))))))
+
+
+;;; Modifiers
+;;
+(cl-defun helm-source-add-action-to-source-if (name fn source predicate
+                                                    &optional (index 4))
+  "Same as `helm-add-action-to-source-if' but for SOURCE defined as eieio object.
+You can use this inside a `helm--setup-source' method for a SOURCE defined as
+an eieio class."
+  (let* ((actions     (oref source :action))
+         (action-transformers (oref source :action-transformer))
+         (new-action  (list (cons name fn)))
+         (transformer `(lambda (actions candidate)
+                         (cond ((funcall (quote ,predicate) candidate)
+                                (helm-append-at-nth
+                                 actions (quote ,new-action) ,index))
+                               (t actions)))))
+    (when (symbolp actions)
+      (oset source :action (list (cons "Default action" actions))))
+    (when (symbolp action-transformers)
+      (setq action-transformers (list action-transformers)))
+    (oset source
+          :action-transformer
+          (delq nil (append (list transformer) action-transformers)))))
 
 ;;; Methods to access types slots.
 (defmethod helm-source-get-action-from-type ((object helm-type-file))
   (oref object :action))
 
 
-;;; Method to build sources.
+;;; Methods to build sources.
 ;;
 ;;
 (defmethod helm--setup-source :before ((source helm-source))
   (helm-aif (slot-value source :keymap)
       (and (symbolp it) (set-slot-value source :keymap (symbol-value it)))))
 
+(defmethod helm-setup-user-source ((_source helm-source)))
+
 (defmethod helm--setup-source ((source helm-source-sync))
+  (when (slot-value source :fuzzy-match)
+    ;; FIXME should I allow appending other match fns to this ?
+    (oset source :match 'helm-fuzzy-match)
+    (oset source :nohighlight t))
   (when (slot-value source :matchplugin)
     (oset source :match
           (helm-source-mp-get-search-or-match-fns source 'match))))
@@ -815,13 +857,18 @@ Arguments ARGS are keyword value pairs as defined in CLASS."
         (oset source
               :init (delq
                      nil
-                     `(,(and (null (eq 'helm-default-init-source-in-buffer-function
-                                       cur-init))
-                             cur-init)
-                        (lambda ()
-                          (helm-init-candidates-in-buffer
-                              'global
-                            ',it)))))))
+                     (list
+                      (and (null (eq 'helm-default-init-source-in-buffer-function
+                                     cur-init))
+                           cur-init)
+                      (lambda ()
+                        (helm-init-candidates-in-buffer
+                            'global
+                          (if (functionp it) (funcall it) it))))))))
+  (when (slot-value source :fuzzy-match)
+    ;; FIXME should I allow appending other search fns to this ?
+    (oset source :search '(helm-fuzzy-search))
+    (oset source :nohighlight t))
   (when (slot-value source :matchplugin)
     (oset source :search (helm-source-mp-get-search-or-match-fns source 'search)))
   (let ((mtc (slot-value source :match)))
@@ -835,7 +882,17 @@ Arguments ARGS are keyword value pairs as defined in CLASS."
   (cl-assert (null (slot-value source :candidates))
              nil "Incorrect use of `candidates' use `candidates-process' instead"))
 
-(defmethod helm--setup-source ((_source helm-source-dummy)))
+(defmethod helm--setup-source ((source helm-source-dummy))
+  (let ((mtc (slot-value source :match)))
+    (cl-assert (or (equal '(identity) mtc)
+                   (eq 'identity mtc))
+               nil "Invalid slot value for `match'")
+    (cl-assert (eq (slot-value source :volatile) t)
+               nil "Invalid slot value for `volatile'")
+    (cl-assert (equal (slot-value source :candidates) '("dummy"))
+               nil "Invalid slot value for `candidates'")
+    (cl-assert (eq (slot-value source :accept-empty) t)
+               nil "Invalid slot value for `accept-empty'")))
 
 
 ;;; User functions
@@ -844,22 +901,26 @@ Arguments ARGS are keyword value pairs as defined in CLASS."
 (defmacro helm-build-sync-source (name &rest args)
   "Build a synchronous helm source with name NAME.
 Args ARGS are keywords provided by `helm-source-sync'."
-  `(helm--make-source ,name 'helm-source-sync ,@args))
+  (declare (indent 1))
+  `(helm-make-source ,name 'helm-source-sync ,@args))
 
 (defmacro helm-build-async-source (name &rest args)
   "Build a asynchronous helm source with name NAME.
 Args ARGS are keywords provided by `helm-source-async'."
-  `(helm--make-source ,name 'helm-source-async ,@args))
+  (declare (indent 1))
+  `(helm-make-source ,name 'helm-source-async ,@args))
 
 (defmacro helm-build-in-buffer-source (name &rest args)
   "Build a helm source with name NAME using `candidates-in-buffer' method.
 Args ARGS are keywords provided by `helm-source-in-buffer'."
-  `(helm--make-source ,name 'helm-source-in-buffer ,@args))
+  (declare (indent 1))
+  `(helm-make-source ,name 'helm-source-in-buffer ,@args))
 
 (defmacro helm-build-dummy-source (name &rest args)
   "Build a helm source with name NAME using `dummy' method.
 Args ARGS are keywords provided by `helm-source-dummy'."
-  `(helm--make-source ,name 'helm-source-dummy ,@args))
+  (declare (indent 1))
+  `(helm-make-source ,name 'helm-source-dummy ,@args))
 
 ;; Types
 (defun helm-actions-from-type-file ()
@@ -868,7 +929,7 @@ Args ARGS are keywords provided by `helm-source-dummy'."
     (helm-source-get-action-from-type source)))
 
 (defun helm-build-type-file ()
-  (helm--make-type 'helm-type-file))
+  (helm-make-type 'helm-type-file))
 
 (provide 'helm-source)
 

@@ -22,6 +22,7 @@
 (require 'helm-utils)
 (require 'helm-elscreen)
 (require 'helm-grep)
+(require 'helm-plugin)
 (require 'helm-regexp)
 
 (declare-function ido-make-buffer-list "ido" (default))
@@ -94,6 +95,11 @@ Only buffer names are fuzzy matched when this is enabled,
 (defface helm-buffer-directory
     '((t (:foreground "DarkRed" :background "LightGray")))
   "Face used for directories in `helm-buffers-list'."
+  :group 'helm-buffers)
+
+(defface helm-buffer-file
+    '((t :inherit font-lock-type-face))
+  "Face for buffer file names in `helm-buffers-list'."
   :group 'helm-buffers)
 
 
@@ -169,12 +175,14 @@ Only buffer names are fuzzy matched when this is enabled,
     :initform
     "Show this buffer / C-u \\[helm-execute-persistent-action]: Kill this buffer")))
 
-(defvar helm-source-buffers-list (helm--make-source "Buffers" 'helm-source-buffers))
+(defvar helm-source-buffers-list (helm-make-source "Buffers" 'helm-source-buffers))
 
 (defvar helm-source-buffer-not-found
   (helm-build-dummy-source
    "Create buffer"
-   :action (lambda (candidate)
+   :action (helm-make-actions
+            "Create buffer (C-u choose mode)"
+            (lambda (candidate)
              (let ((mjm (and helm-current-prefix-arg
                              (intern-soft (helm-comp-read
                                            "Major-mode: "
@@ -183,7 +191,7 @@ Only buffer names are fuzzy matched when this is enabled,
                (if mjm
                    (with-current-buffer buffer (funcall mjm))
                    (set-buffer-major-mode buffer))
-               (helm-switch-to-buffer buffer)))))
+               (helm-switch-to-buffer buffer))))))
 
 (defvar ido-temp-list)
 (defvar ido-ignored-list)
@@ -288,7 +296,7 @@ See `ido-make-buffer-list' for more infos."
       (file-name
        (helm-buffer--show-details
         name name-prefix file-name size mode dir
-        'font-lock-type-face 'helm-buffer-process nil details 'filebuf))
+        'helm-buffer-file 'helm-buffer-process nil details 'filebuf))
       ;; Any non--file buffer.=>grey italic
       (t
        (helm-buffer--show-details
@@ -404,7 +412,7 @@ i.e same color."
 (defun helm-buffer--match-pattern (pattern candidate)
   (let ((fun (if (and helm-buffers-fuzzy-matching
                       (not (string-match "\\`\\^" pattern)))
-                 #'helm--mapconcat-candidate
+                 #'helm--mapconcat-pattern
                #'identity)))
   (if (string-match "\\`!" pattern)
       (not (string-match (funcall fun (substring pattern 1))
@@ -738,32 +746,32 @@ displayed with the `file-name-shadow' face if available."
 
 
 (define-helm-type-attribute 'buffer
-    `((action
-       . ,(helm-make-actions
-           "Switch to buffer" 'helm-switch-to-buffer
-           (lambda () (and (locate-library "popwin") "Switch to buffer in popup window"))
-           'popwin:popup-buffer
-           "Switch to buffer other window" 'switch-to-buffer-other-window
-           "Switch to buffer other frame" 'switch-to-buffer-other-frame
-           (lambda () (and (locate-library "elscreen") "Display buffer in Elscreen"))
-           'helm-find-buffer-on-elscreen
-           "Query replace regexp" 'helm-buffer-query-replace-regexp
-           "Query replace" 'helm-buffer-query-replace
-           "View buffer" 'view-buffer
-           "Display buffer" 'display-buffer
-           "Grep buffers (C-u grep all buffers)" 'helm-zgrep-buffers
-           "Multi occur buffer(s)" 'helm-multi-occur-as-action
-           "Revert buffer(s)" 'helm-revert-marked-buffers
-           "Insert buffer" 'insert-buffer
-           "Kill buffer(s)" 'helm-kill-marked-buffers
-           "Diff with file" 'diff-buffer-with-file
-           "Ediff Marked buffers" 'helm-ediff-marked-buffers
-           "Ediff Merge marked buffers" (lambda (candidate)
-                                          (helm-ediff-marked-buffers candidate t))))
-      (persistent-help . "Show this buffer")
-      (filtered-candidate-transformer helm-skip-boring-buffers
-                                      helm-buffers-sort-transformer
-                                      helm-highlight-buffers))
+  `((action
+     . ,(helm-make-actions
+         "Switch to buffer" 'helm-switch-to-buffer
+         (lambda () (and (locate-library "popwin") "Switch to buffer in popup window"))
+         'popwin:popup-buffer
+         "Switch to buffer other window `C-c o'" 'switch-to-buffer-other-window
+         "Switch to buffer other frame `C-c C-o'" 'switch-to-buffer-other-frame
+         (lambda () (and (locate-library "elscreen") "Display buffer in Elscreen"))
+         'helm-find-buffer-on-elscreen
+         "Query replace regexp `C-M-%'" 'helm-buffer-query-replace-regexp
+         "Query replace `M-%'" 'helm-buffer-query-replace
+         "View buffer" 'view-buffer
+         "Display buffer" 'display-buffer
+         "Grep buffers `M-g s' (C-u grep all buffers)" 'helm-zgrep-buffers
+         "Multi occur buffer(s) `C-s'" 'helm-multi-occur-as-action
+         "Revert buffer(s) `M-U'" 'helm-revert-marked-buffers
+         "Insert buffer" 'insert-buffer
+         "Kill buffer(s) `M-D'" 'helm-kill-marked-buffers
+         "Diff with file" 'diff-buffer-with-file
+         "Ediff Marked buffers `C-c ='" 'helm-ediff-marked-buffers
+         "Ediff Merge marked buffers `M-='" (lambda (candidate)
+                                              (helm-ediff-marked-buffers candidate t))))
+    (persistent-help . "Show this buffer")
+    (filtered-candidate-transformer helm-skip-boring-buffers
+                                    helm-buffers-sort-transformer
+                                    helm-highlight-buffers))
   "Buffer or buffer name.")
 
 ;;;###autoload

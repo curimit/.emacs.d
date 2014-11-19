@@ -119,13 +119,6 @@
 (require 'company-c-headers)
 (add-to-list 'company-backends 'company-c-headers)
 
-;; helm company
-(autoload 'helm-company "helm-company")
-(eval-after-load 'company
-  '(progn
-     (define-key company-mode-map (kbd "C-:") 'helm-company)
-     (define-key company-active-map (kbd "C-:") 'helm-company)))
-
 ;; undo tree
 (require 'undo-tree)
 (global-set-key (kbd "C-x C-u") ' undo-tree-visualize)
@@ -157,6 +150,8 @@
 (require 'helm-info)
 (require 'helm-mode)
 (require 'helm-config)
+(require 'helm-misc)
+(require 'helm-command)
 
 (global-set-key (kbd "C-x C-m") 'helm-M-x)
 (global-set-key (kbd "C-o") 'helm-bookmarks)
@@ -168,6 +163,13 @@
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 (define-key helm-find-files-map (kbd "<tab>") 'helm-execute-persistent-action)
 (define-key helm-find-files-map (kbd "<right>") 'helm-select-action)
+
+;; helm company
+(autoload 'helm-company "helm-company")
+(eval-after-load 'company
+  '(progn
+     (define-key company-mode-map (kbd "C-:") 'helm-company)
+     (define-key company-active-map (kbd "C-:") 'helm-company)))
 
 ;; helm dash
 (require 'helm-dash)

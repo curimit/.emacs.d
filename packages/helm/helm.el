@@ -462,7 +462,6 @@ or when `helm-split-window-default-side' is set to 'same."
   :type 'boolean)
 
 (defcustom helm-sources-using-default-as-input '(helm-source-imenu
-                                                 helm-source-semantic
                                                  helm-source-info-elisp
                                                  helm-source-etags-select)
   "List of helm sources that need to use `helm-maybe-use-default-as-input'.
@@ -872,53 +871,6 @@ If `helm-last-log-file' is nil, switch to `helm-debug-buffer' ."
        (message "Helm issued errors: %s"
                 (mapconcat 'identity (reverse helm-issued-errors) "\n"))))
 
-;; [FIXME] It seem it is no more needed to have cursor at end of
-;;         insertion, so I keep the advices fo now but don't activate
-;;         them, need to clarify why I needed that IIRC it was
-;;         a problem with keybinding not activated.
-
-;; These advices are needed to fix cursor position in minibuffer
-;; after insertion, otherwise cursor stay at beginning of insertion.
-;; Using a timer ensure `minibuffer-temporary-goal-position' is set
-;; to nil in `goto-history-element' because `last-command'
-;; will be one of `next-history-element' or `previous-history-element'.
-;; Activate deactivate them by hook because they may not work outside
-;; of helm (Issue #338).
-(defadvice next-history-element (around helm-delay-next-history-element)
-  (interactive "p")
-  (or (zerop n)
-      (run-with-timer
-       0.01 nil
-       `(lambda ()
-          (condition-case _err
-              (goto-history-element (- minibuffer-history-position ,n))
-            (user-error (message "End of history; no default available")
-                        (sit-for 0.5) (message nil)))))))
-
-(defadvice previous-history-element (around helm-delay-previous-history-element)
-  (interactive "p")
-  (or (zerop n)
-      (run-with-timer
-       0.01 nil
-       `(lambda ()
-          (condition-case _err
-              (goto-history-element (+ minibuffer-history-position ,n))
-            (user-error (message "Beginning of history; no preceding item")
-                        (sit-for 0.5) (message nil)))))))
-
-;; (add-hook 'helm-before-initialize-hook
-;;           (lambda ()
-;;             (ad-enable-advice 'next-history-element 'around
-;;                               'helm-delay-next-history-element)
-;;             (ad-enable-advice 'previous-history-element 'around
-;;                               'helm-delay-previous-history-element)))
-;; (add-hook 'helm-cleanup-hook
-;;           (lambda ()
-;;             (ad-disable-advice 'next-history-element 'around
-;;                                'helm-delay-next-history-element)
-;;             (ad-disable-advice 'previous-history-element 'around
-;;                                'helm-delay-previous-history-element)))
-
 
 ;; Programming Tools
 (defmacro helm-aif (test-form then-form &rest else-forms)
@@ -946,7 +898,14 @@ not `exit-minibuffer' or unwanted functions."
         for count from 1 to 50
         for btf = (backtrace-frame count)
         for fn = (cl-second btf)
-        if (and (commandp fn) (not (memq fn bl))) return fn
+        if (and
+            ;; In some case we may have in the way an
+            ;; advice compiled resulting in byte-code,
+            ;; ignore it (Issue #691).
+            (symbolp fn)
+            (commandp fn)
+            (not (memq fn bl)))
+        return fn
         else
         if (and (eq fn 'call-interactively)
                 (> (length btf) 2))
@@ -1137,7 +1096,7 @@ associated to name."
 (cl-defun helm-add-action-to-source-if (name fn source predicate
                                         &optional (index 4) test-only)
   "Add new action NAME linked to function FN to SOURCE.
-Action is added only if current candidate match PREDICATE.
+Action NAME will be available when the current candidate matches PREDICATE.
 This function add an entry in the `action-transformer' attribute
 of SOURCE (or create one if not found).
 Function PREDICATE should take one arg candidate.
@@ -1172,7 +1131,9 @@ only when predicate helm-ff-candidates-lisp-p return non--nil:
     (if test-only                       ; debug
         (delq nil (append (list transformer) action-transformers))
       (helm-attrset 'action-transformer
-                    (delq nil (append (list transformer) action-transformers))
+                    (helm-fast-remove-dups
+                     (delq nil (append (list transformer) action-transformers))
+                     :test 'equal)
                     source))))
 
 (defun helm-set-source-filter (sources)
@@ -1753,10 +1714,6 @@ ANY-KEYMAP ANY-DEFAULT ANY-HISTORY See `helm'."
     (helm-log "any-default = %S" any-default)
     (helm-log "any-history = %S" any-history)
     (let ((old-overriding-local-map overriding-terminal-local-map)
-          ;; #163 no cursor in minibuffer in <=Emacs-24.2.
-          ;; Apart this bug in <=24.2, this is needed for
-          ;; messages in minibuffer on top of helm prompt. 
-          (cursor-in-echo-area t)
           (non-essential t)
           (old--cua cua-mode)
           (helm-maybe-use-default-as-input
@@ -2614,11 +2571,77 @@ CANDIDATE is a string, a symbol, or \(DISPLAY . REAL\) cons cell."
 Default function to match candidates according to `helm-pattern'."
   (string-match helm-pattern candidate))
 
+(defun helm--mapconcat-pattern (pattern)
+  "Transform string PATTERN in regexp for further fuzzy matching.
+e.g helm.el$
+    => \"[^h]*h[^e]*e[^l]*l[^m]*m[^.]*[.][^e]*e[^l]*l$\"
+    ^helm.el$
+    => \"helm[.]el$\"."
+  (let ((ls (split-string pattern "" t)))
+    (if (string= "^" (car ls))
+        ;; Exact match.
+        (mapconcat (lambda (c)
+                     (if (and (string= c "$")
+                              (string-match "$\\'" pattern))
+                         c (regexp-quote c)))
+                   (cdr ls) "")
+        ;; Fuzzy match.
+        (mapconcat (lambda (c)
+                     (if (and (string= c "$")
+                              (string-match "$\\'" pattern))
+                         c (format "[^%s]*%s" c (regexp-quote c))))
+                   ls ""))))
+
+(defun helm-fuzzy-match (candidate)
+  "Check if `helm-pattern' fuzzy match CANDIDATE."
+  (let ((fun (if (string-match "\\`\\^" helm-pattern)
+                 #'identity
+                 #'helm--mapconcat-pattern)))
+  (if (string-match "\\`!" helm-pattern)
+      (not (string-match (funcall fun (substring helm-pattern 1))
+                         candidate))
+    (string-match (funcall fun helm-pattern) candidate))))
+
+(defun helm-fuzzy-search (pattern)
+  "Same as `helm-fuzzy-match' but for sources using `candidates-in-buffer'."
+  (let ((fun (if (string-match "\\`\\^" pattern)
+                 #'identity
+                 #'helm--mapconcat-pattern)))
+  (if (or (string-match "\\`!" pattern)
+          (cl-loop for p in (split-string pattern " " t)
+                   thereis (string-match "\\`!" p)))
+      ;; Don't try to search here, just return
+      ;; the position of line and go ahead,
+      ;; letting match-part fn checking if
+      ;; pattern match against this line.
+      (prog1 (list (point-at-bol) (point-at-eol))
+        (forward-line 1))
+      ;; We could use here directly `re-search-forward'
+      ;; on the regexp produced by `helm--mapconcat-pattern',
+      ;; but it is very slow because emacs have to do an incredible
+      ;; amount of loops to match e.g "[^f]*o[^o]..." in the whole buffer,
+      ;; more the regexp is long more the amount of loops grow.
+      ;; (Probably leading to a max-lisp-eval-depth error if both
+      ;; regexp and buffer are too big)
+      ;; So just search the first bit of pattern e.g "[^f]*f", and
+      ;; then search the corresponding line with the whole regexp,
+      ;; which increase dramatically the speed of the search.
+      (cl-loop while (re-search-forward
+                      (funcall fun (substring pattern 0 1)) nil t)
+               for bol = (point-at-bol)
+               for eol = (point-at-eol)
+               if (progn (goto-char bol)
+                         (re-search-forward (funcall fun pattern) eol t))
+               do (goto-char eol) and return t
+               else do (goto-char eol)
+               finally return nil))))
+
 (defun helm-match-functions (source)
   (let ((matchfns (or (assoc-default 'match source)
                       (assoc-default 'match-strict source)
                       #'helm-default-match-function)))
-    (if (listp matchfns) matchfns (list matchfns))))
+    (if (and (listp matchfns) (not (functionp matchfns)))
+        matchfns (list matchfns))))
 
 (defmacro helm--accumulate-candidates (candidate newmatches
                                        hash item-count limit source)
@@ -2663,7 +2686,7 @@ and `helm-pattern'."
              (if (string-match "[[:upper:]]" pattern) nil t)))
     (t helm-case-fold-search)))
 
-(defun helm-match-from-candidates (cands matchfns limit source)
+(defun helm-match-from-candidates (cands matchfns match-part-fn limit source)
   (let (matches)
     (condition-case err
         (let ((item-count 0)
@@ -2673,11 +2696,13 @@ and `helm-pattern'."
             (let (newmatches)
               (cl-dolist (candidate cands)
                 (unless (gethash candidate helm-match-hash)
-                  (when (funcall match
-                                 (helm-candidate-get-display candidate))
-                    (helm--accumulate-candidates
-                     candidate newmatches
-                     helm-match-hash item-count limit source))))
+                  (let ((target (helm-candidate-get-display candidate)))
+                    (when (funcall match
+                                   (if match-part-fn
+                                       (funcall match-part-fn target) target)) 
+                      (helm--accumulate-candidates
+                       candidate newmatches
+                       helm-match-hash item-count limit source)))))
               ;; filter-one-by-one may return nil candidates, so delq them if some.
               (setq matches (nconc matches (nreverse (delq nil newmatches)))))))
       (error (unless (eq (car err) 'invalid-regexp) ; Always ignore regexps errors.
@@ -2690,6 +2715,7 @@ and `helm-pattern'."
   "Start computing candidates in SOURCE."
   (save-current-buffer
     (let ((matchfns (helm-match-functions source))
+          (matchpartfn (assoc-default 'match-part source))
           (helm-source-name (assoc-default 'name source))
           (helm-current-source source)
           (limit (helm-candidate-number-limit source))
@@ -2706,7 +2732,7 @@ and `helm-pattern'."
             (helm-get-cached-candidates source) limit)
          ;; Compute candidates according to pattern with their match fns.
          (helm-match-from-candidates
-          (helm-get-cached-candidates source) matchfns limit source))
+          (helm-get-cached-candidates source) matchfns matchpartfn limit source))
        source))))
 
 (defun helm-render-source (source matches)
@@ -2717,7 +2743,7 @@ and `helm-pattern'."
     (if (not (assq 'multiline source))
         (cl-loop for m in matches
                  for count from 1
-                 do (helm-insert-match m 'insert source count)) 
+                 do (helm-insert-match m 'insert source count))
       (let ((start (point))
             (count 0)
             separate)
@@ -3552,9 +3578,11 @@ don't exit and send message 'no match'."
              (sit-for 0.5) (message nil))
       (let* ((empty-buffer-p (with-current-buffer helm-buffer
                                (eq (point-min) (point-max))))
+             (sel (helm-get-selection))
              (unknown (and (not empty-buffer-p)
                            (string= (get-text-property
-                                     0 'display (helm-get-selection nil 'withprop))
+                                     0 'display
+                                     (helm-get-selection nil 'withprop))
                                     "[?]"))))
         (cond ((and (or empty-buffer-p unknown)
                     (eq minibuffer-completion-confirm 'confirm))
@@ -3562,7 +3590,13 @@ don't exit and send message 'no match'."
                      'confirm)
                (setq minibuffer-completion-confirm nil)
                (minibuffer-message " [confirm]"))
-              ((and (or empty-buffer-p unknown)
+              ((and (or empty-buffer-p
+                        (unless (if minibuffer-completing-file-name
+                                    (and minibuffer-completion-predicate
+                                         (funcall minibuffer-completion-predicate sel))
+                                    (try-completion sel minibuffer-completion-table
+                                                    minibuffer-completion-predicate))
+                          unknown))
                     (eq minibuffer-completion-confirm t))
                (minibuffer-message " [No match]"))
               (t
@@ -3687,7 +3721,11 @@ to a list of forms.\n\n")
 (add-hook 'kill-buffer-hook 'helm-kill-buffer-hook)
 
 (defun helm-preselect (candidate-or-regexp &optional source)
-  "Move `helm-selection-overlay' to CANDIDATE-OR-REGEXP on startup."
+  "Move `helm-selection-overlay' to CANDIDATE-OR-REGEXP on startup.
+Arg CANDIDATE-OR-REGEXP can be a string or a cons cell of two strings.
+When it is a cons cell helm will try to jump first to first element of cons cell
+and then to second, allowing a finer preselection when possible duplicates are
+before the candidate we want to preselect."
   (with-helm-window
     (when candidate-or-regexp
       (if helm-force-updating-p
@@ -3695,8 +3733,12 @@ to a list of forms.\n\n")
         (goto-char (point-min))
         (forward-line 1))
       (let ((start (point)))
-        (or (re-search-forward candidate-or-regexp nil t)
-            (goto-char start))))
+        (or
+         (if (consp candidate-or-regexp)
+             (and (re-search-forward (car candidate-or-regexp) nil t)
+                  (re-search-forward (cdr candidate-or-regexp) nil t))
+             (re-search-forward candidate-or-regexp nil t))
+         (goto-char start))))
     (forward-line 0) ; Avoid scrolling right on long lines.
     (when (helm-pos-multiline-p)
       (helm-move--beginning-of-multiline-candidate))
@@ -3939,52 +3981,69 @@ To customize `helm-candidates-in-buffer' behavior, use `search',
            pattern get-line-fn search-fns limit search-from-end
            start-point match-part-fn source))))))
 
-(defun helm-point-is-moved (proc)
-  "If point is moved after executing PROC, return t, otherwise nil."
-  (/= (point) (save-excursion (funcall proc) (point))))
-
 (defun helm-search-from-candidate-buffer (pattern get-line-fn search-fns
                                           limit search-from-end
                                           start-point match-part-fn source)
   (let (buffer-read-only
         matches 
         newmatches
-        (case-fold-search (helm-set-case-fold-search)))
+        (case-fold-search (helm-set-case-fold-search))
+        (stopper (if search-from-end #'bobp #'eobp)))
     (helm-search-from-candidate-buffer-internal
      (lambda ()
        (clrhash helm-cib-hash)
        (cl-dolist (searcher search-fns)
          (goto-char start-point)
          (setq newmatches nil)
-         (cl-loop with item-count = 0
-               while (funcall searcher pattern)
-               for cand = (funcall get-line-fn (point-at-bol) (point-at-eol))
-               when (and (not (gethash cand helm-cib-hash))
-                         (or
-                          ;; Always collect when cand is matched by searcher funcs
-                          ;; and match-part attr is not present.
-                          (not match-part-fn)
-                          ;; If match-part attr is present, collect only if PATTERN
-                          ;; match the part of CAND specified by the match-part func.
-                          (helm-search-match-part cand pattern match-part-fn)))
-               do (helm--accumulate-candidates
-                   cand newmatches helm-cib-hash item-count limit source)
-               unless (helm-point-is-moved
-                       (lambda ()
-                         (if search-from-end
-                             (goto-char (1- (point-at-bol)))
-                           (forward-line 1))))
-               return nil)
+         (cl-loop with pos-lst
+                  with item-count = 0
+                  while (and (setq pos-lst (funcall searcher pattern))
+                             (not (funcall stopper)))
+                  for cand = (apply get-line-fn
+                                    (if (and pos-lst (listp pos-lst))
+                                        pos-lst
+                                        (list (point-at-bol) (point-at-eol))))
+                  when (and (not (gethash cand helm-cib-hash))
+                            (or
+                             ;; Always collect when cand is matched by searcher funcs
+                             ;; and match-part attr is not present.
+                             (and (not match-part-fn)
+                                  (not (consp pos-lst)))
+                             ;; If match-part attr is present, or if SEARCHER fn
+                             ;; returns a cons cell, collect PATTERN only if it
+                             ;; match the part of CAND specified by the match-part func.
+                             (helm-search-match-part cand pattern (or match-part-fn #'identity))))
+                  do (helm--accumulate-candidates
+                      cand newmatches helm-cib-hash item-count limit source))
          (setq matches (append matches (nreverse newmatches))))
        (delq nil matches)))))
 
 (defun helm-search-match-part (candidate pattern match-part-fn)
-  "Match PATTERN only on part of CANDIDATE returned by MATCH-PART-FN."
-  (let ((part (funcall match-part-fn candidate)))
+  "Match PATTERN only on part of CANDIDATE returned by MATCH-PART-FN.
+Because `helm-search-match-part' maybe called even if unspecified
+in source (negation), MATCH-PART-FN default to `identity' to match whole candidate.
+When using fuzzy matching and negation (i.e \"!\"), this function is always called."
+  (let ((part (funcall match-part-fn candidate))
+        (fuzzy-p (assoc 'fuzzy-match (helm-get-current-source))))
     (if (string-match " " pattern)
-        (cl-loop for i in (split-string pattern " " t)
-              always (string-match i part))
-      (string-match pattern part))))
+        (cl-loop for i in (split-string pattern " " t) always
+                 (if (string-match "\\`!" i)
+                     (not (string-match
+                           (if fuzzy-p
+                               (helm--mapconcat-pattern
+                                (substring i 1))
+                               (substring i 1))
+                           part))
+                     (string-match
+                      (if fuzzy-p
+                          (helm--mapconcat-pattern i) i)
+                      part)))
+        (if (string-match "\\`!" pattern)
+            (let ((reg (substring pattern 1)))
+              (not (string-match (if fuzzy-p (helm--mapconcat-pattern reg) reg)
+                                 part)))
+            (string-match (if fuzzy-p (helm--mapconcat-pattern pattern) pattern)
+                          part)))))
 
 (defun helm-initial-candidates-from-candidate-buffer (endp
                                                       get-line-fn
@@ -4668,19 +4727,27 @@ This will enable `helm-follow-mode' automatically in `helm-source-buffers-list'.
                                              'name (symbol-value s)))
                            thereis (and sname (string= sname name) s)))
            (fol-attr (assq 'follow src))
-           (enabled  (or (< arg 0)      ; Assume follow is enabled.
-                         (eq (cdr fol-attr) 1))))
-      (if (eq (cdr fol-attr) 'never)
-          (message "helm-follow-mode not allowed in this source")
-        (helm-attrset 'follow (if enabled -1 1) src)
-        (setq helm-follow-mode (eq (cdr (assq 'follow src)) 1))
-        (message "helm-follow-mode is %s"
-                 (if helm-follow-mode
-                     "enabled" "disabled"))
-        (helm-display-mode-line src))
-      ;; Make follow attr persistent for this session.
-      (when (and helm-follow-mode-persistent sym)
-        (set (car `(,sym)) src)))))
+           (enabled  (or
+                      ;; If `helm-follow-mode' is called with a negative
+                      ;; ARG, assume follow is already enabled.
+                      ;; i.e turn it off now.
+                      (< arg 0)
+                      (eq (cdr fol-attr) 1)
+                      helm-follow-mode)))
+      (if src
+          (progn
+            (if (eq (cdr fol-attr) 'never)
+                (message "helm-follow-mode not allowed in this source")
+                ;; Make follow attr persistent for this emacs session.
+                (helm-attrset 'follow (if enabled -1 1) src)
+                (setq helm-follow-mode (not enabled))
+                (message "helm-follow-mode is %s"
+                         (if helm-follow-mode
+                             "enabled" "disabled"))
+                (helm-display-mode-line src))
+            (unless helm-follow-mode-persistent
+              (and sym (set sym (remove (assq 'follow src) src)))))
+          (message "Not enough candidates for helm-follow-mode")))))
 
 (defvar helm-follow-input-idle-delay nil
   "`helm-follow-mode' will execute its persistent action after this delay.

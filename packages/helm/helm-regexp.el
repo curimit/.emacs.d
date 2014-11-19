@@ -20,6 +20,7 @@
 (require 'cl-lib)
 (require 'helm)
 (require 'helm-utils)
+(require 'helm-plugin)
 
 
 (defgroup helm-regexp nil
@@ -144,7 +145,7 @@ i.e Don't replace inside a word, regexp is surrounded with \\bregexp\\b."
      ;; match beginning
      ;; KLUDGE: point of helm-candidate-buffer is +1 than that of helm-current-buffer.
      ;; It is implementation problem of candidates-in-buffer.
-     'helm-real-value (1- s))))
+     'helm-realvalue (1- s))))
 
 (defun helm-regexp-persistent-action (pt)
   (helm-goto-char pt)
@@ -166,7 +167,7 @@ i.e Don't replace inside a word, regexp is surrounded with \\bregexp\\b."
 (defun helm-occur-init-source ()
   (unless helm-source-occur
     (setq helm-source-occur
-          (helm--make-source "Occur" 'helm-source-multi-occur))))
+          (helm-make-source "Occur" 'helm-source-multi-occur))))
 
 
 ;;; Multi occur
@@ -381,7 +382,7 @@ Same as `helm-moccur-goto-line' but go in new frame."
                   buffers)))
     (unless helm-source-moccur
       (setq helm-source-moccur
-            (helm--make-source "Moccur" 'helm-source-multi-occur)))
+            (helm-make-source "Moccur" 'helm-source-multi-occur)))
     (helm-attrset 'moccur-buffers bufs helm-source-moccur)
     (helm-set-local-variable 'helm-multi-occur-buffer-list bufs)
     (helm-set-local-variable

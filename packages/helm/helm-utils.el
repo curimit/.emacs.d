@@ -333,25 +333,6 @@ even is \" -b\" is specified."
        (replace-regexp-in-string " -b\\'" "" helm-pattern)
        candidate))))
 
-(defun helm--mapconcat-candidate (candidate)
-  "Transform string CANDIDATE in regexp.
-e.g helm.el$
-    => \"[^h]*h[^e]*e[^l]*l[^m]*m[^.]*[.][^e]*e[^l]*l$\"
-    ^helm.el$
-    => \"helm[.]el$\"."
-  (let ((ls (split-string candidate "" t)))
-    (if (string= "^" (car ls))
-        (mapconcat (lambda (c)
-                     (if (string= c ".")
-                         (concat "[" c "]") c))
-                   (cdr ls) "")
-      (mapconcat (lambda (c)
-                   (cond ((string= c ".")
-                          (concat "[^" c "]*" (concat "[" c "]")))
-                         ((string= c "$") c)
-                         (t (concat "[^" c "]*" (regexp-quote c)))))
-                 ls ""))))
-
 (defun helm-skip-entries (seq regexp-list)
   "Remove entries which matches one of REGEXP-LIST from SEQ."
   (cl-loop for i in seq
@@ -449,14 +430,14 @@ from its directory."
                       org-directory
                       (expand-file-name org-directory))
                  (with-current-buffer it default-directory))
-           (cond ((or (file-remote-p sel)
-                      (file-exists-p sel))
-                  (expand-file-name sel))
-                 (bmk (helm-aif (bookmark-get-filename bmk)
+           (cond (bmk (helm-aif (bookmark-get-filename bmk)
                           (if (and ffap-url-regexp
                                    (string-match ffap-url-regexp it))
                               it (expand-file-name it))
                         default-directory))
+                 ((or (file-remote-p sel)
+                      (file-exists-p sel))
+                  (expand-file-name sel))
                  ((and grep-line (file-exists-p (car grep-line)))
                   (expand-file-name (car grep-line)))
                  ((and ffap-url-regexp (string-match ffap-url-regexp sel)) sel)
@@ -923,7 +904,12 @@ grabs the entire symbol."
 (defun helm-reset-yank-point ()
   (setq helm-yank-point nil))
 
-(add-hook 'helm-after-persistent-action-hook 'helm-reset-yank-point)
+;; FIXME why do we run this after PA?
+;; Seems it is not needed, thus it create a bug
+;; when we want to hit repetitively C-w and follow-mode is enabled,
+;; or if we run a PA between to hits on C-w.
+;; Keep this commented for now.
+;(add-hook 'helm-after-persistent-action-hook 'helm-reset-yank-point)
 (add-hook 'helm-cleanup-hook 'helm-reset-yank-point)
 (add-hook 'helm-after-initialize-hook 'helm-reset-yank-point)
 
