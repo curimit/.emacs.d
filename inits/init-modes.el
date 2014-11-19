@@ -410,11 +410,13 @@
 ;; function args
 (require 'function-args)
 
+(global-set-key (kbd "M-g") 'helm-imenu)
+
 (add-hook 'c-mode-common-hook (lambda ()
                                 (define-key c-mode-base-map (kbd "M-g") 'moo-jump-local)
                                 ))
-(add-hook 'js2-mode-hook (lambda ()
-                           (define-key js2-mode-map (kbd "M-g") 'moo-jump-local)
+(add-hook 'css-mode-hook (lambda ()
+                           (define-key css-mode-map (kbd "M-g") 'moo-jump-local)
                            ))
 
 (defun moo-select-candidate (candidates action &optional name preselect)
