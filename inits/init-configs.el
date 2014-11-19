@@ -325,7 +325,7 @@
   )
 (my-mode-line)
 
-(set-face-foreground 'mode-line "YellowGreen")
+(set-face-foreground 'mode-line "white")
 (set-face-background 'mode-line "gray15")
 (set-face-foreground 'mode-line-inactive "white")
 (set-face-background 'mode-line-inactive "gray45")
