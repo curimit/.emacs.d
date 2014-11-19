@@ -330,6 +330,6 @@
 (set-face-foreground 'mode-line-inactive "white")
 (set-face-background 'mode-line-inactive "gray45")
 (set-face-foreground 'window-numbering-face "OrangeRed")
-(set-face-bold 'window-numbering-face 't)
+(set-face-bold-p 'window-numbering-face 't)
 
 (provide 'init-configs)
