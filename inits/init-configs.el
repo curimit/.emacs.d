@@ -194,7 +194,6 @@
 ;; cursors following mouse
 (setq mouse-autoselect-window t)
 
-;; borrow from http://stackoverflow.com/questions/8190277/how-do-i-display-the-total-number-of-lines-in-the-emacs-modeline
 (defvar my-mode-line-buffer-line-count nil)
 (make-variable-buffer-local 'my-mode-line-buffer-line-count)
 
@@ -205,14 +204,13 @@
 (add-hook 'after-save-hook 'my-mode-line-count-lines)
 (add-hook 'after-revert-hook 'my-mode-line-count-lines)
 (add-hook 'dired-after-readin-hook 'my-mode-line-count-lines)
-;; -------------------- line count --------------------
 
-
-;;在标题栏提示当前位置
 (setq frame-title-format
       (list "[" '(:eval (projectile-project-name)) "]"
-	    " ψωETωψ ◎ "
-	    '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+            " "
+            (user-full-name)
+            " @ "
+            '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
 
 
 (setq show-buffer-file-name nil)
@@ -270,12 +268,6 @@
                                        'help-echo "Buffer is read-only"))))
     "] "
 
-    ;; ;; line and column
-    "(" ;; '%02' to set to 2 chars at least; prevents flickering
-    (propertize "%01l" 'face 'font-lock-type-face) ","
-    (propertize "%02c" 'face 'font-lock-type-face)
-    ") "
-
     ;; the current major mode for the buffer.
     "["
 
@@ -326,6 +318,12 @@
     ;; date
     '(:eval (propertize (format-time-string "[%Y-%02m-%02d %3a]")
                         'face 'font-lock-comment-face))
+
+    ;; ;; line and column
+    " (" ;; '%02' to set to 2 chars at least; prevents flickering
+    (propertize "%01l" 'face 'font-lock-type-face) ","
+    (propertize "%02c" 'face 'font-lock-type-face)
+    ") "
     ))
   )
 (my-mode-line)
