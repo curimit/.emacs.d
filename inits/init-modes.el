@@ -157,7 +157,6 @@
 (require 'helm-imenu)
 
 (global-set-key (kbd "C-x C-m") 'helm-M-x)
-(global-set-key (kbd "C-o") 'helm-bookmarks)
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 
 (define-key helm-map (kbd "C-w") 'backward-kill-word)
@@ -559,7 +558,7 @@
                                '(lambda () "sort by Name"
                                   (interactive) (dired-sort-other (concat dired-listing-switches ""))))
 
-                             (define-key dired-mode-map (kbd "C-o") 'helm-bookmarks)
+                             (define-key dired-mode-map (kbd "C-o") 'wg-switch-to-workgroup)
                              (define-key dired-mode-map (kbd "C-s") '(lambda ()
                                                                      (interactive)
                                                                      (helm-swoop :$query "")))
@@ -630,6 +629,13 @@
 (setq wg-emacs-exit-save-behavior 'save)
 (setq wg-workgroups-mode-exit-save-behavior 'save)
 (workgroups-mode 1)
+
+;; Use helm as default engine for wg-completing-read
+(defun wg-completing-read (prompt choices &optional pred require-match initial-input history default)
+  (helm--completing-read-default prompt choices pred require-match
+                                 initial-input history default))
+(global-set-key (kbd "C-o") 'wg-switch-to-workgroup)
+
 
 (defun helm-dwim ()
   (interactive)
