@@ -656,6 +656,9 @@
 (defun tabbar-buffer-groups ()
   (list (cond
          ((s-starts-with-p "*helm" (buffer-name)) "helm buffer")
+         ((s-starts-with-p "*scratch" (buffer-name)) "scratch buffer")
+         ((or (equal major-mode 'dired-mode)
+              (equal major-mode 'wdired-mode)) "dired buffer")
          (buffer-read-only "readonly buffer")
          ((s-starts-with-p "*" (buffer-name)) "emacs buffer")
          ((equalp (buffer-file-name) nil) "noname buffer")
