@@ -160,6 +160,8 @@
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 
 (define-key helm-map (kbd "C-w") 'backward-kill-word)
+(define-key helm-map (kbd "C-M-p") 'helm-previous-source)
+(define-key helm-map (kbd "C-M-n") 'helm-next-source)
 
 ;; use helm-find-files as default
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
