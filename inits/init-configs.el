@@ -175,7 +175,7 @@
 
 ;; smart-expand
 (add-hook 'c-mode-common-hook (lambda ()
-                                (define-key c-mode-base-map (kbd "C-j") 'smart-expand)
+                                (define-key c-mode-base-map (kbd "C-c C-j") 'smart-expand)
                                 ))
 
 ;; coding style: 80 chars limit
