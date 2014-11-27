@@ -674,4 +674,7 @@
          ((buffer-file-name) (f-dirname (buffer-file-name)))
          (t "others"))))
 
+;; git timemachine
+(require 'git-timemachine)
+
 (provide 'init-modes)
