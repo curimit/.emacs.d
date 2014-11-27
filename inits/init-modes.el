@@ -677,4 +677,8 @@
 ;; git timemachine
 (require 'git-timemachine)
 
+;; member-functions
+(autoload 'expand-member-functions "member-functions" "Expand C++ member function declarations" t)
+(add-hook 'c++-mode-hook (lambda () (local-set-key "\C-cm" #'expand-member-functions)))
+
 (provide 'init-modes)
