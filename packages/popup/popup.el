@@ -4,7 +4,7 @@
 
 ;; Author: Tomohiro Matsuyama <tomo@cx4a.org>
 ;; Keywords: lisp
-;; Version: 0.5.0
+;; Version: 0.5.1
 ;; Package-Requires: ((cl-lib "0.3"))
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -31,7 +31,7 @@
 
 (require 'cl-lib)
 
-(defconst popup-version "0.5.0")
+(defconst popup-version "0.5.1")
 
 
 
@@ -89,20 +89,16 @@ splitting with WIDTH."
   "Split STRING into fixed width strings and return a cons cell
 like \(WIDTH . ROWS). Here, the car WIDTH indicates the actual
 maxim width of ROWS.
-
 The argument WIDTH specifies the width of filling each
 paragraph. WIDTH nil means don't perform any justification and
 word wrap. Note that this function doesn't add any padding
 characters at the end of each row.
-
 MAX-WIDTH, if WIDTH is nil, specifies the maximum number of
 columns.
-
 The optional fourth argument JUSTIFY specifies which kind of
 justification to do: `full', `left', `right', `center', or
 `none' (equivalent to nil).  A value of t means handle each
 paragraph as specified by its text properties.
-
 SQUEEZE nil means leave whitespaces other than line breaks
 untouched."
   (if (eq width 0)
@@ -495,38 +491,26 @@ number at the point."
                         parent-offset
                         keymap)
   "Create a popup instance at POINT with WIDTH and HEIGHT.
-
 MIN-HEIGHT is a minimal height of the popup. The default value is
 0.
-
 MAX-WIDTH is the maximum width of the popup. The default value is
 nil (no limit). If a floating point, the value refers to the ratio of
 the window. If an integer, limit is in characters.
-
 If AROUND is non-nil, the popup will be displayed around the
 point but not at the point.
-
 FACE is a background face of the popup. The default value is POPUP-FACE.
-
 SELECTION-FACE is a foreground (selection) face of the popup The
 default value is POPUP-FACE.
-
 If SCROLL-BAR is non-nil, the popup will have a scroll bar at the
 right.
-
 If MARGIN-LEFT is non-nil, the popup will have a margin at the
 left.
-
 If MARGIN-RIGHT is non-nil, the popup will have a margin at the
 right.
-
 SYMBOL is a single character which indicates a kind of the item.
-
 PARENT is a parent popup instance. If PARENT is omitted, the
 popup will be a root instance.
-
 PARENT-OFFSET is a row offset from the parent popup.
-
 KEYMAP is a keymap that will be put on the popup contents."
   (or margin-left (setq margin-left 0))
   (or margin-right (setq margin-right 0))
@@ -674,7 +658,8 @@ KEYMAP is a keymap that will be put on the popup contents."
         (popup-save-buffer-state
           (goto-char (point-max))
           (dotimes (i newlines)
-            (if (= (char-before) ?\n)
+            (if (and (char-before)
+                     (= (char-before) ?\n))
                 (delete-char -1)))))))
   nil)
 
@@ -945,17 +930,13 @@ Pages up through POPUP."
                          help-delay)
   "Start isearch on POPUP. This function is synchronized, meaning
 event loop waits for quiting of isearch.
-
 CURSOR-COLOR is a cursor color during isearch. The default value
 is `popup-isearch-cursor-color'.
-
 KEYMAP is a keymap which is used when processing events during
 event loop. The default value is `popup-isearch-keymap'.
-
 CALLBACK is a function taking one argument. `popup-isearch' calls
 CALLBACK, if specified, after isearch finished or isearch
 canceled. The arguments is whole filtered list of items.
-
 HELP-DELAY is a delay of displaying helps."
   (let ((list (popup-original-list popup))
         (pattern (or (popup-pattern popup) ""))
@@ -1031,14 +1012,10 @@ HELP-DELAY is a delay of displaying helps."
   "Show a tooltip of STRING at POINT. This function is
 synchronized unless NOWAIT specified. Almost arguments are same
 as `popup-create' except for TRUNCATE, NOWAIT, and PROMPT.
-
 If TRUNCATE is non-nil, the tooltip can be truncated.
-
 If NOWAIT is non-nil, this function immediately returns the
 tooltip instance without entering event loop.
-
 If `NOSTRIP` is non-nil, `STRING` properties are not stripped.
-
 PROMPT is a prompt string when reading events during event loop."
   (if (bufferp string)
       (setq string (with-current-buffer string (buffer-string))))
@@ -1324,35 +1301,25 @@ value of the selected item. Almost arguments are same as
 `popup-create' except for KEYMAP, FALLBACK, HELP-DELAY, PROMPT,
 ISEARCH, ISEARCH-CURSOR-COLOR, ISEARCH-KEYMAP, and
 ISEARCH-CALLBACK.
-
 If KEYMAP is a keymap which is used when processing events during
 event loop.
-
 If FALLBACK is a function taking two arguments; a key and a
 command. FALLBACK is called when no special operation is found on
 the key. The default value is `popup-menu-fallback', which does
 nothing.
-
 HELP-DELAY is a delay of displaying helps.
-
 If NOWAIT is non-nil, this function immediately returns the menu
 instance without entering event loop.
-
 PROMPT is a prompt string when reading events during event loop.
-
 If ISEARCH is non-nil, do isearch as soon as displaying the popup
 menu.
-
 ISEARCH-CURSOR-COLOR is a cursor color during isearch. The
 default value is `popup-isearch-cursor-color'.
-
 ISEARCH-KEYMAP is a keymap which is used when processing events
 during event loop. The default value is `popup-isearch-keymap'.
-
 ISEARCH-CALLBACK is a function taking one argument.  `popup-menu'
 calls ISEARCH-CALLBACK, if specified, after isearch finished or
 isearch canceled. The arguments is whole filtered list of items.
-
 If `INITIAL-INDEX' is non-nil, this is an initial index value for
 `popup-select'. Only positive integer is valid."
   (and (eq margin t) (setq margin 1))
