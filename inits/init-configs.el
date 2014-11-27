@@ -340,4 +340,7 @@
 ;; org-mode
 (setq org-hide-leading-stars t)
 
+;; c++ header use c++-mode
+(add-to-list 'auto-mode-alist '("\\.h$'" . c++-mode))
+
 (provide 'init-configs)
