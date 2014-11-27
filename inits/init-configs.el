@@ -337,4 +337,7 @@
 (set-face-foreground 'wg-mode-line-face "OrangeRed")
 (set-face-bold-p 'wg-mode-line-face 't)
 
+;; org-mode
+(setq org-hide-leading-stars t)
+
 (provide 'init-configs)
