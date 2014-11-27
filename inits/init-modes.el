@@ -61,6 +61,21 @@
         ))
 (yas-global-mode 1)
 
+;; auto complete mode
+(require 'auto-complete-config)
+(ac-config-default)
+(global-auto-complete-mode)
+(setq ac-quick-help-prefer-pos-tip t)
+(setq ac-use-quick-help t)
+(setq ac-delay 0.3)
+(setq ac-quick-help-delay 0.8)
+(set-face-attribute 'ac-candidate-face nil   :background "#00222c" :foreground "light gray")
+(set-face-attribute 'ac-selection-face nil   :background "SteelBlue4" :foreground "white")
+(define-key ac-complete-mode-map (kbd "C-s") 'ac-isearch)
+
+(setq ac-fuzzy-enable t)
+(global-set-key (kbd "C-<space>") 'ac-fuzzy-complete)
+
 (defun c++-triple-slash ()
   (interactive)
   (insert "/")
