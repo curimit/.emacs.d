@@ -74,7 +74,7 @@
 (define-key ac-complete-mode-map (kbd "C-s") 'ac-isearch)
 
 (setq ac-fuzzy-enable t)
-(global-set-key (kbd "C-<space>") 'ac-fuzzy-complete)
+(global-set-key (kbd "C-j") 'ac-fuzzy-complete)
 
 (defun c++-triple-slash ()
   (interactive)
