@@ -78,6 +78,23 @@
 (setq ac-fuzzy-enable t)
 (global-set-key (kbd "C-j") 'ac-fuzzy-complete)
 
+(set-default 'ac-sources
+             '(ac-source-semantic
+               ac-source-yasnippet
+               ac-source-abbrev
+               ac-source-words-in-buffer
+               ac-source-words-in-all-buffer
+               ac-source-imenu
+               ac-source-files-in-current-dir
+               ac-source-filename))
+(add-hook 'c-mode-common-hook '(lambda ()
+                                 (add-to-list 'ac-omni-completion-sources
+                                              (cons "\\." '(ac-source-semantic)))
+                                 (add-to-list 'ac-omni-completion-sources
+                                              (cons "->" '(ac-source-semantic)))
+                                 (add-to-list 'ac-sources '(ac-source-semantic ac-source-yasnippet))
+                                 ))
+
 (defun c++-triple-slash ()
   (interactive)
   (insert "/")
