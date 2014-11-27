@@ -107,18 +107,6 @@
                                 (define-key c-mode-base-map (kbd "/") 'c++-triple-slash)
                                 ))
 
-;; company mode
-(require 'company)
-(global-company-mode)
-(setq company-idle-delay 0)
-(define-key company-active-map (kbd "C-w") 'backward-kill-word)
-(set-face-attribute 'company-tooltip nil   :background "#00222c" :foreground "light gray")
-(set-face-attribute 'company-tooltip-selection nil   :background "SteelBlue4" :foreground "white")
-
-;; company c headers
-(require 'company-c-headers)
-(add-to-list 'company-backends 'company-c-headers)
-
 ;; undo tree
 (require 'undo-tree)
 (global-set-key (kbd "C-x C-u") ' undo-tree-visualize)
@@ -167,13 +155,6 @@
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 (define-key helm-find-files-map (kbd "<tab>") 'helm-execute-persistent-action)
 (define-key helm-find-files-map (kbd "<right>") 'helm-select-action)
-
-;; helm company
-(autoload 'helm-company "helm-company")
-(eval-after-load 'company
-  '(progn
-     (define-key company-mode-map (kbd "C-:") 'helm-company)
-     (define-key company-active-map (kbd "C-:") 'helm-company)))
 
 ;; helm dash
 (require 'helm-dash)
@@ -291,9 +272,6 @@
 (autoload 'tern-mode "tern.el" nil t)
 
 (add-hook 'js2-mode-hook (lambda () (tern-mode t)))
-
-(require 'company-tern)
-(add-to-list 'company-backends 'company-tern)
 
 ;; enhanced-ruby-mode
 (autoload 'enh-ruby-mode "enh-ruby-mode" "Major mode for ruby files" t)
