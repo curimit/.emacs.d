@@ -188,7 +188,9 @@
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 (add-hook 'c-mode-common-hook (lambda ()
-                                (define-key c-mode-base-map (kbd "C-<f12>") 'ff-find-related-file)
+                                (define-key c-mode-base-map (kbd "<f12>") 'semantic-ia-fast-jump)
+                                (define-key c-mode-base-map (kbd "<M-f12>") 'semantic-analyze-proto-impl-toggle)
+                                (define-key c-mode-base-map (kbd "C-<f12>") 'ff-find-other-file)
                                 ))
 
 ;; cursors following mouse
