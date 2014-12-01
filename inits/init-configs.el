@@ -191,6 +191,7 @@
                                 (define-key c-mode-base-map (kbd "<f12>") 'semantic-ia-fast-jump)
                                 (define-key c-mode-base-map (kbd "<M-f12>") 'semantic-analyze-proto-impl-toggle)
                                 (define-key c-mode-base-map (kbd "C-<f12>") 'ff-find-other-file)
+                                (define-key c-mode-base-map (kbd "<f7>") 'compile)
                                 ))
 
 ;; cursors following mouse
@@ -220,7 +221,7 @@
   "toggle show or hide buffer full file name in mode line"
   (interactive)
   (setq show-buffer-file-name
-	(if show-buffer-file-name nil t)))
+        (if show-buffer-file-name nil t)))
 (global-set-key (kbd "M-<f11>") 'toggle-show-buffer-file-name)
 
 ;;====================== time setting =====================
