@@ -76,7 +76,7 @@
 (define-key ac-complete-mode-map (kbd "C-s") 'ac-isearch)
 
 (setq ac-fuzzy-enable t)
-(global-set-key (kbd "C-j") 'ac-fuzzy-complete)
+(global-set-key (kbd "C-j") 'ac-complete-semantic)
 
 (set-default 'ac-sources
              '(ac-source-semantic
@@ -92,7 +92,15 @@
                                               (cons "\\." '(ac-source-semantic)))
                                  (add-to-list 'ac-omni-completion-sources
                                               (cons "->" '(ac-source-semantic)))
-                                 (add-to-list 'ac-sources '(ac-source-semantic ac-source-yasnippet))
+                                 (set-default 'ac-sources
+                                              '(ac-source-semantic
+                                                ac-source-yasnippet
+                                                ac-source-abbrev
+                                                ac-source-words-in-buffer
+                                                ac-source-words-in-all-buffer
+                                                ac-source-imenu
+                                                ac-source-files-in-current-dir
+                                                ac-source-filename))
                                  ))
 
 (defun c++-triple-slash ()
@@ -529,8 +537,8 @@
 (add-hook 'haskell-mode-hook 'haskell-decl-scan-mode)
 (add-hook 'haskell-mode-hook 'haskell-doc-mode)
 (custom-set-variables
-  '(haskell-process-suggest-hoogle-imports t)
-  '(haskell-process-suggest-remove-import-lines t))
+ '(haskell-process-suggest-hoogle-imports t)
+ '(haskell-process-suggest-remove-import-lines t))
 
 ;; ess
 (add-to-list 'load-path "~/.emacs.d/packages/ess/lisp")
@@ -574,8 +582,8 @@
 
                              (define-key dired-mode-map (kbd "C-o") 'wg-switch-to-workgroup)
                              (define-key dired-mode-map (kbd "C-s") '(lambda ()
-                                                                     (interactive)
-                                                                     (helm-swoop :$query "")))
+                                                                       (interactive)
+                                                                       (helm-swoop :$query "")))
                              ))
 ;; bookmark+
 (require 'bookmark+)
@@ -655,27 +663,27 @@
   (interactive)
   (if (projectile-project-p)
       (let ((helm-ff-transformer-show-only-basename nil))
-      (helm-other-buffer
-       '(helm-source-buffers-list
-         helm-source-projectile-projects
-         helm-source-projectile-files-list
-         helm-source-bookmark-files&dirs
-         helm-source-recentf
-         helm-source-buffer-not-found
-         helm-source-bookmark-set
-         )
-       "*helm search*"))
-    (let ((helm-ff-transformer-show-only-basename nil))
         (helm-other-buffer
          '(helm-source-buffers-list
            helm-source-projectile-projects
+           helm-source-projectile-files-list
            helm-source-bookmark-files&dirs
            helm-source-recentf
-           helm-source-files-in-current-dir
            helm-source-buffer-not-found
            helm-source-bookmark-set
            )
-         "*helm search*"))))
+         "*helm search*"))
+    (let ((helm-ff-transformer-show-only-basename nil))
+      (helm-other-buffer
+       '(helm-source-buffers-list
+         helm-source-projectile-projects
+         helm-source-bookmark-files&dirs
+         helm-source-recentf
+         helm-source-files-in-current-dir
+         helm-source-buffer-not-found
+         helm-source-bookmark-set
+         )
+       "*helm search*"))))
 
 (global-set-key (kbd "C-x C-b") 'helm-dwim)
 
