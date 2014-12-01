@@ -388,8 +388,8 @@
 
 ;; auto pair
 (require 'autopair)
-
 (autopair-global-mode t)
+(setq autopair-blink nil)
 
 ;; feature-mode
 (autoload 'feature-mode "feature-mode" nil t)
