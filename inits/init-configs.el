@@ -343,4 +343,21 @@
 ;; c++ header use c++-mode
 (add-to-list 'auto-mode-alist '("\\.h$'" . c++-mode))
 
+;; clean-buffer
+(global-set-key (kbd "C-S-l") 'clean-buffer)
+
+;; goto-line
+(global-set-key (kbd "s-g") 'goto-line)
+
+(require 'recentf)
+
+(defun reopen-last-killed-file ()
+  (interactive)
+  (let ((active-files (loop for buf in (buffer-list)
+                            when (buffer-file-name buf) collect it)))
+    (loop for file in recentf-list
+          unless (member file active-files) return (find-file file))))
+
+(define-key global-map (kbd "C-S-t") 'reopen-last-killed-file)
+
 (provide 'init-configs)
