@@ -61,7 +61,7 @@
 (setq yas-snippet-dirs
       '("~/.emacs.d/userdata/snippets"
         ))
-(yas-global-mode 1)
+;; (yas-global-mode 1)
 
 ;; auto complete mode
 (require 'auto-complete-config)
