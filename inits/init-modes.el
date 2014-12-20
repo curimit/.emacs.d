@@ -69,7 +69,7 @@
 (global-auto-complete-mode)
 (setq ac-quick-help-prefer-pos-tip t)
 (setq ac-use-quick-help t)
-(setq ac-delay 0.2)
+(setq ac-delay 0.5)
 (setq ac-candidate-limit 12)
 (set-face-attribute 'ac-candidate-face nil   :background "#00222c" :foreground "light gray")
 (set-face-attribute 'ac-selection-face nil   :background "SteelBlue4" :foreground "white")
