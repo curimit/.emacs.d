@@ -711,4 +711,10 @@
 ;; cpp-buf-utils
 (require 'cpp-buf-utils)
 
+;; gist
+(require 'gist)
+
+;; helm gist
+(require 'helm-gist)
+
 (provide 'init-modes)
