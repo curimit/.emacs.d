@@ -363,4 +363,7 @@
 
 (define-key global-map (kbd "C-S-t") 'reopen-last-killed-file)
 
+;; import
+(define-key global-map (kbd "C-c C-i") 'import)
+
 (provide 'init-configs)
