@@ -294,4 +294,16 @@ Adapted from `flyspell-correct-word-before-point'."
                                  poss word cursor-location start end opoint)))
           (ispell-pdict-save t)))))
 
+(defun import ()
+  (interactive)
+  (cond
+   ((eq major-mode 'jade-mode)
+    (let ((symbol (helm-comp-read "import: " (--map (f-filename it) (f-directories "../../app/bower_components")))))
+      (save-excursion
+        (beginning-of-buffer)
+        (re-search-forward "+bower(")
+        (insert "'" symbol "',\n       "))))
+   )
+  )
+
 (provide 'init-utilities)
