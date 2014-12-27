@@ -294,6 +294,52 @@ Adapted from `flyspell-correct-word-before-point'."
                                  poss word cursor-location start end opoint)))
           (ispell-pdict-save t)))))
 
+
+(defun site-new ()
+  (interactive)
+  (let ((path (car (s-match ".*src" buffer-file-name))))
+    (let ((name (read-input "Component name: ")))
+      (let ((dir (concat path "/" name ))
+            (jade (concat path "/" name "/" name ".jade"))
+            (index (concat path "/" name "/" "index.jade"))
+            (styl (concat path "/" name "/" name ".styl"))
+            (coffee (concat path "/" name "/" name ".coffee"))
+            )
+        (f-mkdir dir)
+        (f-write-text
+         (concat
+          "include ../base/alpha3.jade
+
+doctype html
+head
+  meta(charset=\"UTF-8\")
+  +bower('polymer')
+  +import('""" name """')
+
+body(fullbleed)
+  " name)
+         'utf-8 index)
+
+        (f-write-text "#main\n  font-family helvetica, sans-serif" 'utf-8 styl)
+        (f-write-text "Polymer { }\n" 'utf-8 coffee)
+        (f-write-text (concat "include ../base/alpha3.jade
+
++polymer
+
++bower('paper-button',
+       'code-mirror',
+       'core-list',
+       'core-localstorage',
+       'jquery2-import')
+
++polymer-element(\"" name "\")
+") 'utf-8 jade)
+        (find-file jade)
+        )
+      )
+    )
+  )
+
 (defun import ()
   (interactive)
   (cond
