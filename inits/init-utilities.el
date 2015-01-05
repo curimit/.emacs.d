@@ -333,8 +333,11 @@ body(fullbleed)
 +bower('paper-button',
        'jquery2-import')
 
++js('/js/global.js')
+
 +polymer-element(\"" name "\")
   +css('/css/global.css')
+  +js('/js/d3.js')
 
   h1 " name "
 
