@@ -198,6 +198,8 @@
 (define-key helm-find-files-map (kbd "<tab>") 'helm-execute-persistent-action)
 (define-key helm-find-files-map (kbd "<right>") 'helm-select-action)
 
+(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+
 ;; helm dash
 (require 'helm-dash)
 
@@ -269,6 +271,10 @@
 (tabbar-mode 1)
 (global-set-key (kbd "M-h") 'tabbar-backward-tab)
 (global-set-key (kbd "M-l") 'tabbar-forward-tab)
+
+(after-load "dired-mode"
+  (define-key dired-mode-map (kbd "M-l") 'tabbar-forward-tab)
+  )
 
 (set-face-attribute 'tabbar-default nil
                     :background "gray80"
