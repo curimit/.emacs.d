@@ -1,9 +1,9 @@
 ;; paredit
-(require 'paredit)
-(global-set-key (kbd "M-(") 'paredit-wrap-round)
-(global-set-key (kbd "M-s") 'paredit-splice-sexp)
-(global-set-key (kbd "C-<left>") 'paredit-backward-slurp-sexp)
-(global-set-key (kbd "C-<right>") 'paredit-forward-slurp-sexp)
+;; (require 'paredit)
+;; (global-set-key (kbd "M-(") 'paredit-wrap-round)
+;; (global-set-key (kbd "M-s") 'paredit-splice-sexp)
+;; (global-set-key (kbd "C-<left>") 'paredit-backward-slurp-sexp)
+;; (global-set-key (kbd "C-<right>") 'paredit-forward-slurp-sexp)
 
 ;; parenface
 (require 'parenface)
