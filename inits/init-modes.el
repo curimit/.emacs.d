@@ -746,4 +746,13 @@
 ;; helm gist
 (require 'helm-gist)
 
+(require 'rainbow-mode)
+(setq rainbow-html-colors t)
+
+(after-load "stylus-mode"
+  (add-hook 'stylus-mode-hook '(lambda () (rainbow-mode t)))
+  )
+(after-load "jade-mode"
+  (add-hook 'jade-mode-hook '(lambda () (rainbow-mode t)))
+  )
 (provide 'init-modes)
