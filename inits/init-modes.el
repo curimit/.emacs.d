@@ -727,7 +727,7 @@
          (buffer-read-only "readonly buffer")
          ((s-starts-with-p "*" (buffer-name)) "emacs buffer")
          ((equalp (buffer-file-name) nil) "noname buffer")
-         ((projectile-project-p) (projectile-project-p))
+         ;; ((projectile-project-p) (projectile-project-p))
          ((buffer-file-name) (f-dirname (buffer-file-name)))
          (t "others"))))
 
