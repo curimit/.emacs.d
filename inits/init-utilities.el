@@ -313,26 +313,31 @@ Adapted from `flyspell-correct-word-before-point'."
 doctype html
 head
   meta(charset=\"UTF-8\")
+  title " name "
+
   +bower('polymer')
-  +import('""" name """')
+  +import('" name "')
+
+  +live-reload
 
 body(fullbleed)
   " name)
          'utf-8 index)
 
-        (f-write-text "#main\n  font-family helvetica, sans-serif" 'utf-8 styl)
-        (f-write-text "Polymer { }\n" 'utf-8 coffee)
+        (f-write-text "@import \"../css/google-colors\"\n" 'utf-8 styl)
+        (f-write-text "Polymer\n  ready: ->\n" 'utf-8 coffee)
         (f-write-text (concat "include ../base/alpha3.jade
 
 +polymer
 
 +bower('paper-button',
-       'code-mirror',
-       'core-list',
-       'core-localstorage',
        'jquery2-import')
 
 +polymer-element(\"" name "\")
+  +css('/css/global.css')
+
+  h1 " name "
+
 ") 'utf-8 jade)
         (find-file jade)
         )
@@ -350,6 +355,16 @@ body(fullbleed)
         (re-search-forward "+bower(")
         (insert "'" symbol "',\n       "))))
    )
+  )
+
+(defun switch-component ()
+  (interactive)
+  (let ((component (helm-comp-read "switch-component: " (--filter (f-exists? (concat "../" it "/" it ".jade")) (--map (f-filename it) (f-directories ".."))))))
+    (find-file (concat "../" component "/" component ".jade"))
+    (find-file (concat "../" component "/" component ".coffee"))
+    (find-file (concat "../" component "/" component ".styl"))
+    (find-file (concat "../" component "/" component ".jade"))
+    )
   )
 
 (provide 'init-utilities)

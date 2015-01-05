@@ -53,8 +53,9 @@
 (setq x-select-enable-clipboard t)
 (setq make-backup-files nil)
 (setq backup-inhibited t)
+(setq create-lockfiles nil)
 (setq auto-save-default nil)
-(setq auto-save-mode t)
+(setq auto-save-mode nil)
 (global-auto-revert-mode 1)
 (setq echo-keystrokes 0.1)
 (global-font-lock-mode t)
@@ -365,5 +366,8 @@
 
 ;; import
 (define-key global-map (kbd "C-c C-i") 'import)
+
+;; switch
+(define-key global-map (kbd "C-S-O") 'switch-component)
 
 (provide 'init-configs)
