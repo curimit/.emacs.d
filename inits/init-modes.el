@@ -436,22 +436,23 @@
 
 (after-load "jade-mode"
   (setq jade-keywords
-    (regexp-opt
-       '("if" "else" "for" "in" "each" "case" "when" "default" "block" "extends"
-         "name" "value" "mode" "target" "repeat" "selected" "style" "is"
-         "one" "two" "three"
-         "block append" "block prepend" "append" "prepend"
-         "fullbleed" "unresolved" "layout" "reverse"
-         "flex" "auto-vertical" "vertical" "auto-horizontal" "horizontal"
-         "start-justified" "center-justified" "end-justified" "justified"
-         "block" "hidden" "relative" "fit"
-         "self-start" "self-center" "self-end" "self-stretch"
-         "include" "yield" "mixin") 'words))
+        (regexp-opt
+         '("if" "else" "for" "in" "each" "case" "when" "default" "block" "extends"
+           "name" "value" "mode" "target" "repeat" "selected" "style" "is"
+           "one" "two" "three"
+           "block append" "block prepend" "append" "prepend"
+           "fullbleed" "unresolved" "layout" "reverse"
+           "flex" "auto-vertical" "vertical" "auto-horizontal" "horizontal"
+           "start-justified" "center-justified" "end-justified" "justified"
+           "block" "hidden" "relative" "fit"
+           "self-start" "self-center" "self-end" "self-stretch"
+           "include" "yield" "mixin") 'words))
 
   (setq jade-font-lock-keywords
         `((,"!!!\\|doctype\\( ?[A-Za-z0-9\-\_]*\\)?" 0 font-lock-comment-face) ;; doctype
           (,jade-keywords . font-lock-keyword-face) ;; keywords
           (,"\\(on\\(\\-\\w+\\)+\\)" . font-lock-keyword-face) ;; on-*
+          (,"\\({{[^{}]+}}\\)" . font-lock-warning-face) ;; data-bindings
           (,"#\\(\\w\\|_\\|-\\)*" . font-lock-variable-name-face) ;; id
           (,"^\\(?:[ {2,}]*\\)\\(\\+[A-Za-z0-9\-\_]*\\)" 1 font-lock-warning-face) ;; mixin
           (,"^\\(?:[ {2,}]*\\(?:[a-z0-9_:\\-]*\\)\\)?\\(#[A-Za-z0-9\-\_]*[^ ]\\)" 1 font-lock-variable-name-face) ;; id
