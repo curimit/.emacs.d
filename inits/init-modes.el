@@ -401,9 +401,11 @@
 (global-set-key (kbd "M-%") 'anzu-query-replace)
 
 ;; auto pair
-(require 'autopair)
-(autopair-global-mode t)
-(setq autopair-blink nil)
+;; (require 'autopair)
+;; (autopair-global-mode nil)
+;; (setq autopair-blink nil)
+
+(electric-pair-mode t)
 
 ;; feature-mode
 (autoload 'feature-mode "feature-mode" nil t)
