@@ -758,4 +758,8 @@
 (after-load "jade-mode"
   (add-hook 'jade-mode-hook '(lambda () (rainbow-mode t)))
   )
+
+;; livescript
+(require 'livescript-mode)
+
 (provide 'init-modes)
