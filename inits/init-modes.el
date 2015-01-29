@@ -278,6 +278,10 @@
   (define-key dired-mode-map (kbd "M-l") 'tabbar-forward-tab)
   )
 
+(after-load "dired+"
+  (define-key dired-mode-map (kbd "M-l") 'tabbar-forward-tab)
+  )
+
 (set-face-attribute 'tabbar-default nil
                     :background "gray80"
                     :foreground "black"
