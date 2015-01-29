@@ -303,16 +303,16 @@ Adapted from `flyspell-correct-word-before-point'."
             (jade (concat path "/" name "/" name ".jade"))
             (index (concat path "/" name "/" "index.jade"))
             (styl (concat path "/" name "/" name ".styl"))
-            (coffee (concat path "/" name "/" name ".coffee"))
+            (ls (concat path "/" name "/" name ".ls"))
             )
         (f-mkdir dir)
         (f-write-text
          (concat
-          "include ../base/alpha3.jade
+          "include ../base/a3.jade
 
 doctype html
 head
-  meta(charset=\"UTF-8\")
+  meta(charset='UTF-8')
   title " name "
 
   +bower('polymer')
@@ -324,23 +324,26 @@ body(fullbleed)
   " name)
          'utf-8 index)
 
-        (f-write-text "@import \"../css/google-colors\"\n" 'utf-8 styl)
-        (f-write-text "Polymer\n  ready: ->\n" 'utf-8 coffee)
-        (f-write-text (concat "include ../base/alpha3.jade
+        (f-write-text "@import \"../base/google-colors\"\n" 'utf-8 styl)
+        (f-write-text "'use continuation'
+
+Polymer do
+  ready: ->
+" 'utf-8 ls)
+        (f-write-text (concat "include ../base/a3.jade
 
 +polymer
 
-+bower('paper-button',
-       'jquery2-import')
++bower('jquery2-import')
 
++js('/base/a3.js')
 +js('/js/global.js')
++js('/js/d3.js')
 
-+polymer-element(\"" name "\")
++polymer-element('" name "')
   +css('/css/global.css')
-  +js('/js/d3.js')
 
   h1 " name "
-
 ") 'utf-8 jade)
         (find-file jade)
         )
@@ -364,7 +367,7 @@ body(fullbleed)
   (interactive)
   (let ((component (helm-comp-read "switch-component: " (--filter (f-exists? (concat "../" it "/" it ".jade")) (--map (f-filename it) (f-directories ".."))))))
     (find-file (concat "../" component "/" component ".jade"))
-    (find-file (concat "../" component "/" component ".coffee"))
+    (find-file (concat "../" component "/" component ".ls"))
     (find-file (concat "../" component "/" component ".styl"))
     (find-file (concat "../" component "/" component ".jade"))
     )
