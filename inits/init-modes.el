@@ -190,6 +190,8 @@
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 
 (define-key helm-map (kbd "C-w") 'backward-kill-word)
+(define-key helm-map (kbd "C-k") 'kill-line)
+(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
 (define-key helm-map (kbd "C-M-p") 'helm-previous-source)
 (define-key helm-map (kbd "C-M-n") 'helm-next-source)
 
