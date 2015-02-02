@@ -12,7 +12,11 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
 (defun back-insert-new-line ()
   (interactive)
   (end-of-line)
-  (newline-and-indent))
+  (if (eq major-mode 'livescript-mode)
+      (livescript-newline-and-indent)
+    (newline-and-indent)
+    )
+  )
 
 (defun prev-insert-new-line ()
   (interactive)
