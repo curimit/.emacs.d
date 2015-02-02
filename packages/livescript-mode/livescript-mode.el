@@ -350,16 +350,16 @@ called `livescript-compiled-buffer-name'."
 (defvar livescript-string-regexp "\"\\([^\\]\\|\\\\.\\)*?\"\\|'\\([^\\]\\|\\\\.\\)*?'")
 
 ;; Instance variables (implicit this)
-(defvar livescript-this-regexp "@\\(\\w\\|_\\)*\\|this")
+(defvar livescript-this-regexp "@\\(\\w\\|-\\|_\\)*\\|this")
 
 ;; Prototype::access
-(defvar livescript-prototype-regexp "\\(\\(\\w\\|\\.\\|_\\| \\|$\\)+?\\)::\\(\\(\\w\\|\\.\\|_\\| \\|$\\)+?\\):")
+(defvar livescript-prototype-regexp "\\(\\(\\w\\|\\.\\|_\\|-\\| \\|$\\)+?\\)::\\(\\(\\w\\|\\.\\|_\\|-\\| \\|$\\)+?\\):")
 
 ;; Assignment
 (defvar livescript-assign-regexp "\\(\\(\\w\\|\\.\\|_\\|$\\|-\\)+?\s*\\):")
 
 ;; Local Assignment
-(defvar livescript-local-assign-regexp "\\(\\(_\\|\\w\\|\\$\\)+\\)\s+=")
+(defvar livescript-local-assign-regexp "\\(\\(_\\|\\w\\|-\\|\\$\\)+\\)\s+=")
 
 ;; Lambda
 (defvar livescript-lambda-regexp "\\((.+)\\)?\\s *\\(->\\|=>\\)")
