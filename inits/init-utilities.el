@@ -367,6 +367,32 @@ Polymer do
    )
   )
 
+(defun extends ()
+  (interactive)
+  (cond
+   ((eq major-mode 'jade-mode)
+    (let ((component (helm-comp-read "extends-component: " (--filter (f-exists? (concat "../" it "/" it ".jade")) (--map (f-filename it) (f-directories ".."))))))
+      (save-excursion
+        (beginning-of-buffer)
+        (re-search-forward "+polymer-element")
+        (end-of-line)
+        (insert (concat "(extends=\"" component "\")"))
+        )))
+   )
+  )
+
+(defun import-component ()
+  (interactive)
+  (cond
+   ((eq major-mode 'jade-mode)
+    (let ((component (helm-comp-read "switch-component: " (--filter (f-exists? (concat "../" it "/" it ".jade")) (--map (f-filename it) (f-directories ".."))))))
+      (save-excursion
+        (beginning-of-buffer)
+        (re-search-forward "+use(")
+        (insert "'" component "',\n     "))))
+   )
+  )
+
 (defun switch-component ()
   (interactive)
   (let ((component (helm-comp-read "switch-component: " (--filter (f-exists? (concat "../" it "/" it ".jade")) (--map (f-filename it) (f-directories ".."))))))
