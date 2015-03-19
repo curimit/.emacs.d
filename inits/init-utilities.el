@@ -301,7 +301,7 @@ Adapted from `flyspell-correct-word-before-point'."
 
 (defun site-new ()
   (interactive)
-  (let ((path (car (s-match ".*src" buffer-file-name))))
+  (let ((path (car (s-match ".*frontend" buffer-file-name))))
     (let ((name (read-input "Component name: ")))
       (let ((dir (concat path "/" name ))
             (jade (concat path "/" name "/" name ".jade"))
@@ -320,11 +320,14 @@ head
   title " name "
 
   +bower('polymer')
+
+  +use('x-base')
+
   +import('" name "')
 
   +live-reload
 
-body(fullbleed)
+body(fullbleed style='display:flex;overflow:hidden')
   " name)
          'utf-8 index)
 
@@ -338,14 +341,7 @@ Polymer do
 
 +polymer
 
-+bower('jquery2-import')
-
-+js('/base/a3.js')
-+js('/js/global.js')
-+js('/js/d3.js')
-
 +polymer-element('" name "')
-  +css('/css/global.css')
 
   h1 " name "
 ") 'utf-8 jade)
@@ -359,7 +355,7 @@ Polymer do
   (interactive)
   (cond
    ((eq major-mode 'jade-mode)
-    (let ((symbol (helm-comp-read "import: " (--map (f-filename it) (f-directories "../../app/bower_components")))))
+    (let ((symbol (helm-comp-read "import: " (--map (f-filename it) (f-directories "../../platform/website/bower_components")))))
       (save-excursion
         (beginning-of-buffer)
         (re-search-forward "+bower(")
