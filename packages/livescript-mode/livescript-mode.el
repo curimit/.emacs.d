@@ -383,7 +383,7 @@ called `livescript-compiled-buffer-name'."
 
 ;; Reserved keywords either by JS or CS.
 (defvar livescript-js-reserved
-      '("case" "default" "do" "function" "var" "void" "with"
+      '("case" "default" "do" "function" "var" "void" "with" "cont" "obtain"
         "const" "let" "debugger" "enum" "export" "import" "native"
         "__extends" "__hasProp"))
 
