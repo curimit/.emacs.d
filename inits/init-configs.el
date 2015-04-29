@@ -364,9 +364,10 @@
 
 (define-key global-map (kbd "C-S-t") 'reopen-last-killed-file)
 
+(require 'higgs)
+
 ;; import
 (define-key global-map (kbd "C-c C-i") 'import)
-(define-key global-map (kbd "C-c C-o") 'import-component)
 
 ;; switch
 (define-key global-map (kbd "C-S-O") 'switch-component)
