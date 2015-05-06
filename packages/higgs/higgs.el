@@ -2,7 +2,7 @@
 
 (defun polymer-new ()
   (interactive)
-  (let ((path (concat (car (s-match ".*frontend" buffer-file-name)) "/src")))
+  (let ((path ".."))
     (let ((name (read-input "Component name: ")))
       (let ((dir (concat path "/" name ))
             (jade (concat path "/" name "/" name ".jade"))
@@ -16,7 +16,7 @@
             )
         (f-mkdir dir)
 
-        (f-write-text (concat "include ../x-base/global.jade
+        (f-write-text (concat "include ../../global/global.jade
 
 +use('polymer')
 
@@ -32,7 +32,7 @@ Polymer do
   publish: { }
 " 'utf-8 ls)
 
-        (f-write-text "@import \"../x-base/global.styl\"\n" 'utf-8 styl)
+        (f-write-text "@import \"../../global/global.styl\"\n" 'utf-8 styl)
 
         (f-write-text (concat "# " name "
 
@@ -72,7 +72,7 @@ This is the document of `" name "`.
 ```
 ") 'utf-8 document)
 
-        (f-write-text (concat "include ../x-base/global.jade
+        (f-write-text (concat "include ../../global/global.jade
 
 doctype html
 head
