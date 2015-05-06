@@ -39,7 +39,7 @@ Polymer do
 See the [component page]() for more information.
 ") 'utf-8 readme)
 
-        (f-write-text (concat "include ../x-base/global.jade
+        (f-write-text (concat "include ../../global/global.jade
 
 doctype html
 head
