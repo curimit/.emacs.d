@@ -94,7 +94,7 @@ body(unresolved)
   (interactive)
   (cond
    ((eq major-mode 'jade-mode)
-    (let ((symbol (helm-comp-read "import: " (--map (f-filename it) (f-directories "../../build/website")))))
+    (let ((symbol (helm-comp-read "import: " (--map (f-filename it) (f-directories "../")))))
       (save-excursion
         (beginning-of-buffer)
         (re-search-forward "+use(")
