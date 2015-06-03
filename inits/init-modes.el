@@ -48,7 +48,7 @@
 
 (require 'company)
 (global-company-mode)
-(setq company-idle-delay 0)
+(setq company-idle-delay 0.2)
 (define-key company-active-map (kbd "C-w") 'backward-kill-word)
 
 (require 'flycheck)
@@ -58,8 +58,8 @@
     (progn
       (require 'ycmd)
       (setq ycmd-idle-change-delay 0.5)
+      (global-ycmd-mode)
 
-      (add-hook 'c-mode-common-hook #'ycmd-mode)
       (set-variable 'ycmd-server-command (list "python" ycmd-path))
 
       (require 'company-ycmd)
