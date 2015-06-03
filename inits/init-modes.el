@@ -39,69 +39,32 @@
 ;; fuzzy
 (require 'fuzzy)
 
-;; cedit
-(require 'cedet)
-(require 'semantic/ia)
-(semantic-mode 1)
-(global-semanticdb-minor-mode)
-(global-semantic-decoration-mode)
-(global-semantic-mru-bookmark-mode)
-(global-semantic-highlight-func-mode)
-(global-semantic-show-unmatched-syntax-mode)
-(global-semantic-idle-local-symbol-highlight-mode)
-(global-semantic-idle-scheduler-mode)
-(global-semantic-idle-summary-mode)
-;; (global-semantic-idle-completions-mode)
-
-;; ede
-(global-ede-mode)
-
 ;; yasnippet
-(require 'yasnippet)
-(setq yas-snippet-dirs
-      '("~/.emacs.d/userdata/snippets"
-        ))
+;; (require 'yasnippet)
+;; (setq yas-snippet-dirs
+;;       '("~/.emacs.d/userdata/snippets"
+;;         ))
 ;; (yas-global-mode 1)
 
-;; auto complete mode
-(require 'auto-complete-config)
-(ac-config-default)
-(global-auto-complete-mode)
-(setq ac-quick-help-prefer-pos-tip t)
-(setq ac-use-quick-help t)
-(setq ac-delay 0.5)
-(setq ac-candidate-limit 12)
-(set-face-attribute 'ac-candidate-face nil   :background "#00222c" :foreground "light gray")
-(set-face-attribute 'ac-selection-face nil   :background "SteelBlue4" :foreground "white")
-(define-key ac-complete-mode-map (kbd "C-s") 'ac-isearch)
+(require 'company)
+(global-company-mode)
+(setq company-idle-delay 0)
+(define-key company-active-map (kbd "C-w") 'backward-kill-word)
 
-(setq ac-fuzzy-enable t)
-(global-set-key (kbd "C-j") 'ac-complete-semantic)
+(if (boundp 'ycmd-path)
+    (progn
+      (require 'ycmd)
+      (setq ycmd-idle-change-delay 0.5)
 
-(set-default 'ac-sources
-             '(ac-source-semantic
-               ac-source-yasnippet
-               ac-source-abbrev
-               ac-source-words-in-buffer
-               ac-source-words-in-all-buffer
-               ac-source-imenu
-               ac-source-files-in-current-dir
-               ac-source-filename))
-(add-hook 'c-mode-common-hook '(lambda ()
-                                 (add-to-list 'ac-omni-completion-sources
-                                              (cons "\\." '(ac-source-semantic)))
-                                 (add-to-list 'ac-omni-completion-sources
-                                              (cons "->" '(ac-source-semantic)))
-                                 (set-default 'ac-sources
-                                              '(ac-source-semantic
-                                                ac-source-yasnippet
-                                                ac-source-abbrev
-                                                ac-source-words-in-buffer
-                                                ac-source-words-in-all-buffer
-                                                ac-source-imenu
-                                                ac-source-files-in-current-dir
-                                                ac-source-filename))
-                                 ))
+      (add-hook 'c-mode-common-hook #'ycmd-mode)
+      (set-variable 'ycmd-server-command (list "python" ycmd-path))
+
+      (require 'company-ycmd)
+      (company-ycmd-setup)
+
+      (require 'flycheck)
+      (require 'flycheck-ycmd)
+      (flycheck-ycmd-setup)))
 
 (defun c++-triple-slash ()
   (interactive)
