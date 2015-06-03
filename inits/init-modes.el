@@ -655,4 +655,9 @@
 (add-to-list 'auto-mode-alist
              '("\\.go$" . go-mode))
 
+;; csharp mode
+(autoload 'csharp-mode "csharp-mode" nil t)
+(add-to-list 'auto-mode-alist
+             '("\\.cs$" . csharp-mode))
+
 (provide 'init-modes)
