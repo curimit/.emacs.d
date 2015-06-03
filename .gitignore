@@ -13,3 +13,9 @@ userdata
 projectile-bookmarks.eld
 projectile.cache
 .workgroups
+/SessionDesktop.el
+/perspectives
+/skewer-cache/
+/tramp
+/persp-confs/
+/var/
