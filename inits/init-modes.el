@@ -51,6 +51,9 @@
 (setq company-idle-delay 0)
 (define-key company-active-map (kbd "C-w") 'backward-kill-word)
 
+(require 'flycheck)
+(global-flycheck-mode)
+
 (if (boundp 'ycmd-path)
     (progn
       (require 'ycmd)
@@ -62,7 +65,6 @@
       (require 'company-ycmd)
       (company-ycmd-setup)
 
-      (require 'flycheck)
       (require 'flycheck-ycmd)
       (flycheck-ycmd-setup)))
 
