@@ -1,88 +1,140 @@
 (require 'helm)
 
+(defun write-file (name text)
+  (f-write-text text 'utf-8 name))
+
 (defun polymer-new ()
   (interactive)
   (let ((path ".."))
     (let ((name (read-input "Component name: ")))
-      (let ((dir (concat path "/" name ))
+      (let ((dir (concat path "/" name))
+            (demo-dir (concat path "/" name "/demo"))
+            (test-dir (concat path "/" name "/test"))
+            (index (concat path "/" name "/" "index.jade"))
             (jade (concat path "/" name "/" name ".jade"))
             (styl (concat path "/" name "/" name ".styl"))
             (ls (concat path "/" name "/" name ".ls"))
             (bower (concat path "/" name "/" "bower.json"))
-            (document (concat path "/" name "/" "document.md"))
             (readme (concat path "/" name "/" "readme.md"))
-            (demo (concat path "/" name "/" "demo.jade"))
-            (index (concat path "/" name "/" "index.jade"))
+            (demo (concat path "/" name "/" "demo/index.jade"))
+            (test-index (concat path "/" name "/" "test/index.jade"))
+            (test-ls (concat path "/" name "/" "test/test.ls"))
             )
         (f-mkdir dir)
+        (f-mkdir demo-dir)
+        (f-mkdir test-dir)
 
-        (f-write-text (concat "include ../../global/global.jade
+        ;; index
+        (write-file index (concat "include ../../global/global.jade
 
-+use('polymer')
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
 
-include:comment document.md
+    +js('../webcomponentsjs/webcomponents-lite.js')
+    +import('../iron-component-page/iron-component-page.html')
 
-+polymer-element('" name "')(extends='x-div')
-  h1 " name "
-") 'utf-8 jade)
+    +live-reload
 
-        (f-write-text "'use continuation'
+  body
+    iron-component-page(src='" name ".html')"))
 
-Polymer do
-  publish: { }
-" 'utf-8 ls)
+        ;; jade
+        (write-file jade (concat "include ../../global/global.jade
 
-        (f-write-text "@import \"../../global/global.styl\"\n" 'utf-8 styl)
++import('../polymer/polymer.html')
 
-        (f-write-text (concat "# " name "
+include:comment README.md
 
-See the [component page]() for more information.
-") 'utf-8 readme)
++dom-module('" name "')
+  p " name))
 
-        (f-write-text (concat "include ../../global/global.jade
+        ;; styl
+        (write-file styl (concat "@import '../../global/global.styl'"))
 
-doctype html
-head
-  +polymer-index('" name "')
+        ;; ls
+        (write-file ls (concat "Polymer do
+  is: '" name "'
 
-body(fullbleed)
-  " name "(flex)
-") 'utf-8 demo)
+  behaviors: []
 
-        (f-write-text (concat "{
+  properties: { }
+"))
+        ;; bower
+        (write-file bower (concat "{
   \"name\": \"" name "\",
+  \"version\": \"0.0.0\",
+  \"description\": \"" name "\",
+  \"authors\": [
+    \"curimit\"
+  ],
+  \"keywords\": [
+    \"curimit\"
+  ],
+  \"main\": \"" name ".html\",
   \"private\": true,
+  \"license\": \"http://polymer.github.io/LICENSE.txt\",
+  \"homepage\": \"http://curimit.com/blog\",
   \"dependencies\": {
-    \"polymer\": \"Polymer/polymer#^0.5\"
+    \"polymer\": \"Polymer/polymer#^1.0.0\"
   },
-  \"version\": \"0.0.0\"
+  \"devDependencies\": {
+    \"iron-component-page\": \"polymerelements/iron-component-page#latest\",
+    \"test-fixture\": \"polymerelements/test-fixture#latest\",
+    \"web-component-tester\": \"*\",
+    \"webcomponentsjs\": \"webcomponents/webcomponentsjs#latest\"
+  }
 }
-") 'utf-8 bower)
+"))
 
-        (f-write-text (concat "@element " name "
-@extends x-div
-@homepage #
-@status unstable
+        ;; readme
+        (write-file readme (concat name "
+============
 
 This is the document of `" name "`.
 
-### Example:
-```
+Example:
+```html
 <" name "></" name ">
 ```
-") 'utf-8 document)
 
-        (f-write-text (concat "include ../../global/global.jade
+@demo demo/index.html"))
 
-doctype html
-head
-  +js('webcomponentsjs/webcomponents.js')
+        ;; demo
+        (write-file demo (concat "include ../../../global/global.jade
 
-  +use('core-component-page')
+html
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible' content='IE=edge,chrome=1')
+    meta(name='viewport' content='width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes')
 
-body(unresolved)
-  core-component-page
-") 'utf-8 index)
+    title " name " demo
+
+    +js('../../webcomponentsjs/webcomponents-lite.js')
+    +import('../" name ".html')
+
+    +live-reload
+
+  body
+    div(class='horizontal center-justified layout')
+      " name))
+
+        ;; test-index
+        (write-file test-index (concat "include ../../../global/global.jade
+
+html
+  head
+    meta(charset='utf-8')
+    +js('../../webcomponentsjs/webcomponents-lite.js')
+    +js('../../web-component-tester/browser.js')
+
+  body
+    +js('test.js')"))
+
+        ;; test-ls
+        (write-file test-ls (concat "WCT.load-suites []"))
 
         (find-file jade)
         )
