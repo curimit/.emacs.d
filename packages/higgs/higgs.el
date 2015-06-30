@@ -51,13 +51,19 @@ include:comment README.md
   p " name))
 
         ;; styl
-        (write-file styl (concat "@import '../../global/global.styl'"))
+        (write-file styl (concat "@import '../../global/global.styl'
+
+" name "
+  layout-vertical()
+"))
 
         ;; ls
         (write-file ls (concat "Polymer do
   is: '" name "'
 
-  behaviors: []
+  behaviors:
+    * Polymer.BaseBehavior
+    ...
 
   properties: { }
 "))
