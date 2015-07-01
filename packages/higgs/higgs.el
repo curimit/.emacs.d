@@ -123,9 +123,8 @@ html
 
     +live-reload
 
-  body
-    div(class='horizontal center-justified layout')
-      " name))
+  body(vertical layout)
+    " name "(flex)"))
 
         ;; test-index
         (write-file test-index (concat "include ../../../global/global.jade
