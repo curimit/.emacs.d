@@ -53,7 +53,7 @@ include:comment README.md
         ;; styl
         (write-file styl (concat "@import '../../global/global.styl'
 
-:host(" name ")
+" name "
   layout-vertical()
 "))
 
