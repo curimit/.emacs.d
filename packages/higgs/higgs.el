@@ -43,7 +43,7 @@ html
         ;; jade
         (write-file jade (concat "include ../../global/global.jade
 
-+import('../polymer/polymer.html')
++import('../x-base/x-base.html')
 
 include:comment README.md
 
@@ -123,8 +123,8 @@ html
 
     +live-reload
 
-  body(vertical layout)
-    " name "(flex)"))
+  body(class='vertical layout')
+    " name "(class='flex')"))
 
         ;; test-index
         (write-file test-index (concat "include ../../../global/global.jade
