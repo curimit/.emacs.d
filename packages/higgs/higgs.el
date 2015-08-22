@@ -1,6 +1,6 @@
 (require 'helm)
 
-(defun write-file (name text)
+(defun f-write-file (name text)
   (f-write-text text 'utf-8 name))
 
 (defun polymer-new ()
@@ -25,7 +25,7 @@
         (f-mkdir test-dir)
 
         ;; index
-        (write-file index (concat "include ../../global/global.jade
+        (f-write-file index (concat "include ../../global/global.jade
 
 html
   head
@@ -41,7 +41,7 @@ html
     iron-component-page(src='" name ".html')"))
 
         ;; jade
-        (write-file jade (concat "include ../../global/global.jade
+        (f-write-file jade (concat "include ../../global/global.jade
 
 +import('../x-base/x-base.html')
 
@@ -51,14 +51,14 @@ include:comment README.md
   p " name))
 
         ;; styl
-        (write-file styl (concat "@import '../../global/global.styl'
+        (f-write-file styl (concat "@import '../../global/global.styl'
 
 " name "
   layout-vertical()
 "))
 
         ;; ls
-        (write-file ls (concat "Polymer do
+        (f-write-file ls (concat "Polymer do
   is: '" name "'
 
   behaviors:
@@ -68,7 +68,7 @@ include:comment README.md
   properties: { }
 "))
         ;; bower
-        (write-file bower (concat "{
+        (f-write-file bower (concat "{
   \"name\": \"" name "\",
   \"version\": \"0.0.0\",
   \"description\": \"" name "\",
@@ -95,7 +95,7 @@ include:comment README.md
 "))
 
         ;; readme
-        (write-file readme (concat name "
+        (f-write-file readme (concat name "
 ============
 
 This is the document of `" name "`.
@@ -108,7 +108,7 @@ Example:
 @demo demo/index.html"))
 
         ;; demo
-        (write-file demo (concat "include ../../../global/global.jade
+        (f-write-file demo (concat "include ../../../global/global.jade
 
 html
   head
@@ -127,7 +127,7 @@ html
     " name "(class='flex')"))
 
         ;; test-index
-        (write-file test-index (concat "include ../../../global/global.jade
+        (f-write-file test-index (concat "include ../../../global/global.jade
 
 html
   head
@@ -139,7 +139,7 @@ html
     +js('test.js')"))
 
         ;; test-ls
-        (write-file test-ls (concat "WCT.load-suites []"))
+        (f-write-file test-ls (concat "WCT.load-suites []"))
 
         (find-file jade)
         )
