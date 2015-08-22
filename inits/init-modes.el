@@ -164,6 +164,7 @@
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 (define-key helm-find-files-map (kbd "<tab>") 'helm-execute-persistent-action)
 (define-key helm-find-files-map (kbd "<right>") 'helm-select-action)
+(define-key helm-find-files-map (kbd "C-k") 'kill-line)
 
 (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
 
