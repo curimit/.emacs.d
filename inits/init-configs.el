@@ -210,9 +210,7 @@
 (add-hook 'dired-after-readin-hook 'my-mode-line-count-lines)
 
 (setq frame-title-format
-      (list "[" '(:eval (projectile-project-name)) "]"
-            " "
-            (user-full-name)
+      (list (user-full-name)
             " @ "
             '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
 
