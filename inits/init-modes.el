@@ -641,8 +641,11 @@
 (setq rainbow-html-colors t)
 
 (after-load "stylus-mode"
-  (add-hook 'stylus-mode-hook '(lambda () (rainbow-mode t)))
-  )
+  (require 'company-stylus)
+  (add-hook 'stylus-mode-hook '(lambda ()
+                                 (rainbow-mode t)
+                                 (add-to-list 'company-backends 'company-stylus))))
+
 (after-load "jade-mode"
   (add-hook 'jade-mode-hook '(lambda () (rainbow-mode t)))
   )
