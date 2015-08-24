@@ -11,7 +11,7 @@
   )
 
 (if (eq window-system nil)
-    (require 'init-config-lite)
+    (require 'init-configs-lite)
   (require 'init-configs)
   )
 
