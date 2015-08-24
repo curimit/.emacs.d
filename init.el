@@ -10,7 +10,11 @@
     (load-file "~/.emacs.d/preconfig.el")
   )
 
-(require 'init-configs)
+(if (eq window-system nil)
+    (require 'init-config-lite)
+  (require 'init-configs)
+  )
+
 
 (if (file-exists-p "~/.emacs.d/personal.el")
     (load-file "~/.emacs.d/personal.el")
