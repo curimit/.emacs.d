@@ -67,12 +67,6 @@
  tab-always-indent nil
  tab-width 2)
 
-;; color theme
-(require 'color-theme)
-(after-load "color-theme"
-  (color-theme-initialize)
-  (color-theme-dark-blue2))
-
 (require 'init-utilities)
 (require 'init-modes-lite)
 
