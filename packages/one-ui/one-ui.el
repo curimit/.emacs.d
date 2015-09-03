@@ -14,7 +14,15 @@
 (defun f-output-one-ui-template (path name)
   (f-write-file
    (concat name "/" (s-replace "one-sample" name path))
-   (f-read-one-ui-file path name)))
+   (f-read-one-ui-template path name)))
+
+(defun one-ui-git-init (name)
+  (magit-run-git-async "init")
+  (magit-run-git-async "remote" "add" "origin" (concat "ssh://git@git.wenjies.com/oneui/" name ".git"))
+  (magit-run-git-async "add" ".gitignore")
+  (magit-run-git-async "commit" "-m" "First commit.")
+  (magit-run-git-async "branch" "develop")
+  (magit-run-git-async "checkout" "develop"))
 
 (defun one-ui-new ()
   (interactive)
@@ -39,7 +47,9 @@
       (f-output-one-ui-template "src/global/global.styl" name)
       (f-output-one-ui-template "src/global/google-colors.styl" name)
       (f-output-one-ui-template "src/global/layout.styl" name)
-      (find-file (concat name "/src/" name ".jade"))
+      (find-file name)
+      (one-ui-git-init name)
+      (find-file (concat "src/" name ".jade"))
       )))
 
 (defun import ()
@@ -74,5 +84,5 @@
     (find-file (concat "../../" component "/src/" component ".jade"))
     )
   )
-
+(magit-add-remote )
 (provide 'one-ui)
