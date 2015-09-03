@@ -1,0 +1,12 @@
+include global/global.jade
+
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+
+    +js('../webcomponentsjs/webcomponents-lite.js')
+    +import('../iron-component-page/iron-component-page.html')
+
+  body
+    iron-component-page(src='./one-sample.html')

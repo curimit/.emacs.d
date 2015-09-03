@@ -411,15 +411,12 @@
 (after-load "jade-mode"
   (setq jade-keywords
         (regexp-opt
-         '("if" "else" "for" "in" "each" "case" "when" "default" "block" "extends"
+         '("one-div"
+           "if" "else" "for" "in" "each" "case" "when" "default" "block" "extends"
            "name" "value" "mode" "target" "repeat" "selected" "style" "is"
-           "one" "two" "three"
            "block append" "block prepend" "append" "prepend"
            "fullbleed" "unresolved" "layout" "reverse"
-           "flex" "auto-vertical" "vertical" "auto-horizontal" "horizontal"
-           "start-justified" "center-justified" "end-justified" "justified"
            "block" "hidden" "relative" "fit"
-           "self-start" "self-center" "self-end" "self-stretch"
            "include" "yield" "mixin") 'words))
 
   (setq jade-font-lock-keywords
@@ -684,5 +681,7 @@
       :help "Run latexmk on file")
     TeX-command-list)))
 (add-hook 'TeX-mode-hook '(lambda () (setq TeX-command-default "pdflatex")))
+
+(require 'one-ui)
 
 (provide 'init-modes)

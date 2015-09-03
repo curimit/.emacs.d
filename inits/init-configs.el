@@ -270,8 +270,6 @@
 
 (define-key global-map (kbd "C-S-t") 'reopen-last-killed-file)
 
-(require 'higgs)
-
 ;; import
 (define-key global-map (kbd "C-c C-i") 'import)
 
