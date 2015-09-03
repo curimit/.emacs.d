@@ -9,4 +9,3 @@ Example:
 ```
 
 @demo demo/index.html
-@test test/index.html
