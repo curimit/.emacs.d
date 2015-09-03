@@ -3,6 +3,9 @@
 (defun f-write-file (name text)
   (f-write-text text 'utf-8 name))
 
+(defun f-read-one-ui-file (path)
+  (f-read-text (concat "~/.emacs.d/packages/one-ui/one-sample/" path) 'utf-8))
+
 (defun f-read-one-ui-template (path name)
   (s-replace
    "one-sample" name
