@@ -58,8 +58,8 @@
    ((eq major-mode 'jade-mode)
     (let ((symbol (helm-comp-read "import: " (--map (f-filename it) (f-directories "../../")))))
       (save-excursion
-        (beginning-of-buffer)
-        (re-search-forward "+import(")
+        (end-of-buffer)
+        (re-search-backward "+import(")
         (end-of-line)
         (newline-and-indent)
         (if (eq (s-index-of "/" symbol) nil)
@@ -74,7 +74,9 @@
               (insert "+import('../")
               (insert symbol)
               (insert ".html')")
-              )))))))
+              ))
+        )))))
+
 (defun switch-component ()
   (interactive)
   (let ((component (helm-comp-read "switch-component: " (--filter (f-exists? (concat "../../" it "/src/" it ".jade")) (--map (f-filename it) (f-directories "../.."))))))
@@ -84,5 +86,5 @@
     (find-file (concat "../../" component "/src/" component ".jade"))
     )
   )
-(magit-add-remote )
+
 (provide 'one-ui)
