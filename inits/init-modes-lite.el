@@ -65,31 +65,6 @@
 (require 'drag-stuff)
 (drag-stuff-global-mode t)
 
-;; tabbar
-(require 'tabbar)
-(tabbar-mode 1)
-(global-set-key (kbd "M-h") 'tabbar-backward-tab)
-(global-set-key (kbd "M-l") 'tabbar-forward-tab)
-
-;; customize tabbar group function
-(defun tabbar-buffer-groups ()
-  (list (cond
-         ((s-starts-with-p "*helm" (buffer-name)) "helm buffer")
-         ((s-starts-with-p "*scratch" (buffer-name)) "scratch buffer")
-         ((or (equal major-mode 'dired-mode)
-              (equal major-mode 'wdired-mode)) "dired buffer")
-         (buffer-read-only "readonly buffer")
-         ((s-starts-with-p "*" (buffer-name)) "emacs buffer")
-         ((equalp (buffer-file-name) nil) "noname buffer")
-         ((buffer-file-name) (f-dirname (buffer-file-name)))
-         (t "others"))))
-
-(after-load "dired-mode"
-  (define-key dired-mode-map (kbd "M-l") 'tabbar-forward-tab))
-
-(after-load "dired+"
-  (define-key dired-mode-map (kbd "M-l") 'tabbar-forward-tab))
-
 ;; web mode
 (autoload 'web-mode "web-mode" "" t)
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
