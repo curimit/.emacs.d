@@ -176,8 +176,6 @@
 ;; cursors following mouse
 (setq mouse-autoselect-window t)
 
-(require 'higgs)
-
 ;; import
 (define-key global-map (kbd "C-c C-i") 'import)
 
