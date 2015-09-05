@@ -549,16 +549,6 @@
 ;; sunrise commander
 (autoload 'sunrise "sunrise-commander" nil t)
 
-;; projectile
-(require 'projectile)
-(projectile-global-mode t)
-(setq projectile-enable-caching t)
-(setq projectile-indexing-method 'alien)
-(setq projectile-sort-order 'recently-active)
-(require 'helm-projectile)
-(helm-projectile-on)
-(setq projectile-completion-system 'helm)
-
 ;; workgroups2
 (require 'workgroups2)
 (setq wg-prefix-key (kbd "C-z"))
@@ -576,29 +566,16 @@
 
 (defun helm-dwim ()
   (interactive)
-  (if (projectile-project-p)
-      (let ((helm-ff-transformer-show-only-basename nil))
-        (helm-other-buffer
-         '(helm-source-buffers-list
-           helm-source-projectile-projects
-           helm-source-projectile-files-list
-           helm-source-bookmark-files&dirs
-           helm-source-recentf
-           helm-source-buffer-not-found
-           helm-source-bookmark-set
-           )
-         "*helm search*"))
-    (let ((helm-ff-transformer-show-only-basename nil))
-      (helm-other-buffer
-       '(helm-source-buffers-list
-         helm-source-projectile-projects
-         helm-source-bookmark-files&dirs
-         helm-source-recentf
-         helm-source-files-in-current-dir
-         helm-source-buffer-not-found
-         helm-source-bookmark-set
-         )
-       "*helm search*"))))
+  (let ((helm-ff-transformer-show-only-basename nil))
+    (helm-other-buffer
+     '(helm-source-buffers-list
+       helm-source-bookmark-files&dirs
+       helm-source-recentf
+       helm-source-files-in-current-dir
+       helm-source-buffer-not-found
+       helm-source-bookmark-set
+       )
+     "*helm search*")))
 
 (global-set-key (kbd "C-x C-b") 'helm-dwim)
 
@@ -612,7 +589,6 @@
          (buffer-read-only "readonly buffer")
          ((s-starts-with-p "*" (buffer-name)) "emacs buffer")
          ((equalp (buffer-file-name) nil) "noname buffer")
-         ;; ((projectile-project-p) (projectile-project-p))
          ((buffer-file-name) (f-dirname (buffer-file-name)))
          (t "others"))))
 
