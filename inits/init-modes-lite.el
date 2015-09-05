@@ -1,8 +1,5 @@
 ;; parenface
 (require 'parenface)
-(set-face-foreground 'parenface-paren-face "DarkSlateGray")
-(set-face-foreground 'parenface-bracket-face "DarkSlateGray")
-(set-face-foreground 'parenface-curly-face "DarkSlateGray")
 
 (defun paren-face-js-add-keyword ()
   "Adds paren-face support to the mode."
@@ -33,33 +30,6 @@
 ;; multiple cursors
 (global-set-key (kbd "M-<RET>") 'mc/mark-next-like-this)
 (autoload 'mc/mark-next-like-this "multiple-cursors.el" nil t)
-
-;; ;; helm
-(require 'helm-info)
-(require 'helm-mode)
-(require 'helm-config)
-(require 'helm-misc)
-(require 'helm-command)
-(require 'helm-ring)
-(require 'helm-color)
-(require 'helm-imenu)
-
-(global-set-key (kbd "C-x C-m") 'helm-M-x)
-(global-set-key (kbd "M-y") 'helm-show-kill-ring)
-
-(define-key helm-map (kbd "C-w") 'backward-kill-word)
-(define-key helm-map (kbd "C-k") 'kill-line)
-(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
-(define-key helm-map (kbd "C-M-p") 'helm-previous-source)
-(define-key helm-map (kbd "C-M-n") 'helm-next-source)
-
-;; use helm-find-files as default
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
-(define-key helm-find-files-map (kbd "<tab>") 'helm-execute-persistent-action)
-(define-key helm-find-files-map (kbd "<right>") 'helm-select-action)
-(define-key helm-find-files-map (kbd "C-k") 'kill-line)
-
-(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
 
 ;; drag stuff
 (require 'drag-stuff)
@@ -99,13 +69,6 @@
 
 (autoload 'magit-status "magit" nil t)
 
-;; back button
-(require 'back-button)
-(back-button-mode 1)
-(global-set-key (kbd "C--") 'back-button-local-backward)
-(global-set-key (kbd "C-=") 'back-button-local-forward)
-(global-set-key (kbd "C-\\") 'back-button-push-mark-local-and-global)
-
 ;; anzu
 (autoload 'anzu-query-replace "anzu" nil t)
 (after-load 'anzu
@@ -122,19 +85,6 @@
 (global-set-key (kbd "M-%") 'anzu-query-replace)
 
 (electric-pair-mode t)
-
-(global-set-key (kbd "M-g") 'helm-imenu)
-
-(define-key helm-map (kbd "C-j") (lambda ()
-                                   (interactive)
-                                   (helm-next-line)
-                                   (helm-execute-persistent-action)
-                                   ))
-(define-key helm-map (kbd "C-k") (lambda ()
-                                   (interactive)
-                                   (helm-previous-line)
-                                   (helm-execute-persistent-action)
-                                   ))
 
 ;; hungry-delete
 (require 'hungry-delete)
@@ -165,28 +115,7 @@
                                   (interactive) (dired-sort-other (concat dired-listing-switches ""))))
 
                              (define-key dired-mode-map (kbd "C-o") 'wg-switch-to-workgroup)
-                             (define-key dired-mode-map (kbd "C-s") '(lambda ()
-                                                                       (interactive)
-                                                                       (helm-swoop :$query "")))
                              ))
-;; helm swoop
-(autoload 'helm-swoop "helm-swoop.el" nil t)
-(autoload 'my-helm-swoop "helm-swoop.el" nil t)
-(after-load
-  'helm-swoop
-  (define-key helm-swoop-map (kbd "C-k") 'kill-line)
-
-  (defun my-helm-swoop ()
-    (interactive)
-    (if (use-region-p)
-        (helm-swoop)
-      (helm-swoop :$query "")))
-
-  (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
-  (define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop)
-  )
-
-(global-set-key (kbd "M-i") 'my-helm-swoop)
 
 ;; markdown-mode
 (autoload 'markdown-mode "markdown-mode"
@@ -195,19 +124,14 @@
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
-(defun helm-dwim ()
-  (interactive)
-  (let ((helm-ff-transformer-show-only-basename nil))
-    (helm-other-buffer
-     '(helm-source-buffers-list
-       helm-source-bookmark-files&dirs
-       helm-source-recentf
-       helm-source-files-in-current-dir
-       helm-source-buffer-not-found
-       helm-source-bookmark-set
-       )
-     "*helm search*")))
+;; smex
+(autoload 'smex "smex"
+  "Smex is a M-x enhancement for Emacs, it provides a convenient interface to
+your recently and most frequently used commands.")
+(global-set-key (kbd "C-x C-m") 'smex)
 
-(global-set-key (kbd "C-x C-b") 'helm-dwim)
+;; ido
+(autoload 'ibuffer "ibuffer" nil t)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 
 (provide 'init-modes-lite)
