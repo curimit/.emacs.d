@@ -174,11 +174,6 @@
 (setq compilation-auto-jump-to-next t)
 (setq compilation-always-kill t)
 
-;; smart-expand
-(add-hook 'c-mode-common-hook (lambda ()
-                                (define-key c-mode-base-map (kbd "C-c C-j") 'smart-expand)
-                                ))
-
 ;; coding style: 80 chars limit
 (require 'whitespace)
 (setq whitespace-line-column 80)
