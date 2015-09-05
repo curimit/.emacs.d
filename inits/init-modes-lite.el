@@ -17,20 +17,24 @@
 (add-hook 'c-mode-common-hook 'paren-face-c-add-keyword)
 
 ;; undo tree
-(require 'undo-tree)
+(autoload 'undo-tree-visualize "undo-tree.el" nil t)
 (global-set-key (kbd "C-x C-u") ' undo-tree-visualize)
+
+(autoload 'undo-tree-undo "undo-tree.el" nil t)
 (global-set-key (kbd "C-/") 'undo-tree-undo)
+
+(autoload 'undo-tree-redo "undo-tree.el" nil t)
 (global-set-key (kbd "C-?") 'undo-tree-redo)
 
 ;; expand region
-(require 'expand-region)
+(autoload 'er/expand-region "expand-region.el" nil t)
 (global-set-key (kbd "C-;") 'er/expand-region)
 
 ;; multiple cursors
-(require 'multiple-cursors)
 (global-set-key (kbd "M-<RET>") 'mc/mark-next-like-this)
+(autoload 'mc/mark-next-like-this "multiple-cursors.el" nil t)
 
-;; helm
+;; ;; helm
 (require 'helm-info)
 (require 'helm-mode)
 (require 'helm-config)
@@ -67,47 +71,33 @@
 (global-set-key (kbd "M-h") 'tabbar-backward-tab)
 (global-set-key (kbd "M-l") 'tabbar-forward-tab)
 
+;; customize tabbar group function
+(defun tabbar-buffer-groups ()
+  (list (cond
+         ((s-starts-with-p "*helm" (buffer-name)) "helm buffer")
+         ((s-starts-with-p "*scratch" (buffer-name)) "scratch buffer")
+         ((or (equal major-mode 'dired-mode)
+              (equal major-mode 'wdired-mode)) "dired buffer")
+         (buffer-read-only "readonly buffer")
+         ((s-starts-with-p "*" (buffer-name)) "emacs buffer")
+         ((equalp (buffer-file-name) nil) "noname buffer")
+         ((buffer-file-name) (f-dirname (buffer-file-name)))
+         (t "others"))))
+
 (after-load "dired-mode"
-  (define-key dired-mode-map (kbd "M-l") 'tabbar-forward-tab)
-  )
+  (define-key dired-mode-map (kbd "M-l") 'tabbar-forward-tab))
 
 (after-load "dired+"
-  (define-key dired-mode-map (kbd "M-l") 'tabbar-forward-tab)
-  )
+  (define-key dired-mode-map (kbd "M-l") 'tabbar-forward-tab))
 
-(set-face-attribute 'tabbar-default nil
-                    :background "gray80"
-                    :foreground "black"
-                    :height 1.0
-                    )
+;; web mode
+(autoload 'web-mode "web-mode" "" t)
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.aspx?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.ejs\\'" . web-mode))
 
-(set-face-attribute 'tabbar-button nil
-                    :inherit 'tabbar-default
-                    )
-(set-face-attribute 'tabbar-selected nil
-                    :inherit 'tabbar-default
-                    :foreground "hotpink"
-                    :background "#233b5a"
-                    :box '(:line-width 5 :color "#233b5a" :background: "#233b5a")
-                    :weight 'bold
-                    )
-(set-face-attribute 'tabbar-unselected nil
-                    :inherit 'tabbar-default
-                    :foreground "black"
-                    )
-
-;; ;; web mode
-;; (require 'web-mode)
-
-;; (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-;; (add-to-list 'auto-mode-alist '("\\.php\\'" . web-mode))
-;; (add-to-list 'auto-mode-alist '("\\.aspx?\\'" . web-mode))
-;; (add-to-list 'auto-mode-alist '("\\.ejs\\'" . web-mode))
-
-;; (after-load 'info
-;;   (info-initialize)
-;;   (add-to-list 'Info-directory-list "~/.emacs.d/packages//magit"))
-;; (autoload 'magit-status "magit" nil t)
+(autoload 'magit-status "magit" nil t)
 
 ;; back button
 (require 'back-button)
@@ -117,16 +107,17 @@
 (global-set-key (kbd "C-\\") 'back-button-push-mark-local-and-global)
 
 ;; anzu
-(require 'anzu)
-(global-anzu-mode t)
+(autoload 'anzu-query-replace "anzu" nil t)
+(after-load 'anzu
+  (custom-set-variables
+   '(anzu-deactivate-region t)
+   '(anzu-search-threshold 1000)
+   '(anzu-replace-to-string-separator " => "))
 
-(custom-set-variables
- '(anzu-deactivate-region t)
- '(anzu-search-threshold 1000)
- '(anzu-replace-to-string-separator " => "))
+  (set-face-attribute 'anzu-mode-line nil
+                      :foreground "red" :weight 'bold)
+  )
 
-(set-face-attribute 'anzu-mode-line nil
-                    :foreground "red" :weight 'bold)
 
 (global-set-key (kbd "M-%") 'anzu-query-replace)
 
@@ -179,18 +170,23 @@
                                                                        (helm-swoop :$query "")))
                              ))
 ;; helm swoop
-(require 'helm-swoop)
-(define-key helm-swoop-map (kbd "C-k") 'kill-line)
+(autoload 'helm-swoop "helm-swoop.el" nil t)
+(autoload 'my-helm-swoop "helm-swoop.el" nil t)
+(after-load
+  'helm-swoop
+  (define-key helm-swoop-map (kbd "C-k") 'kill-line)
 
-(defun my-helm-swoop ()
-  (interactive)
-  (if (use-region-p)
-      (helm-swoop)
-    (helm-swoop :$query "")))
+  (defun my-helm-swoop ()
+    (interactive)
+    (if (use-region-p)
+        (helm-swoop)
+      (helm-swoop :$query "")))
+
+  (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
+  (define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop)
+  )
 
 (global-set-key (kbd "M-i") 'my-helm-swoop)
-(define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
-(define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop)
 
 ;; markdown-mode
 (autoload 'markdown-mode "markdown-mode"
@@ -213,18 +209,5 @@
      "*helm search*")))
 
 (global-set-key (kbd "C-x C-b") 'helm-dwim)
-
-;; customize tabbar group function
-(defun tabbar-buffer-groups ()
-  (list (cond
-         ((s-starts-with-p "*helm" (buffer-name)) "helm buffer")
-         ((s-starts-with-p "*scratch" (buffer-name)) "scratch buffer")
-         ((or (equal major-mode 'dired-mode)
-              (equal major-mode 'wdired-mode)) "dired buffer")
-         (buffer-read-only "readonly buffer")
-         ((s-starts-with-p "*" (buffer-name)) "emacs buffer")
-         ((equalp (buffer-file-name) nil) "noname buffer")
-         ((buffer-file-name) (f-dirname (buffer-file-name)))
-         (t "others"))))
 
 (provide 'init-modes-lite)
