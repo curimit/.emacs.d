@@ -14,14 +14,18 @@ mixin dom-module(name, params)
   if params == null
     dom-module(id=name)&attributes(attributes)
       +css('../normalize.css/normalize.css')
-      +css('./' + name + '.css')
+      style(is='custom-style')
+        include:stylus ../one-sample.styl
       template
         block
-    +js('./' + name + '.js')
+    script
+      include:livescript ../one-sample.ls
   else
     dom-module(name=name attributes=params)&attributes(attributes)
       +css('../normalize.css/normalize.css')
-      +css('./' + name + '.css')
+      style(is='custom-style')
+        include:stylus ../one-sample.styl
       template
         block
-    +js('./' + name + '.js')
+    script
+      include:livescript ../one-sample.ls
