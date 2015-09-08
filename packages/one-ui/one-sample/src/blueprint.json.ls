@@ -1,6 +1,6 @@
 name: 'one-sample'
 version: '0.0.0'
-description: 'This is a sample component.'
+description: 'Polymer component: one-sample.'
 authors:
   * 'curimit'
   ...

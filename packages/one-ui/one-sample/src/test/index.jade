@@ -1,10 +1,4 @@
-include ../global/global.jade
+include ../layout.jade
 
-html
-  head
-    meta(charset='utf-8')
-    +js('../../webcomponentsjs/webcomponents-lite.js')
-    +js('../../web-component-tester/browser.js')
-
-  body
-    +js('one-sample.js')
++module-test('one-sample')
+  +js('test.js')

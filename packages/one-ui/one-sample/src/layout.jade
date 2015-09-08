@@ -1,0 +1,10 @@
+include ../../one/index.jade
+
+mixin module(name)
+  dom-module(id=name)&attributes(attributes)
+    style(is='custom-style')
+      include:stylus one-sample.styl
+    template
+      block
+  script
+    include:livescript one-sample.ls
