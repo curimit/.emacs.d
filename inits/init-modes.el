@@ -660,4 +660,7 @@
 
 (require 'one-ui)
 
+(require 'indent-guide)
+(indent-guide-global-mode)
+
 (provide 'init-modes)
