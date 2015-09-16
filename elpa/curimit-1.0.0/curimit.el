@@ -1,5 +1,3 @@
-(require 'pcache)
-
 (require 'init-modern-api)
 
 ;; Add all of the directories in packages to load-path
@@ -13,7 +11,7 @@
         (load-file "~/.emacs.d/preconfig.el")
       )
 
-    (require 'init-configs-lite)
+    (require 'init-configs)
 
     (if (file-exists-p "~/.emacs.d/personal.el")
         (load-file "~/.emacs.d/personal.el")
