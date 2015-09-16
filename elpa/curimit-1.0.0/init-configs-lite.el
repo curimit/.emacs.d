@@ -1,3 +1,7 @@
+;; menu-bar
+(if (symbolp menu-bar-mode)
+    (menu-bar-mode -1))
+
 (put 'set-goal-column 'disabled nil)
 
 ;; default encoding

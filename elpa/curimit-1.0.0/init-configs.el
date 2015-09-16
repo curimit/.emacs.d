@@ -3,6 +3,10 @@
 ;; Title
 ;; (setq frame-title-format "Emacs@%b")
 
+;; menu-bar
+(if (symbolp menu-bar-mode)
+    (menu-bar-mode -1))
+
 (setq default-frame-alist
       '((top . 0) (left . 0)
         (width . 120) (height . 45)))
