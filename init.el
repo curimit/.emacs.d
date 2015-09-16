@@ -1,22 +1,13 @@
 (add-to-list 'load-path "~/.emacs.d/inits")
 
-(require 'init-modern-api)
+(require 'package)
 
-;; Add all of the directories in packages to load-path
-(--map (add-to-list 'load-path it)
-       (f-directories "~/.emacs.d/packages"))
+(global-set-key (kbd "C-x C-\\") 'package-install)
 
-(if (eq window-system nil)
-    (require 'init-configs-lite)
-  (progn
-    (if (file-exists-p "~/.emacs.d/preconfig.el")
-        (load-file "~/.emacs.d/preconfig.el")
-      )
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ("marmalade" . "http://marmalade-repo.org/packages/")
+                         ("melpa" . "http://melpa.milkbox.net/packages/")))
 
-    (require 'init-configs)
+(package-initialize)
 
-    (if (file-exists-p "~/.emacs.d/personal.el")
-        (load-file "~/.emacs.d/personal.el")
-      )
-    )
-  )
+(require 'curimit)

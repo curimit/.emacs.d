@@ -1,0 +1,24 @@
+(require 'pcache)
+
+(require 'init-modern-api)
+
+;; Add all of the directories in packages to load-path
+(--map (add-to-list 'load-path it)
+       (f-directories "~/.emacs.d/packages"))
+
+(if (eq window-system nil)
+    (require 'init-configs-lite)
+  (progn
+    (if (file-exists-p "~/.emacs.d/preconfig.el")
+        (load-file "~/.emacs.d/preconfig.el")
+      )
+
+    (require 'init-configs-lite)
+
+    (if (file-exists-p "~/.emacs.d/personal.el")
+        (load-file "~/.emacs.d/personal.el")
+      )
+    )
+  )
+
+(provide 'curimit)

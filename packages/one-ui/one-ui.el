@@ -16,6 +16,23 @@
    (concat name "/" (s-replace "one-sample" name path))
    (f-read-one-ui-template path name)))
 
+(setq stash-url "Neo.DeployTool.CommandLine stash create repo -s https://git.wenjies.com -u swjcloud -p songwenjie7")
+(defun stash-create-repo (project name)
+  (message (concat "creating repo: ONEUI." name))
+  (if (boundp 'stash-url)
+      (shell-command
+       (concat
+        stash-url
+        " "
+        project
+        " "
+        name
+        " &"
+        ))
+      (message (concat "Please set stash-url first."))
+      )
+  )
+
 (defun one-ui-git-init (name)
   (magit-run-git-async "init")
   (magit-run-git-async "remote" "add" "origin" (concat "ssh://git@git.wenjies.com/oneui/" name ".git"))
