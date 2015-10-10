@@ -372,9 +372,8 @@
 
 ;; hungry-delete
 (require 'hungry-delete)
-(global-hungry-delete-mode)
-(define-key hungry-delete-mode-map (kbd "C-c C-d") 'hungry-delete-forward)
-(define-key hungry-delete-mode-map (kbd "C-c C-<backspace>") 'hungry-delete-backward)
+(global-set-key (kbd "C-c C-d") 'hungry-delete-forward)
+(global-set-key (kbd "C-c C-<backspace>") 'hungry-delete-backward)
 
 ;; dired+
 (require 'dired+)
