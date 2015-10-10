@@ -326,24 +326,35 @@
 (after-load "jade-mode"
   (setq jade-keywords
         (regexp-opt
-         '("one-div"
+         '(
+           "around-justified" "block" "center" "center-center" "center-justified" "end" "end-justified" "fit"
+           "fixed-bottom" "fixed-left" "fixed-right" "fixed-top" "flex" "flex-1" "flex-10" "flex-11" "flex-12"
+           "flex-2" "flex-3" "flex-4" "flex-5" "flex-6" "flex-7" "flex-8" "flex-9" "flex-auto" "flex-none"
+           "fullbleed" "horizontal" "horizontal-reverse" "inline" "invisible" "justified" "layout" "relative"
+           "scroll" "self-center" "self-end" "self-start" "self-stretch" "start" "start-justified" "vertical"
+           "vertical-reverse" "wrap" "wrap-reverse"
+
            "if" "else" "for" "in" "each" "case" "when" "default" "block" "extends"
-           "name" "value" "mode" "target" "repeat" "selected" "style" "is"
            "block append" "block prepend" "append" "prepend"
-           "fullbleed" "unresolved" "layout" "reverse"
-           "block" "hidden" "relative" "fit"
            "include" "yield" "mixin") 'words))
 
   (setq jade-font-lock-keywords
         `((,"!!!\\|doctype\\( ?[A-Za-z0-9\-\_]*\\)?" 0 font-lock-comment-face) ;; doctype
+          (,"\\bon\\-\\w+='\\w+'" . font-lock-warning-face) ;; data-bindings on-*='XXX'
+          (,"\\({{[^{}]+}}\\)" . font-lock-warning-face) ;; data-bindings {{ }}
+          (,"\\(\\[\\[[^][]+\\]\\]\\)" . font-lock-warning-face) ;; data-bindings [[ ]]
           (,jade-keywords . font-lock-keyword-face) ;; keywords
-          (,"\\(on\\(\\-\\w+\\)+\\)" . font-lock-keyword-face) ;; on-*
-          (,"\\({{[^{}]+}}\\)" . font-lock-warning-face) ;; data-bindings
+          (,"\"\\([^\"]+\\)\"" . font-lock-string-face)
+          (,"'\\([^']+\\)'" . font-lock-string-face)
+          ;; \\(=?\\bon[-a-z]+='\\)\\w+
           (,"#\\(\\w\\|_\\|-\\)*" . font-lock-variable-name-face) ;; id
+          (,"\"\\([^\"]+\\)\"" . font-lock-constant-face)
           (,"^\\(?:[ {2,}]*\\)\\(\\+[A-Za-z0-9\-\_]*\\)" 1 font-lock-warning-face) ;; mixin
-          (,"^\\(?:[ {2,}]*\\(?:[a-z0-9_:\\-]*\\)\\)?\\(#[A-Za-z0-9\-\_]*[^ ]\\)" 1 font-lock-variable-name-face) ;; id
-          (,"^\\(?:[ {2,}]*\\(?:[a-z0-9_:\\-]*\\)\\)?\\(\\.[A-Za-z0-9\-\_]*\\)" 1 font-lock-type-face) ;; class name
-          (,"^[ {2,}]*[a-z0-9_:\\-]*" 0 font-lock-function-name-face)))
+          (,"^\\(?:[ {2,}]*\\(?:[a-zA-Z0-9_:\\-]*\\)\\)?\\(#[A-Za-z0-9\-\_]*[^ ]\\)" 1 font-lock-variable-name-face) ;; id
+          (,"^\\(?:[ {2,}]*\\(?:[.a-zA-Z0-9_:\\-]*\\)\\)?\\(\\.[A-Za-z0-9\-\_]*\\)" 1 font-lock-type-face) ;; class name
+          (,"^\\(?:[ {2,}]*\\(?:[a-zA-Z0-9_:\\-]*\\)\\)?\\(\\.[A-Za-z0-9\-\_]*\\)" 1 font-lock-type-face) ;; class name
+          (,"\\([A-Za-z0-9$-]+\\)=" 1 font-lock-type-face) ;; attribute
+          (,"^[ {2,}]*[a-zA-Z0-9_:\\-]*" 0 font-lock-function-name-face)))
   )
 
 (global-set-key (kbd "M-g") 'helm-imenu)

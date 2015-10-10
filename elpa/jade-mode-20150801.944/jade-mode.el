@@ -9,6 +9,8 @@
 
 (defvar jade-tab-width)
 
+(defun jade-open-quote () (looking-back "([^\n)]*\n*[^\n)]*"))
+
 (defun jade-debug (string &rest args)
   "Prints a debug message"
   (apply 'message (append (list string) args)))
@@ -263,10 +265,11 @@ terminates (to facilitate subsequent indentations of the same region)"
 
 (defun jade-calculate-indent-target ()
   "Return the column to which the current line should be indented."
-  (let ((max-indent (+ (jade-previous-line-indentation) jade-tab-width)))
-    (if (>= (current-indentation) max-indent) ;; if at max indentation
-        0
-      (+ (current-indentation) jade-tab-width))))
+  ;; (search-backward ")")
+
+  (if (< (current-indentation) (jade-current-line-indentation))
+          (jade-current-line-indentation)
+        (+ (current-indentation) jade-tab-width)))
 
 (defun jade-unindent ()
   "Unindent active region or current line."
@@ -326,11 +329,19 @@ Follows indentation behavior of `indent-rigidly'."
     (let ((next-line-indent (current-indentation)))
       next-line-indent)))
 
+(defun jade-current-line-indentation ()
+  (if (jade-open-quote)
+      (+ (jade-previous-line-indentation) (* 2 jade-tab-width))
+    (max (jade-previous-line-indentation) 0)
+    )
+  )
+
 (defun jade-newline-and-indent ()
   "Insert newline and indent to parent's indentation level."
   (interactive)
   (newline)
-  (indent-line-to (max (jade-previous-line-indentation) 0)))
+  (indent-line-to jade-current-line-indentation)
+  )
 
 (defun jade-fontify-region-as-js (beg end)
   "Fontify a region between BEG and END using js-mode fontification.
