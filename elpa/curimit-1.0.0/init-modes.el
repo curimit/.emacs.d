@@ -474,7 +474,7 @@
        )
      "*helm search*")))
 
-(global-set-key (kbd "C-x C-b") 'helm-dwim)
+(global-set-key (kbd "C-x C-b") 'helm-buffers-list)
 
 ;; customize tabbar group function
 (defun tabbar-buffer-groups ()
