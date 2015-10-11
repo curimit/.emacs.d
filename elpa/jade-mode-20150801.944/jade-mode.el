@@ -340,7 +340,7 @@ Follows indentation behavior of `indent-rigidly'."
   "Insert newline and indent to parent's indentation level."
   (interactive)
   (newline)
-  (indent-line-to jade-current-line-indentation)
+  (indent-line-to (jade-current-line-indentation))
   )
 
 (defun jade-fontify-region-as-js (beg end)
