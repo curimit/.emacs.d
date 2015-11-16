@@ -271,4 +271,7 @@
 ;; switch
 (define-key global-map (kbd "C-S-O") 'switch-component)
 
+;; uniquify
+(require 'uniquify)
+
 (provide 'init-configs)
