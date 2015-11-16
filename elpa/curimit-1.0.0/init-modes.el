@@ -485,6 +485,7 @@
               (equal major-mode 'wdired-mode)) "dired buffer")
          (buffer-read-only "readonly buffer")
          ((s-starts-with-p "*" (buffer-name)) "emacs buffer")
+         ((s-starts-with-p "*eshell*" (buffer-name)) "emacs eshell")
          ((equalp (buffer-file-name) nil) "noname buffer")
          ((buffer-file-name) (f-dirname (buffer-file-name)))
          (t "others"))))
@@ -533,5 +534,15 @@
 
 (require 'indent-guide)
 (indent-guide-global-mode)
+
+(require 'shell-switcher)
+(shell-switcher-mode 1)
+
+(define-key shell-switcher-mode-map (kbd "C-'")
+            'shell-switcher-switch-buffer)
+(define-key shell-switcher-mode-map (kbd "C-x 4 '")
+            'shell-switcher-switch-buffer-other-window)
+(define-key shell-switcher-mode-map (kbd "C-M-'")
+            'shell-switcher-new-shell)
 
 (provide 'init-modes)
