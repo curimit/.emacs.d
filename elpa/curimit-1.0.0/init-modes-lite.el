@@ -50,6 +50,7 @@
          ((or (equal major-mode 'dired-mode)
               (equal major-mode 'wdired-mode)) "dired buffer")
          (buffer-read-only "readonly buffer")
+         ((s-starts-with-p "*eshell*" (buffer-name)) "emacs eshell")
          ((s-starts-with-p "*" (buffer-name)) "emacs buffer")
          ((equalp (buffer-file-name) nil) "noname buffer")
          ((buffer-file-name) (f-dirname (buffer-file-name)))
