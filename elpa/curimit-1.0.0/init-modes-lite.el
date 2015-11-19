@@ -135,4 +135,14 @@ your recently and most frequently used commands.")
 (autoload 'ibuffer "ibuffer" nil t)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
+;; bash completion
+(bash-completion-setup)
+
+(add-hook 'shell-dynamic-complete-functions
+          'bash-completion-dynamic-complete)
+
+;; eshell-z
+(require 'eshell-z)
+
+
 (provide 'init-modes-lite)

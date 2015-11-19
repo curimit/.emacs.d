@@ -545,4 +545,13 @@
 (define-key shell-switcher-mode-map (kbd "C-M-'")
             'shell-switcher-new-shell)
 
+;; bash completion
+(bash-completion-setup)
+
+(add-hook 'shell-dynamic-complete-functions
+          'bash-completion-dynamic-complete)
+
+;; eshell-z
+(require 'eshell-z)
+
 (provide 'init-modes)
