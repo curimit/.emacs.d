@@ -16,6 +16,7 @@
         smart-hungry-delete
         company
         magit
+        restclient
         back-button
         csharp-mode))
 
@@ -26,7 +27,7 @@
 
   (package-refresh-contents)
 
-  (mapcar (lambda(package)  (package-install package)) package-required-packages)
+  (mapcar (lambda(package) (package-install package)) package-required-packages)
   )
 
 ;; color theme
@@ -118,15 +119,15 @@
 (setq gud-key-prefix "\C-x\C-g")
 
 (defun qiang-comment-dwim-line (&optional arg)
-    "Replacement for the comment-dwim command.
+  "Replacement for the comment-dwim command.
 If no region is selected and current line is not blank and we are not at the end of the line,
 then comment current line.
 Replaces default behaviour of comment-dwim, when it inserts comment at the end of the line."
-    (interactive "*P")
-    (comment-normalize-vars)
-    (if (not (region-active-p))
-  (comment-or-uncomment-region (line-beginning-position) (line-end-position))
-      (comment-dwim arg)))
+  (interactive "*P")
+  (comment-normalize-vars)
+  (if (not (region-active-p))
+      (comment-or-uncomment-region (line-beginning-position) (line-end-position))
+    (comment-dwim arg)))
 
 (global-set-key "\M-;" 'qiang-comment-dwim-line)
 
@@ -263,7 +264,7 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (back-button magit company-1 csharp-mode company smart-hungry-delete sublime-themes treemacs drag-stuff nlinum f dash color-theme-modern expand-region multiple-cursors helm-swoop helm zenburn-theme yasnippet-snippets yaml-mode which-key undo-tree rust-mode puppet-mode lv lsp-ui ido-completing-read+ graphviz-dot-mode goto-chg gitignore-mode gitconfig-mode gitattributes-mode git-modes folding ess diminish csv-mode company-lsp))))
+    (restclient back-button magit company-1 csharp-mode company smart-hungry-delete sublime-themes treemacs drag-stuff nlinum f dash color-theme-modern expand-region multiple-cursors helm-swoop helm zenburn-theme yasnippet-snippets yaml-mode which-key undo-tree rust-mode puppet-mode lv lsp-ui ido-completing-read+ graphviz-dot-mode goto-chg gitignore-mode gitconfig-mode gitattributes-mode git-modes folding ess diminish csv-mode company-lsp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
