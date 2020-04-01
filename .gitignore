@@ -23,3 +23,5 @@ recentf
 eshell
 elpa/
 .cache
+local.el
+abbrev_defs
