@@ -1,4 +1,0 @@
-#name: add-to-list
-#key: al
-# --
-(add-to-list 'load-path "~/.emacs.d/packages/$0")
