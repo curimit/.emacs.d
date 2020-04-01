@@ -21,3 +21,5 @@ projectile.cache
 /var/
 recentf
 eshell
+elpa/
+.cache
