@@ -1,43 +1,32 @@
 (package-initialize)
 
 ;; init packages
-(if (or (not (package-installed-p 'helm))
-        (not (package-installed-p 'helm-swoop))
-        (not (package-installed-p 'multiple-cursors))
-        (not (package-installed-p 'expand-region))
-        (not (package-installed-p 'color-theme-modern))
-        (not (package-installed-p 'dash))
-        (not (package-installed-p 'f))
-        (not (package-installed-p 'nlinum))
-        (not (package-installed-p 'drag-stuff))
-        (not (package-installed-p 'treemacs))
-        (not (package-installed-p 'sublime-themes))
-        (not (package-installed-p 'smart-hungry-delete))
-        (not (package-installed-p 'company))
-        (not (package-installed-p 'csharp-mode))
-        )
-    (progn
-      (require 'package)
-      (setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-                               ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
+(setq package-required-packages
+      '(helm
+        helm-swoop
+        multiple-cursors
+        expand-region
+        color-theme-modern
+        dash
+        f
+        nlinum
+        drag-stuff
+        treemacs
+        sublime-themes
+        smart-hungry-delete
+        company
+        magit
+        back-button
+        csharp-mode))
 
-      (package-refresh-contents)
+(if (eval (cons 'and (mapcar (lambda(package) (package-installed-p package)) package-required-packages)))
+    (require 'package)
+  (setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+                           ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
 
-      (package-install 'helm)
-      (package-install 'helm-swoop)
-      (package-install 'multiple-cursors)
-      (package-install 'expand-region)
-      (package-install 'color-theme-modern)
-      (package-install 'dash)
-      (package-install 'f)
-      (package-install 'nlinum)
-      (package-install 'drag-stuff)
-      (package-install 'treemacs)
-      (package-install 'sublime-themes)
-      (package-install 'smart-hungry-delete)
-      (package-install 'company)
-      (package-install 'csharp-mode)
-      )
+  (package-refresh-contents)
+
+  (mapcar (lambda(package)  (package-install package)) package-required-packages)
   )
 
 ;; color theme
@@ -258,6 +247,12 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
 ;; tramp
 (setq tramp-default-method "ssh")
 
+;; back-button
+;; (require 'back-button)
+(back-button-mode 1)
+(global-set-key (kbd "C--") 'back-button-local-backward)
+(global-set-key (kbd "C-=") 'back-button-local-forward)
+
 ;; local config
 (if (f-exists-p "~/.emacs.d/local.el")
     (load-file "~/.emacs.d/local.el"))
@@ -268,7 +263,7 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (csharp-mode company smart-hungry-delete sublime-themes treemacs drag-stuff nlinum f dash color-theme-modern expand-region multiple-cursors helm-swoop helm zenburn-theme yasnippet-snippets yaml-mode which-key undo-tree rust-mode puppet-mode lv lsp-ui ido-completing-read+ graphviz-dot-mode goto-chg gitignore-mode gitconfig-mode gitattributes-mode git-modes folding ess diminish csv-mode company-lsp))))
+    (back-button magit company-1 csharp-mode company smart-hungry-delete sublime-themes treemacs drag-stuff nlinum f dash color-theme-modern expand-region multiple-cursors helm-swoop helm zenburn-theme yasnippet-snippets yaml-mode which-key undo-tree rust-mode puppet-mode lv lsp-ui ido-completing-read+ graphviz-dot-mode goto-chg gitignore-mode gitconfig-mode gitattributes-mode git-modes folding ess diminish csv-mode company-lsp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

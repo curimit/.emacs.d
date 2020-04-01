@@ -25,3 +25,4 @@ elpa/
 .cache
 local.el
 abbrev_defs
+transient/
