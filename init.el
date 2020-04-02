@@ -60,7 +60,11 @@
 
 ;; no menu
 (if (not (eq system-type 'darwin))
-    (tool-bar-mode -1))
+    (progn
+      (tool-bar-mode -1)
+      (menu-bar-mode -1)
+      )
+  )
 (scroll-bar-mode -1)
 
 ;; enable recursive in minibuffer
