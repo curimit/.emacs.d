@@ -18,7 +18,7 @@
         company-quickhelp
         magit
         restclient
-        back-button
+        backward-forward
         csharp-mode
         omnisharp))
 
@@ -353,11 +353,11 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
 ;; tramp
 (setq tramp-default-method "ssh")
 
-;; back-button
-(require 'back-button)
-(back-button-mode 1)
-(global-set-key (kbd "C--") 'back-button-local-backward)
-(global-set-key (kbd "C-=") 'back-button-local-forward)
+;; backward-forward
+(require 'backward-forward)
+(backward-forward-mode t)
+(global-set-key (kbd "C--") 'backward-forward-previous-location)
+(global-set-key (kbd "C-=") 'backward-forward-next-location)
 
 ;; company
 (require 'company)
@@ -385,7 +385,7 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (esup omnisharp company-quickhelp restclient back-button magit company-1 csharp-mode company smart-hungry-delete sublime-themes treemacs drag-stuff nlinum f dash color-theme-modern expand-region multiple-cursors helm-swoop helm zenburn-theme yasnippet-snippets yaml-mode which-key undo-tree rust-mode puppet-mode lv lsp-ui ido-completing-read+ graphviz-dot-mode goto-chg gitignore-mode gitconfig-mode gitattributes-mode git-modes folding ess diminish csv-mode company-lsp))))
+    (backward-forward esup omnisharp company-quickhelp restclient magit company-1 csharp-mode company smart-hungry-delete sublime-themes treemacs drag-stuff nlinum f dash color-theme-modern expand-region multiple-cursors helm-swoop helm zenburn-theme yasnippet-snippets yaml-mode which-key undo-tree rust-mode puppet-mode lv lsp-ui ido-completing-read+ graphviz-dot-mode goto-chg gitignore-mode gitconfig-mode gitattributes-mode git-modes folding ess diminish csv-mode company-lsp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
