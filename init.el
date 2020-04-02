@@ -3,7 +3,7 @@
 ;; init packages
 (setq package-required-packages
       '(helm
-        helm-swoop
+        swiper-helm
         multiple-cursors
         expand-region
         color-theme-modern
@@ -19,6 +19,7 @@
         magit
         restclient
         backward-forward
+        highlight-parentheses
         csharp-mode
         omnisharp))
 
@@ -327,11 +328,10 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
   (setq helm-ff-kill-or-find-buffer-fname-fn 'ignore)
   )
 
-
-;; (require 'helm-swoop)
-;; (global-set-key (kbd "M-i") 'helm-swoop)
-;; (define-key helm-swoop-map (kbd "C-w") 'backward-kill-word)
-;; (define-key helm-swoop-map (kbd "C-k") 'kill-line)
+;; swiper-helm
+(lazy-load-global-keys
+ '(("M-i" . swiper-helm))
+ "swiper-helm")
 
 ;; treemacs
 (lazy-load-global-keys
@@ -374,6 +374,14 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
     )
   )
 
+;; highlight-parentheses
+(require 'highlight-parentheses)
+(define-globalized-minor-mode global-highlight-parentheses-mode
+  highlight-parentheses-mode
+  (lambda ()
+    (highlight-parentheses-mode t)))
+(global-highlight-parentheses-mode t)
+
 ;; local config
 (if (f-exists-p "~/.emacs.d/local.el")
     (load-file "~/.emacs.d/local.el"))
@@ -385,7 +393,7 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (backward-forward esup omnisharp company-quickhelp restclient magit company-1 csharp-mode company smart-hungry-delete sublime-themes treemacs drag-stuff nlinum f dash color-theme-modern expand-region multiple-cursors helm-swoop helm zenburn-theme yasnippet-snippets yaml-mode which-key undo-tree rust-mode puppet-mode lv lsp-ui ido-completing-read+ graphviz-dot-mode goto-chg gitignore-mode gitconfig-mode gitattributes-mode git-modes folding ess diminish csv-mode company-lsp))))
+    (swiper-helm swiper-isearch highlight-parentheses tempbuf backward-forward esup omnisharp company-quickhelp restclient back-button magit company-1 csharp-mode company smart-hungry-delete sublime-themes treemacs drag-stuff nlinum f dash color-theme-modern expand-region multiple-cursors helm zenburn-theme yasnippet-snippets yaml-mode which-key undo-tree rust-mode puppet-mode lv lsp-ui ido-completing-read+ graphviz-dot-mode goto-chg gitignore-mode gitconfig-mode gitattributes-mode git-modes folding ess diminish csv-mode company-lsp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
