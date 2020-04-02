@@ -40,6 +40,9 @@
     (normal-top-level-add-subdirs-to-load-path)))
 (add-subdirs-to-load-path "~/.emacs.d/packages")
 
+;; lazy-load
+(require 'lazy-load)
+
 ;; color theme
 (if (eq window-system nil)
     nil
@@ -160,66 +163,75 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
 (global-set-key (kbd "C-;") 'er/expand-region)
 (global-set-key (kbd "M-<RET>") 'mc/mark-next-like-this)
 
-(require 'gcl-mode)
+;; gcl-mode
+(autoload 'gcl-mode "gcl-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.gcl$" . gcl-mode))
 
 ;; aweshell
-(require 'aweshell)
-(global-set-key (kbd "C-'") 'aweshell-next)
-(global-set-key (kbd "C-\"") 'aweshell-prev)
-(global-set-key (kbd "C-M-'") 'aweshell-new)
+(lazy-load-global-keys
+ '(("C-'" . aweshell-next)
+   ("C-\"" . aweshell-next)
+   ("C-M-'" . aweshell-new) )
+ "aweshell")
 
 ;; csharp-mode
-(require 'csharp-mode)
+(autoload 'csharp-mode "csharp-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.cs$" . csharp-mode))
 
 ;; nox
-(require 'nox)
-(add-to-list 'nox-server-programs '(csharp-mode . ("OmniSharp")))
+(autoload 'nox "nox" nil t)
+(with-eval-after-load 'nox
+  (add-to-list 'nox-server-programs '(csharp-mode . ("OmniSharp")))
+  )
 
 ;; awesome-tab
 (require 'awesome-tab)
-(awesome-tab-mode t)
-(global-set-key (kbd "M-h") 'awesome-tab-backward-tab)
-(global-set-key (kbd "M-l") 'awesome-tab-forward-tab)
-(setq awesome-tab-dark-unselected-blend 0.2)
-(setq awesome-tab-dark-selected-blend 0.2)
-(setq awesome-tab-active-bar-height 36)
+(with-eval-after-load 'awesome-tab
+  (awesome-tab-mode t)
+  (global-set-key (kbd "M-h") 'awesome-tab-backward-tab)
+  (global-set-key (kbd "M-l") 'awesome-tab-forward-tab)
+  (setq awesome-tab-dark-unselected-blend 0.2)
+  (setq awesome-tab-dark-selected-blend 0.2)
+  (setq awesome-tab-active-bar-height 36)
 
-(require 'f)
+  (require 'f)
 
-(defun awesome-tab-buffer-groups ()
-  (list
-   (cond
-    ((or (string-equal "*" (substring (buffer-name) 0 1))
-         (memq major-mode '(magit-process-mode
-                            magit-status-mode
-                            magit-diff-mode
-                            magit-log-mode
-                            magit-file-mode
-                            magit-blob-mode
-                            magit-blame-mode
-                            )))
-     "Emacs")
-    ((derived-mode-p 'eshell-mode)
-     "EShell")
-    ((derived-mode-p 'emacs-lisp-mode)
-     "Elisp")
-    ((derived-mode-p 'dired-mode)
-     "Dired")
-    ((memq major-mode '(org-mode org-agenda-mode diary-mode))
-     "OrgMode")
-    ((buffer-file-name) (f-dirname (buffer-file-name)))
-    (t
-     (awesome-tab-get-group-name (current-buffer))))))
+  (defun awesome-tab-buffer-groups ()
+    (list
+     (cond
+      ((or (string-equal "*" (substring (buffer-name) 0 1))
+           (memq major-mode '(magit-process-mode
+                              magit-status-mode
+                              magit-diff-mode
+                              magit-log-mode
+                              magit-file-mode
+                              magit-blob-mode
+                              magit-blame-mode
+                              )))
+       "Emacs")
+      ((derived-mode-p 'eshell-mode)
+       "EShell")
+      ((derived-mode-p 'emacs-lisp-mode)
+       "Elisp")
+      ((derived-mode-p 'dired-mode)
+       "Dired")
+      ((memq major-mode '(org-mode org-agenda-mode diary-mode))
+       "OrgMode")
+      ((buffer-file-name) (f-dirname (buffer-file-name)))
+      (t
+       (awesome-tab-get-group-name (current-buffer))))))
 
-(setq awesome-tab-height 120)
-(setq awesome-tab-display-icon nil)
+  (setq awesome-tab-height 120)
+  (setq awesome-tab-display-icon nil)
+  )
 
 ;; snails
-(require 'snails)
-(global-set-key (kbd "C-c C-p") 'snails)
+(lazy-load-global-keys
+ '(("C-c C-p" . snails))
+ "snails")
 
 ;; awesome-pair
-(require 'awesome-pair)
+(autoload 'awesome-pair-mode "awesome-pair" nil t)
 (dolist (hook (list
                'c-mode-common-hook
                'c-mode-hook
@@ -250,32 +262,34 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
                'gcl-mode-hook
                ))
   (add-hook hook '(lambda () (awesome-pair-mode 1))))
-(define-key awesome-pair-mode-map (kbd "(") 'awesome-pair-open-round)
-(define-key awesome-pair-mode-map (kbd "[") 'awesome-pair-open-bracket)
-(define-key awesome-pair-mode-map (kbd "{") 'awesome-pair-open-curly)
-(define-key awesome-pair-mode-map (kbd ")") 'awesome-pair-close-round)
-(define-key awesome-pair-mode-map (kbd "]") 'awesome-pair-close-bracket)
-(define-key awesome-pair-mode-map (kbd "}") 'awesome-pair-close-curly)
-(define-key awesome-pair-mode-map (kbd "=") 'awesome-pair-equal)
+(with-eval-after-load 'awesome-pair
+  (define-key awesome-pair-mode-map (kbd "(") 'awesome-pair-open-round)
+  (define-key awesome-pair-mode-map (kbd "[") 'awesome-pair-open-bracket)
+  (define-key awesome-pair-mode-map (kbd "{") 'awesome-pair-open-curly)
+  (define-key awesome-pair-mode-map (kbd ")") 'awesome-pair-close-round)
+  (define-key awesome-pair-mode-map (kbd "]") 'awesome-pair-close-bracket)
+  (define-key awesome-pair-mode-map (kbd "}") 'awesome-pair-close-curly)
+  (define-key awesome-pair-mode-map (kbd "=") 'awesome-pair-equal)
 
-(define-key awesome-pair-mode-map (kbd "%") 'awesome-pair-match-paren)
-(define-key awesome-pair-mode-map (kbd "\"") 'awesome-pair-double-quote)
+  (define-key awesome-pair-mode-map (kbd "%") 'awesome-pair-match-paren)
+  (define-key awesome-pair-mode-map (kbd "\"") 'awesome-pair-double-quote)
 
-(define-key awesome-pair-mode-map (kbd "SPC") 'awesome-pair-space)
+  (define-key awesome-pair-mode-map (kbd "SPC") 'awesome-pair-space)
 
-(define-key awesome-pair-mode-map (kbd "M-o") 'awesome-pair-backward-delete)
-(define-key awesome-pair-mode-map (kbd "C-d") 'awesome-pair-forward-delete)
-(define-key awesome-pair-mode-map (kbd "C-k") 'awesome-pair-kill)
+  (define-key awesome-pair-mode-map (kbd "M-o") 'awesome-pair-backward-delete)
+  (define-key awesome-pair-mode-map (kbd "C-d") 'awesome-pair-forward-delete)
+  (define-key awesome-pair-mode-map (kbd "C-k") 'awesome-pair-kill)
 
-(define-key awesome-pair-mode-map (kbd "M-\"") 'awesome-pair-wrap-double-quote)
-(define-key awesome-pair-mode-map (kbd "M-[") 'awesome-pair-wrap-bracket)
-(define-key awesome-pair-mode-map (kbd "M-{") 'awesome-pair-wrap-curly)
-(define-key awesome-pair-mode-map (kbd "M-(") 'awesome-pair-wrap-round)
-(define-key awesome-pair-mode-map (kbd "M-)") 'awesome-pair-unwrap)
+  (define-key awesome-pair-mode-map (kbd "M-\"") 'awesome-pair-wrap-double-quote)
+  (define-key awesome-pair-mode-map (kbd "M-[") 'awesome-pair-wrap-bracket)
+  (define-key awesome-pair-mode-map (kbd "M-{") 'awesome-pair-wrap-curly)
+  (define-key awesome-pair-mode-map (kbd "M-(") 'awesome-pair-wrap-round)
+  (define-key awesome-pair-mode-map (kbd "M-)") 'awesome-pair-unwrap)
 
-(define-key awesome-pair-mode-map (kbd "M-p") 'awesome-pair-jump-right)
-(define-key awesome-pair-mode-map (kbd "M-n") 'awesome-pair-jump-left)
-(define-key awesome-pair-mode-map (kbd "M-:") 'awesome-pair-jump-out-pair-and-newline)
+  (define-key awesome-pair-mode-map (kbd "M-p") 'awesome-pair-jump-right)
+  (define-key awesome-pair-mode-map (kbd "M-n") 'awesome-pair-jump-left)
+  (define-key awesome-pair-mode-map (kbd "M-:") 'awesome-pair-jump-out-pair-and-newline)
+  )
 
 ;; awesome-tray
 (require 'awesome-tray)
@@ -289,45 +303,58 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
 (add-hook 'nlinum-mode-hook #'my-nlinum-mode-hook)
 
 ;; drag stuff
-(require 'drag-stuff)
-(global-set-key (kbd "M-<up>")   #'drag-stuff-up)
-(global-set-key (kbd "M-<down>") #'drag-stuff-down)
+(lazy-load-global-keys
+ '(("M-<up>" . drag-stuff-up)
+   ("M-<down>" . drag-stuff-down))
+ "drag-stuff")
 
 ;; helm
-(require 'helm)
-(require 'helm-files)
-(require 'helm-command)
-(define-key helm-map (kbd "C-w") 'backward-kill-word)
-(define-key helm-map (kbd "C-k") 'kill-line)
-(global-set-key (kbd "C-x C-m") 'helm-M-x)
-(define-key helm-map "\t" 'helm-execute-persistent-action)
-(define-key helm-map (kbd "C-M-p") 'helm-previous-source)
-(setq helm-ff-kill-or-find-buffer-fname-fn 'ignore)
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
-(global-set-key (kbd "C-x C-b") 'helm-buffers-list)
-(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+(lazy-load-global-keys
+ '(("C-x C-f" . helm-find-files))
+ "helm-files")
 
-(require 'helm-swoop)
-(global-set-key (kbd "M-i") 'helm-swoop)
-(define-key helm-swoop-map (kbd "C-w") 'backward-kill-word)
-(define-key helm-swoop-map (kbd "C-k") 'kill-line)
+(lazy-load-global-keys
+ '(("C-x C-b" . helm-buffers-list)
+   ("C-x C-m" . helm-M-x))
+ "helm-command")
+
+(with-eval-after-load 'helm
+  (define-key helm-map (kbd "C-w") 'backward-kill-word)
+  (define-key helm-map (kbd "C-k") 'kill-line)
+  (define-key helm-map "\t" 'helm-execute-persistent-action)
+  (define-key helm-map (kbd "C-M-p") 'helm-previous-source)
+  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+  (setq helm-ff-kill-or-find-buffer-fname-fn 'ignore)
+  )
+
+
+;; (require 'helm-swoop)
+;; (global-set-key (kbd "M-i") 'helm-swoop)
+;; (define-key helm-swoop-map (kbd "C-w") 'backward-kill-word)
+;; (define-key helm-swoop-map (kbd "C-k") 'kill-line)
 
 ;; treemacs
-(require 'treemacs)
-(global-set-key [f8] 'treemacs)
-(defun my-treemacs-mode-hook ()
-  (nlinum-mode -1))
-(add-hook 'treemacs-mode-hook #'my-treemacs-mode-hook)
+(lazy-load-global-keys
+ '(("<f8>" . treemacs))
+ "treemacs")
+(with-eval-after-load 'treemacs
+  (defun my-treemacs-mode-hook ()
+    (nlinum-mode -1))
+  (add-hook 'treemacs-mode-hook #'my-treemacs-mode-hook)
+  )
 
-(require 'smart-hungry-delete)
-(global-set-key (kbd "C-c C-w") 'smart-hungry-delete-backward-char)
-(global-set-key (kbd "C-c C-d") 'smart-hungry-delete-forward-char)
+
+;; smart-hungry-delete
+(lazy-load-global-keys
+ '(("C-c C-w" . smart-hungry-delete-backward-char)
+   ("C-c C-d" . smart-hungry-delete-forward-char))
+ "smart-hungry-delete")
 
 ;; tramp
 (setq tramp-default-method "ssh")
 
 ;; back-button
-;; (require 'back-button)
+(require 'back-button)
 (back-button-mode 1)
 (global-set-key (kbd "C--") 'back-button-local-backward)
 (global-set-key (kbd "C-=") 'back-button-local-forward)
@@ -341,15 +368,16 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
 
 ;; ominisharp
 (add-hook 'csharp-mode-hook 'omnisharp-mode)
-(eval-after-load
- 'company
- '(add-to-list 'company-backends 'company-omnisharp))
-
-(add-hook 'csharp-mode-hook #'company-mode)
+(with-eval-after-load 'csharp-mode
+  (with-eval-after-load 'company
+    (add-to-list 'company-backends 'company-omnisharp)
+    )
+  )
 
 ;; local config
 (if (f-exists-p "~/.emacs.d/local.el")
     (load-file "~/.emacs.d/local.el"))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -357,7 +385,7 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (omnisharp company-quickhelp restclient back-button magit company-1 csharp-mode company smart-hungry-delete sublime-themes treemacs drag-stuff nlinum f dash color-theme-modern expand-region multiple-cursors helm-swoop helm zenburn-theme yasnippet-snippets yaml-mode which-key undo-tree rust-mode puppet-mode lv lsp-ui ido-completing-read+ graphviz-dot-mode goto-chg gitignore-mode gitconfig-mode gitattributes-mode git-modes folding ess diminish csv-mode company-lsp))))
+    (esup omnisharp company-quickhelp restclient back-button magit company-1 csharp-mode company smart-hungry-delete sublime-themes treemacs drag-stuff nlinum f dash color-theme-modern expand-region multiple-cursors helm-swoop helm zenburn-theme yasnippet-snippets yaml-mode which-key undo-tree rust-mode puppet-mode lv lsp-ui ido-completing-read+ graphviz-dot-mode goto-chg gitignore-mode gitconfig-mode gitattributes-mode git-modes folding ess diminish csv-mode company-lsp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
