@@ -19,7 +19,8 @@
         magit
         restclient
         back-button
-        csharp-mode))
+        csharp-mode
+        omnisharp))
 
 (if (eval (cons 'and (mapcar (lambda(package) (package-installed-p package)) package-required-packages)))
     (require 'package)
@@ -267,6 +268,14 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
 (define-key company-active-map (kbd "C-w") 'backward-kill-word)
 (company-quickhelp-mode)
 
+;; ominisharp
+(add-hook 'csharp-mode-hook 'omnisharp-mode)
+(eval-after-load
+ 'company
+ '(add-to-list 'company-backends 'company-omnisharp))
+
+(add-hook 'csharp-mode-hook #'company-mode)
+
 ;; local config
 (if (f-exists-p "~/.emacs.d/local.el")
     (load-file "~/.emacs.d/local.el"))
@@ -277,7 +286,7 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (company-quickhelp restclient back-button magit company-1 csharp-mode company smart-hungry-delete sublime-themes treemacs drag-stuff nlinum f dash color-theme-modern expand-region multiple-cursors helm-swoop helm zenburn-theme yasnippet-snippets yaml-mode which-key undo-tree rust-mode puppet-mode lv lsp-ui ido-completing-read+ graphviz-dot-mode goto-chg gitignore-mode gitconfig-mode gitattributes-mode git-modes folding ess diminish csv-mode company-lsp))))
+    (omnisharp company-quickhelp restclient back-button magit company-1 csharp-mode company smart-hungry-delete sublime-themes treemacs drag-stuff nlinum f dash color-theme-modern expand-region multiple-cursors helm-swoop helm zenburn-theme yasnippet-snippets yaml-mode which-key undo-tree rust-mode puppet-mode lv lsp-ui ido-completing-read+ graphviz-dot-mode goto-chg gitignore-mode gitconfig-mode gitattributes-mode git-modes folding ess diminish csv-mode company-lsp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
