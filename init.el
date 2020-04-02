@@ -204,6 +204,11 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
 (setq awesome-tab-height 120)
 (setq awesome-tab-display-icon nil)
 
+;; snails
+(add-to-list 'load-path "~/.emacs.d/packages/snails")
+(require 'snails)
+(global-set-key (kbd "C-c C-p") 'snails)
+
 ;; nlinum
 (global-nlinum-mode)
 (defun my-nlinum-mode-hook ()
