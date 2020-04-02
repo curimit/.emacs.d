@@ -382,6 +382,9 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
     (highlight-parentheses-mode t)))
 (global-highlight-parentheses-mode t)
 
+;; show-paren-mode
+(show-paren-mode t)
+
 ;; local config
 (if (f-exists-p "~/.emacs.d/local.el")
     (load-file "~/.emacs.d/local.el"))
