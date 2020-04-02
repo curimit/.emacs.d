@@ -277,6 +277,10 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
 (define-key awesome-pair-mode-map (kbd "M-n") 'awesome-pair-jump-left)
 (define-key awesome-pair-mode-map (kbd "M-:") 'awesome-pair-jump-out-pair-and-newline)
 
+;; awesome-tray
+(require 'awesome-tray)
+(awesome-tray-mode 1)
+
 ;; nlinum
 (global-nlinum-mode)
 (defun my-nlinum-mode-hook ()
