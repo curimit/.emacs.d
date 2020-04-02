@@ -32,6 +32,14 @@
   (mapcar (lambda(package) (package-install package)) package-required-packages)
   )
 
+;; add load-path for ~/.emacs.d/packages
+(defun add-subdirs-to-load-path (dir)
+  "Recursive add directories to `load-path'."
+  (let ((default-directory (file-name-as-directory dir)))
+    (add-to-list 'load-path dir)
+    (normal-top-level-add-subdirs-to-load-path)))
+(add-subdirs-to-load-path "~/.emacs.d/packages")
+
 ;; color theme
 (if (eq window-system nil)
     nil
@@ -148,11 +156,9 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
 (global-set-key (kbd "C-;") 'er/expand-region)
 (global-set-key (kbd "M-<RET>") 'mc/mark-next-like-this)
 
-(add-to-list 'load-path "~/.emacs.d/packages/gcl-mode")
 (require 'gcl-mode)
 
 ;; aweshell
-(add-to-list 'load-path "~/.emacs.d/packages/aweshell")
 (require 'aweshell)
 (global-set-key (kbd "C-'") 'aweshell-next)
 (global-set-key (kbd "C-\"") 'aweshell-prev)
@@ -162,12 +168,11 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
 (require 'csharp-mode)
 
 ;; nox
-(add-to-list 'load-path "~/.emacs.d/packages/nox")
 (require 'nox)
 (add-to-list 'nox-server-programs '(csharp-mode . ("OmniSharp")))
 
 ;; awesome-tab
-(load-file "~/.emacs.d/packages/awesome-tab/awesome-tab.el")
+(require 'awesome-tab)
 (awesome-tab-mode t)
 (global-set-key (kbd "M-h") 'awesome-tab-backward-tab)
 (global-set-key (kbd "M-l") 'awesome-tab-forward-tab)
@@ -206,7 +211,6 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
 (setq awesome-tab-display-icon nil)
 
 ;; snails
-(add-to-list 'load-path "~/.emacs.d/packages/snails")
 (require 'snails)
 (global-set-key (kbd "C-c C-p") 'snails)
 
