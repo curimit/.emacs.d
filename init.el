@@ -23,6 +23,7 @@
         csharp-mode
         dockerfile-mode
         docker-compose-mode
+        undo-tree
         omnisharp))
 
 (if (eval (cons 'and (mapcar (lambda(package) (package-installed-p package)) package-required-packages)))
@@ -316,6 +317,11 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
     (add-to-list 'company-backends 'company-omnisharp)
     )
   )
+
+;; undo-tree
+(require 'undo-tree)
+(global-undo-tree-mode)
+(global-set-key (kbd "C-x C-u") 'undo-tree-visualize)
 
 ;; highlight-parentheses
 (require 'highlight-parentheses)
