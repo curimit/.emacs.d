@@ -102,6 +102,10 @@
 (which-function-mode t)
 (setq-default word-wrap t)
 
+;; turn off bell
+(setq ring-bell-function 'ignore)
+
+
 ;; Remove this :  Buffer `blah' still has clients; kill it? (yes or no)
 (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
 
